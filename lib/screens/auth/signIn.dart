@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/zigo_logo.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -82,14 +83,8 @@ class SignInScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // sign in button
-                      ElevatedButton(
-                        onPressed: (){}, 
-                        child: Text('Sign in'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(Dimensions.width50*2, Dimensions.width20*2)
-                        ),
-                      ),
+                      // sign in button (from our custom button)
+                      AppButton(text: 'Sign in', onTap: (){},),
                     ],
                   ),
                 ],
