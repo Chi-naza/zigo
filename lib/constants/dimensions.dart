@@ -43,4 +43,8 @@ class Dimensions {
   static double radius15 = screenHeight / 45.56;
   static double radius20 = screenHeight / 34.17;
   static double radius30 = screenHeight / 22.78;
+
+  // // PageView builder
+  // static double pageView = screenHeight / 2.64;
+  // static double pageViewContainer = screenHeight / 3.84;
 }

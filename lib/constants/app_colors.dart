@@ -10,6 +10,7 @@ class AppColors {
   static final Color zigoGreyColor = Color(0xFFCACACA);
   static final Color zigoGreyTextColor = Color(0xFF9b9b9b);
   static final Color zigoBackgroundColor = Color(0xFFE5E5E5);
+  static final Color starColor = Color(0xFFFEDE38);
 
   // static final Color zigoBackground2Color = Color.fromARGB(255, 255, 253, 253);
   
