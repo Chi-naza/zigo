@@ -45,13 +45,14 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
         lastDate: DateTime(2100)
       );
 
-    if (picked != null && picked != startBookDate)
+    if (picked != null && picked != startBookDate) {
       setState(() {
         startBookDate = picked;
         var date =
             "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
         _startBookDateController.text = date;
       });
+    }
   }
 
   // show Date picker:  function - for endDate
@@ -63,13 +64,14 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
         lastDate: DateTime(2100)
       );
 
-    if (picked != null && picked != endBookDate)
+    if (picked != null && picked != endBookDate) {
       setState(() {
         endBookDate = picked;
         var date =
             "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
         _endBookDateController.text = date;
       });
+    }
   }
 
    @override

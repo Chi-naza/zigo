@@ -36,6 +36,8 @@ dependencies:
   google_fonts: ^3.0.1
   getwidget: ^3.0.1
   dots_indicator: ^2.1.0
+  font_awesome_flutter: ^10.1.0
+  syncfusion_flutter_sliders: ^20.2.46
 
 dev_dependencies:
   flutter_test:
