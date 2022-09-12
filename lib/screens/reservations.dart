@@ -3,16 +3,21 @@ import 'package:getwidget/getwidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/widgets/header_section.dart';
+import 'package:zigo/widgets/footer/zigo_bottom_navbar.dart';
+import 'package:zigo/widgets/header/drawer_screen.dart';
+import 'package:zigo/widgets/header/header_section.dart';
 import 'package:zigo/widgets/shadowed_tile.dart';
 import 'package:zigo/widgets/small_text_n_divider.dart';
 
 class Reservations extends StatelessWidget {
   const Reservations({Key? key}) : super(key: key);
 
+  static const String routeName = '/home';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerScreen(),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -132,6 +137,8 @@ class Reservations extends StatelessWidget {
           ],
         ),
       ),
+      // Our Custom BottomNavBar
+      bottomNavigationBar: const ZigoBottomNavBar(isHomeClicked: true),
     );
   }
 }

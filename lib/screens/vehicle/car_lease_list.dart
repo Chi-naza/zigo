@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/car_lease_card.dart';
-import 'package:zigo/widgets/header.dart';
+import 'package:zigo/widgets/header/header.dart';
 
 class CarLeaseListScreen extends StatelessWidget {
   const CarLeaseListScreen({Key? key}) : super(key: key);

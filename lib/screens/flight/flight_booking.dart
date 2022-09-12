@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/widgets/header_section.dart';
+import 'package:zigo/widgets/header/header_section.dart';
 import 'package:zigo/widgets/inputfield_with_description_n_logo.dart';
 import 'package:zigo/widgets/title_n_detail_texts.dart';
 

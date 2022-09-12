@@ -15,11 +15,20 @@ class Header extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // hamburger icon 
-              Icon(
-                Icons.menu,
-                size: Dimensions.height50*1.2,
-                color: AppColors.zigoGreyColor,
+              // hamburger/menu icon. Wrapped with builder to enable custom Drawer
+              Builder(
+                builder: (context) {
+                  return InkWell(
+                    onTap: (() {
+                      Scaffold.of(context).openDrawer();
+                    }),
+                    child: Icon(
+                      Icons.menu,
+                      size: Dimensions.height50*1.2,
+                      color: AppColors.zigoGreyColor,
+                    ),
+                  );
+                }
               ),
               //profile image
               CircleAvatar(

@@ -4,7 +4,8 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/widgets/app_button.dart';
-import 'package:zigo/widgets/header_section.dart';
+import 'package:zigo/widgets/header/header_section.dart';
+
 
 class AutoBudgetPlannerScreen extends StatefulWidget {
   AutoBudgetPlannerScreen({Key? key}) : super(key: key);

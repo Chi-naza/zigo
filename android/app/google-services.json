@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "335252318959",
+    "project_id": "zigo-128d3",
+    "storage_bucket": "zigo-128d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335252318959:android:2fd1e54f63a6613fdc891a",
+        "android_client_info": {
+          "package_name": "com.example.zigo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335252318959-fi66d5hvjdusc0hqaqf55j6dh630dvlm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATRm8g4KUaJ9S8qNrr-2R-9uMKgvTqNCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335252318959-fi66d5hvjdusc0hqaqf55j6dh630dvlm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

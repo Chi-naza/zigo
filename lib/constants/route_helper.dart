@@ -1,29 +1,31 @@
 import 'package:get/get.dart';
+import 'package:zigo/screens/Intro/onboarding/onboarding_screen.dart';
+import 'package:zigo/screens/Intro/splash_screen.dart';
 import 'package:zigo/screens/home/zigo_home.dart';
+import 'package:zigo/screens/reservations.dart';
 
-class Routes {
-
-  static const String home = '/';
-  static const String splashScreen = '/splash-screen';
-
-  static String getHome() => '$home';
-  static String getSplashScreen() => '$splashScreen';
-
+class AppRoutes {
 
 
   static List<GetPage> routes = [
     // for home screen
     GetPage(
-      name: home,
-      page: () => HomeScreen(),
+      name: '/',
+      page: () => SplashScreen(),
       transition: Transition.fadeIn
     ),
+    
+    // onboarding screen
+    GetPage(
+      name: OnboardingScreen.routeName,
+      page: () => OnboardingScreen(),
+    ),
 
-    // for splash screen
-    // GetPage(
-    //   name: splashScreen,
-    //   page:,
-    // ),
+    // reservations: home
+    GetPage(
+      name: Reservations.routeName,
+      page: () => Reservations(),
+    ),
   ];
 
 }

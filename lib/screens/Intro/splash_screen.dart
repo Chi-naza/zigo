@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/widgets/footer/zigo_bottom_navbar.dart';
 import 'package:zigo/widgets/zigo_logo.dart';
 
-class SplashScreenTwo extends StatelessWidget {
-  const SplashScreenTwo({Key? key}) : super(key: key);
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       body: Stack(
         children: [
           Container(
@@ -15,13 +16,13 @@ class SplashScreenTwo extends StatelessWidget {
             width: Dimensions.screenWidth,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/splash2.png'),
+                image: AssetImage('assets/images/splash.png'),
                 fit: BoxFit.fill,
               ),
             ),
           ),
           Positioned(
-            top: Dimensions.height30,
+            top: Dimensions.height25,
             left: Dimensions.height50,
             right: Dimensions.height50,
             child: ZigoLogo(
@@ -34,3 +35,4 @@ class SplashScreenTwo extends StatelessWidget {
     );
   }
 }
+

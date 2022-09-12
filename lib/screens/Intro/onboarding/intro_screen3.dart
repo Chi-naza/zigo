@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/widgets/zigo_logo.dart';
 
-class SplashScreenFour extends StatelessWidget {
-  const SplashScreenFour({Key? key}) : super(key: key);
+class IntroScreenThree extends StatelessWidget {
+  const IntroScreenThree({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +24,15 @@ class SplashScreenFour extends StatelessWidget {
               ),
             ),
           // zigo logo
-          Positioned(
-            top: Dimensions.height50,
-            left: Dimensions.height50,
-            right: Dimensions.height50,
-            child: ZigoLogo(
-              zFontSize: Dimensions.height20*5.5,
-              textFontSize: Dimensions.height20*2,
-            ),
-          ),
+          // Positioned(
+          //   top: Dimensions.height50,
+          //   left: Dimensions.height50,
+          //   right: Dimensions.height50,
+          //   child: ZigoLogo(
+          //     zFontSize: Dimensions.height20*5.5,
+          //     textFontSize: Dimensions.height20*2,
+          //   ),
+          // ),
         ],
       ),
     );

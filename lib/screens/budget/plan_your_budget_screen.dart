@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/widgets/app_button.dart';
-import 'package:zigo/widgets/header_section.dart';
+import 'package:zigo/widgets/header/header_section.dart';
 
 class PlanYourBudgetScreen extends StatefulWidget {
   const PlanYourBudgetScreen({Key? key}) : super(key: key);

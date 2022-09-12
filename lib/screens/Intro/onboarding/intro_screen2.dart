@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zigo/constants/dimensions.dart';
 
-class SplashScreenThree extends StatelessWidget {
-  const SplashScreenThree({Key? key}) : super(key: key);
+class IntroScreenTwo extends StatelessWidget {
+  const IntroScreenTwo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

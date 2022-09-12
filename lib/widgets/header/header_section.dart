@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/widgets/header.dart';
+import 'package:zigo/widgets/header/header.dart';
 import 'package:zigo/widgets/shadowed_tile.dart';
 
 class HeaderSection extends StatelessWidget {
