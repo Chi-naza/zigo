@@ -4,9 +4,9 @@ import 'package:getwidget/getwidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/screens/Intro/onboarding/intro_screen1.dart';
 import 'package:zigo/screens/Intro/onboarding/intro_screen2.dart';
-import 'package:zigo/screens/reservations.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -23,11 +23,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // index of current page
   late int initialPage;
 
+  AuthController authController = Get.find();
+
   // List of onBoarding screens/widgets
   List<Widget> slides() {
     return [
-      IntroScreenOne(),
-      IntroScreenTwo(),
+      const IntroScreenOne(),
+      const IntroScreenTwo(),
       Container(
       width: Dimensions.screenWidth,
       height: Dimensions.screenHeight,
@@ -48,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void initState() {
-    _pageController = PageController(initialPage: 2);
+    _pageController = PageController(initialPage: 0);
     initialPage = _pageController.initialPage;
     super.initState();
   }
@@ -57,7 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: AppColors.mainWhiteColor,
       body: GFIntroScreen(
-        color:  Colors.white, //AppColors.zigoBackgroundColor,
+        color:  Colors.grey.shade200, 
         slides: slides(),
         pageController: _pageController,
         currentIndex: initialPage,
@@ -69,7 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           forwardButtonTextStyle: slideButtonsTextStyle,
           backButtonTextStyle: slideButtonsTextStyle,
           doneButtonTextStyle: slideButtonsTextStyle.copyWith(fontSize: Dimensions.font20-2),
-          skipButtonTextStyle: slideButtonsTextStyle.copyWith(color: Colors.redAccent),
+          skipButtonTextStyle: slideButtonsTextStyle,//.copyWith(color: Colors.redAccent),
           pageController: _pageController,
           pageCount: slides().length,
           currentIndex: initialPage,
@@ -87,13 +89,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           },
           // when skipButton is tapped
           onSkipTap: () {
-            //TODO: check if user is signedIn
-            Get.offAllNamed(Reservations.routeName);
+            // checking if user is loggedIn
+            if(authController.isLoggedIn()){
+              authController.navigateToHomeScreen();
+            }else{
+              authController.navigateToLoginScreen();
+            }
           },
           // when goButton is tapped: goes to homeScreen
           onDoneTap: () {
-            //TODO: check if user is signedIn
-            Get.offAllNamed(Reservations.routeName);
+            // checking if user is loggedIn
+            if(authController.isLoggedIn()){
+              authController.navigateToHomeScreen();
+            }else{
+              authController.navigateToLoginScreen();
+            }
           },
           navigationBarColor: Colors.transparent, //.zigoBackgroundColor,
           showDivider: false,

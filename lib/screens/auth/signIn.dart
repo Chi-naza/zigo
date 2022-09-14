@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/zigo_logo.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
+
   const SignInScreen({Key? key}) : super(key: key);
+
+  static const String routeName = '/login';
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+
+  // getting an instance of the authController
+  AuthController controller = Get.find();
+
+  //Input controllers
+  var _emailController = TextEditingController();
+  var _passwordController = TextEditingController();
+
+  // form key
+  var formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +44,7 @@ class SignInScreen extends StatelessWidget {
                   child: Container(
                     height: Dimensions.height50*8,
                     width: double.maxFinite,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('assets/images/signIn.png'),
                         fit: BoxFit.contain,
@@ -42,67 +64,101 @@ class SignInScreen extends StatelessWidget {
             // Input fields section
             Container(
               padding: EdgeInsets.symmetric(horizontal: Dimensions.width30),
-              child: Column(
-                children: [
-                  // for username
-                  TextField(
-                    decoration: InputDecoration(
-                      helperText: 'Username',
-                      helperStyle: GoogleFonts.montserrat(
-                        color: AppColors.mainColor,
-                        fontSize: Dimensions.font20,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                  // for password
-                  TextField(
-                    obscureText: true,
-                    obscuringCharacter: '*',
-                    decoration: InputDecoration(
-                      helperText: 'Password',
-                      helperStyle: GoogleFonts.montserrat(
-                        color: AppColors.mainColor,
-                        fontSize: Dimensions.font20,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                   // forget passsword section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // for forgot password text
-                      InkWell(
-                        onTap: (){},
-                        child: Text(
-                          'Forgot Password?',
-                          style: GoogleFonts.montserrat(
-                            color: AppColors.mainColor,
-                            fontSize: Dimensions.font16,
-                          ),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    // for username
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      controller: _emailController,
+                      validator: (value){
+                        if (value == null || value.isEmpty || !value.contains('@') || !value.contains('.')) {                            
+                          return "Provide a valid email in order to login";
+                        }else{
+                          return null;
+                        }
+                      },     
+                      decoration: InputDecoration(
+                        helperText: 'Username (email)',
+                        helperStyle: GoogleFonts.montserrat(
+                          color: AppColors.mainColor,
+                          fontSize: Dimensions.font20,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
-                      // sign in button (from our custom button)
-                      AppButton(text: 'Sign in', onTap: (){},),
-                    ],
-                  ),
-                ],
+                    ),
+                    // for password
+                    TextFormField(
+                      obscureText: true,
+                      obscuringCharacter: '*',
+                      controller: _passwordController,
+                      textInputAction: TextInputAction.done,
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 8 ) {                            
+                          return "Password should contain atleast 8 characters";
+                        }else{
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        helperText: 'Password',
+                        helperStyle: GoogleFonts.montserrat(
+                          color: AppColors.mainColor,
+                          fontSize: Dimensions.font20,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                     // forget passsword section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // for forgot password text
+                        InkWell(
+                          onTap: (){},
+                          child: Text(
+                            'Forgot Password?',
+                            style: GoogleFonts.montserrat(
+                              color: AppColors.mainColor,
+                              fontSize: Dimensions.font16,
+                            ),
+                          ),
+                        ),
+                        // sign in button (from our custom button)
+                        AppButton(
+                          text: 'Sign in', 
+                          onTap: (){
+                            //only proceeds if form data are valid
+                            if(formKey.currentState!.validate()){
+                              // calling the login() from authController
+                              controller.login(_emailController.text.trim(), _passwordController.text.trim());
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             // Create account section
-            SizedBox(height: Dimensions.height50*2),
+            SizedBox(height: Dimensions.height50),
             InkWell(
+              onTap: (){
+                controller.navigateToSignUpScreen();
+              },
               child: Text(
               'Create Account',
                 style: GoogleFonts.montserrat(
-                  color: AppColors.mainColor,
+                  color: AppColors.mainColor.withOpacity(0.7),
                   fontSize: Dimensions.font16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
            ),
-           SizedBox(height: Dimensions.height20),
+           SizedBox(height: Dimensions.height30),
           ],
         ),
       ),
