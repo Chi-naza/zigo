@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/flight_controller.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 import 'package:zigo/widgets/inputfield_with_description_n_logo.dart';
 import 'package:zigo/widgets/title_n_detail_texts.dart';
 
 class FlightBookingScreen extends StatefulWidget {
   const FlightBookingScreen({Key? key}) : super(key: key);
+
+  static const String routeName = '/flight-booking';
 
   @override
   State<FlightBookingScreen> createState() => _FlightBookingScreenState();
@@ -480,201 +484,203 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
         state: _activeStepIndex == 2 ? StepState.editing : StepState.complete,
         isActive: _activeStepIndex >= 2,
         title: Text(_activeStepIndex==2 ? 'Choose Seat' : ''),
-        content: Container(
-          height: Dimensions.height50*12,
-          // padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // PLANE SYMBOL & PICK SEAT inside
-                  Container(
-                    height: Dimensions.height50*10,
-                    width: Dimensions.width50*4,
-                    decoration: const BoxDecoration(
-                      // color: Colors.redAccent,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/plane_symbol.png'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    child: Container(
-                      transform: Matrix4.translationValues(0, Dimensions.height30*2, 1),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-                        child: GridView.count(
-                          crossAxisSpacing: 20,
-                          shrinkWrap: true,
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 1,
-                          children: List.generate(seats.length, (index) {
-                            return Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if(_selectedItems.contains(index)==false){
-                                      sum = sum + price;
-                                      _selectedItems.add(index);
-                                      selectedSeatsText = "";
-                                      _selectedItems.forEach((element) {
-                                        if (selectedSeatsText != "") selectedSeatsText += " , ";
-                                        selectedSeatsText += (seats[element]);
-
-                                      });
-                                    }else{
-                                      sum = sum - price;
-                                      _selectedItems.remove(index);
-                                      selectedSeatsText = "";
-                                      _selectedItems.forEach((element) {
-                                        if (selectedSeatsText != "") selectedSeatsText += " , ";
-                                        selectedSeatsText += (seats[element]);
-
-                                      });
-                                    }
-                                  });
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: _selectedItems.contains(index) ? Colors.pink : Color(0xff828EFB), // background
-                                  onPrimary: Colors.white, // foreground
-                                ),
-                                child: Text(
-                                  seats[index],
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                            );
-                          }),
+        content: GetBuilder<FlightController>(builder: (controller) {
+          return Container(
+            height: Dimensions.height50*12,
+            // padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // PLANE SYMBOL & PICK SEAT inside
+                    Container(
+                      height: Dimensions.height50*10,
+                      width: Dimensions.width50*4,
+                      decoration: const BoxDecoration(
+                        // color: Colors.redAccent,
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/plane_symbol.png'),
+                          fit: BoxFit.contain,
                         ),
                       ),
-                    ),
-                  ),
-                  // CONTAINER: The Texts by the Right
-                  Container(
-                    height: Dimensions.height50*7,
-                    // width: Dimensions.width50*4,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          'CHOOSE SEAT',
-                          style: GoogleFonts.poppins(
-                            color: AppColors.zigoGreyTextColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: Dimensions.font23,                         
+                      child: Container(
+                        transform: Matrix4.translationValues(0, Dimensions.height30*2, 1),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
+                          child: GridView.count(
+                            crossAxisSpacing: 20,
+                            shrinkWrap: true,
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 1,
+                            children: List.generate(seats.length, (index) {
+                              return Center(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if(_selectedItems.contains(index)==false){
+                                        sum = sum + price;
+                                        _selectedItems.add(index);
+                                        selectedSeatsText = "";
+                                        _selectedItems.forEach((element) {
+                                          if (selectedSeatsText != "") selectedSeatsText += " , ";
+                                          selectedSeatsText += (seats[element]);
+
+                                        });
+                                      }else{
+                                        sum = sum - price;
+                                        _selectedItems.remove(index);
+                                        selectedSeatsText = "";
+                                        _selectedItems.forEach((element) {
+                                          if (selectedSeatsText != "") selectedSeatsText += " , ";
+                                          selectedSeatsText += (seats[element]);
+
+                                        });
+                                      }
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: _selectedItems.contains(index) ? Colors.pink : Color(0xff828EFB), // background
+                                    onPrimary: Colors.white, // foreground
+                                  ),
+                                  child: Text(
+                                    seats[index],
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
                         ),
-                        // Name & No. of PLANE
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'BOEING',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontWeight: FontWeight.w300,
-                                fontSize: Dimensions.font20+2,                         
-                              ),
+                      ),
+                    ),
+                    // CONTAINER: The Texts by the Right
+                    Container(
+                      height: Dimensions.height50*7,
+                      // width: Dimensions.width50*4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'CHOOSE SEAT',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.zigoGreyTextColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: Dimensions.font23,                         
                             ),
-                            Text(
-                              '737',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontWeight: FontWeight.w300,
-                                fontSize: Dimensions.font20,                         
+                          ),
+                          // Name & No. of PLANE
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                controller.flightDataList[0].flightName.toUpperCase(), // name of plane
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: Dimensions.font20+2,                         
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        // SEAT NO. & Input FIELD
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            // seat no.
-                            Text(
-                              'SEAT NO.',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontWeight: FontWeight.w300,
-                                fontSize: Dimensions.font23,  
-                                wordSpacing: 2,                       
+                              Text(
+                                controller.flightDataList[0].flightID, // plane ID
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: Dimensions.font20,                         
+                                ),
                               ),
-                            ),
-                            // input field
-                            Container(
-                              height: Dimensions.height50,
-                              width: Dimensions.width50*2,
-                              color: AppColors.zigoBackgroundColor2,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: selectedSeatsText, // picked from the selected seat
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: AppColors.zigoBackgroundColor2,
+                            ],
+                          ),
+                          // SEAT NO. & Input FIELD
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              // seat no.
+                              Text(
+                                'SEAT NO.',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: Dimensions.font23,  
+                                  wordSpacing: 2,                       
+                                ),
+                              ),
+                              // input field
+                              Container(
+                                height: Dimensions.height50,
+                                width: Dimensions.width50*2,
+                                color: AppColors.zigoBackgroundColor2,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    hintText: selectedSeatsText, // picked from the selected seat
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: AppColors.zigoBackgroundColor2,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              // LEGEND section
-              Container(
-                margin: EdgeInsets.only(left: Dimensions.width30, top: Dimensions.height20),
-                child: Column(
-                  children: [
-                    // seats available
-                    Row(
-                      children: [
-                         Container(
-                          height: Dimensions.height18,
-                          width: Dimensions.width18,
-                          color: Color(0xff828EFB),
-                        ),
-                        SizedBox(width: Dimensions.width16),
-                        Text(
-                          '12 Seats Available',
-                          style: GoogleFonts.poppins(
-                            color: AppColors.zigoGreyTextColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: Dimensions.font26/2,                         
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    SizedBox(height: Dimensions.height10),
-                    // seats Unavailable
-                    Row(
-                      children: [
-                         Container(
-                          height: Dimensions.height18,
-                          width: Dimensions.width18,
-                          color: Colors.pink,
-                        ),
-                        SizedBox(width: Dimensions.width16),
-                        Text(
-                          '32 Seats Unavailable',
-                          style: GoogleFonts.poppins(
-                            color: AppColors.zigoGreyTextColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: Dimensions.font26/2,                         
-                          ),
-                        ),
-                      ],
-                    ),                 
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
+                // LEGEND section
+                Container(
+                  margin: EdgeInsets.only(left: Dimensions.width30, top: Dimensions.height20),
+                  child: Column(
+                    children: [
+                      // seats available
+                      Row(
+                        children: [
+                          Container(
+                            height: Dimensions.height18,
+                            width: Dimensions.width18,
+                            color: Color(0xff828EFB),
+                          ),
+                          SizedBox(width: Dimensions.width16),
+                          Text(
+                            '12 Seats Available',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.zigoGreyTextColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: Dimensions.font26/2,                         
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: Dimensions.height10),
+                      // seats Unavailable
+                      Row(
+                        children: [
+                          Container(
+                            height: Dimensions.height18,
+                            width: Dimensions.width18,
+                            color: Colors.pink,
+                          ),
+                          SizedBox(width: Dimensions.width16),
+                          Text(
+                            '32 Seats Unavailable',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.zigoGreyTextColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: Dimensions.font26/2,                         
+                            ),
+                          ),
+                        ],
+                      ),                 
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
       //STEP 4: See Info & Save
       Step(
@@ -749,7 +755,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                 width: Dimensions.screenWidth,
                 height: Dimensions.screenHeight,
                 child: Stepper(
-                  physics: const ClampingScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   type: StepperType.horizontal,
                   currentStep: _activeStepIndex,
                   steps: stepList(),

@@ -7,6 +7,7 @@ import 'package:zigo/constants/route_helper.dart';
 import 'package:zigo/firebase_options.dart';
 import 'package:zigo/screens/Intro/onboarding/onboarding_screen.dart';
 import 'package:zigo/screens/auth/signup.dart';
+import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
 import 'package:zigo/screens/reservations.dart';
 import 'package:zigo/screens/test.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         // fontFamily: 'Montserrat',
         primarySwatch: buildMaterialColor(const Color(0xFF0A71DE)),
       ),
-      // home: SignUpScreen(),
+      // home: PlanYourBudgetScreen(),
     );
   }
 }

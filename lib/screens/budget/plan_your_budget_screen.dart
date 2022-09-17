@@ -1,22 +1,29 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/budget_controller.dart';
 import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 
 class PlanYourBudgetScreen extends StatefulWidget {
   const PlanYourBudgetScreen({Key? key}) : super(key: key);
 
+   static const String routeName = '/plan-your-budget';
+
   @override
   State<PlanYourBudgetScreen> createState() => _PlanYourBudgetScreenState();
 }
 
 class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
+
+  BudgetController budgetController = Get.find();
+
   // dummy list for items
   String dropDownCurrentValue = 'Enter item';
-  var items = ['Enter item', 'Hello', 'Dear', 'Ada', 'My love'];
+  // var items = ['Enter item', 'Hello', 'Dear', 'Ada', 'My love'];
 
   // dummy list for file types
   String currentFileType = '.Doc';
@@ -26,6 +33,12 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> items = ['Enter item'];
+    for(var item in budgetController.budgetItemsList){
+      items.add("${item.itemName} - ${item.itemPrice} naira");
+    }
+    
+    print(items);
 
     return Scaffold(
       backgroundColor: Colors.white,

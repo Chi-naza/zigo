@@ -1,19 +1,25 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/hotel_controller.dart';
 import 'package:zigo/widgets/header/header.dart';
 import 'package:zigo/widgets/hotel_list_tile.dart';
 
 class HotelListScreen extends StatefulWidget {
   HotelListScreen({Key? key}) : super(key: key);
 
+  static const String routeName = '/hotel-list';
+
   @override
   State<HotelListScreen> createState() => _HotelListScreenState();
 }
 
 class _HotelListScreenState extends State<HotelListScreen> {
+
+  HotelController hotelController = Get.find();
 
   PageController _pageController = PageController();
   double _currentPageValue = 0;
@@ -158,8 +164,8 @@ class _HotelListScreenState extends State<HotelListScreen> {
               ),
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: 3,
-                itemBuilder: (context, position) {
+                itemCount: hotelController.hotelList.length,
+                itemBuilder: (context, index) {
                   // Container generated for each item by PageView builder
                   return Container(
                     // giving space between one pageView item and another with margin
@@ -182,11 +188,11 @@ class _HotelListScreenState extends State<HotelListScreen> {
                           height: Dimensions.height50*4,
                           width: double.infinity,
                           decoration: BoxDecoration(                  
-                            color: position.isEven ? Color(0xFF69c5df) : Color(0xFFfa7552),
+                            color: index.isEven ? Color(0xFF69c5df) : Color(0xFFfa7552),
                             borderRadius: BorderRadius.circular(Dimensions.radius20),
-                            image: const DecorationImage(                      
-                              image: AssetImage('assets/images/sunview_slide.png'),
-                              fit: BoxFit.fill,
+                            image: DecorationImage(                      
+                              image: NetworkImage(hotelController.hotelList[index].image), //AssetImage('assets/images/sunview_slide.png'),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -201,7 +207,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                               Column(
                                 children: [
                                   Text(
-                                    'Sunview Hotel',
+                                    hotelController.hotelList[index].hotelName,
                                     style: GoogleFonts.montserrat(
                                       color: AppColors.zigoGreyTextColor,
                                       fontWeight: FontWeight.bold,
@@ -215,7 +221,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                         color: AppColors.zigoGreyTextColor,
                                       ),
                                       Text(
-                                        'Ikeja, Lagos',
+                                        "${hotelController.hotelList[index].location}, ${hotelController.hotelList[index].city}",
                                         style: GoogleFonts.montserrat(
                                           color: AppColors.zigoGreyTextColor,
                                           fontWeight: FontWeight.bold
@@ -233,7 +239,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                   Row(
                                     children: List.generate(
                                       //generate items(widgets)
-                                      5,
+                                      int.parse(hotelController.hotelList[index].stars),
                                       (index) => Icon(
                                         Icons.star,
                                         color: AppColors.starColor,
@@ -243,7 +249,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                   ),
                                   // amount
                                   Text(
-                                    '35,000',
+                                    hotelController.hotelList[index].price,
                                     style: GoogleFonts.montserrat(
                                       color: AppColors.zigoGreyTextColor,
                                       fontWeight: FontWeight.bold,
@@ -274,34 +280,26 @@ class _HotelListScreenState extends State<HotelListScreen> {
               ),
             ),
             SizedBox(height: Dimensions.height30),
-            // LIST of HOTELS (with custom HotelTile)
-            // sunview
-            const HotelListTile(
-              imagePath: 'assets/images/sunview_hotel.png', 
-              hotelName: 'Sunview Hotel', 
-              hotelLocation: 'Ikeja, Lagos', 
-              price: '35,000', 
-              numOfReviews: '173'
-            ),
-            SizedBox(height: Dimensions.height15),
-            // jerry
-            const HotelListTile(
-              imagePath: 'assets/images/jerry_hotel.png', 
-              hotelName: 'Jerry Hotel', 
-              hotelLocation: 'Ikeja, Lagos', 
-              price: '35,000', 
-              numOfReviews: '173'
-            ),
-            SizedBox(height: Dimensions.height15),
-            // Eko
-            const HotelListTile(
-              imagePath: 'assets/images/eko_hotel.png', 
-              hotelName: 'Eko Hotel', 
-              hotelLocation: 'Ikeja, Lagos', 
-              price: '35,000', 
-              numOfReviews: '173'
-            ),
-            SizedBox(height: Dimensions.height50),
+            GetBuilder<HotelController>(builder: ((controller) {
+              return ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: ((context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                    child: HotelListTile(
+                      imagePath: controller.hotelList[index].image, 
+                      hotelName: controller.hotelList[index].hotelName, 
+                      hotelLocation: "${controller.hotelList[index].location}, ${controller.hotelList[index].city}",
+                      price: controller.hotelList[index].price, 
+                      numOfReviews: controller.hotelList[index].reviews,
+                    ),
+                  );
+                }) , 
+                separatorBuilder: ((context, index) => SizedBox(height: Dimensions.height20)), 
+                itemCount: controller.hotelList.length,
+              );
+            })),
+            SizedBox(height: Dimensions.height50)
           ],
         ),
       ),

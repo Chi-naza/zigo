@@ -13,21 +13,27 @@ class TitleAndDetailTexts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            color: Colors.black.withOpacity(0.5),
-            fontWeight: FontWeight.bold,
-            fontSize: Dimensions.font16-2,
+        Container(
+          width: Dimensions.width50*2.4,
+          child: Text(
+            title,
+            style: GoogleFonts.poppins(
+              color: Colors.black.withOpacity(0.5),
+              fontWeight: FontWeight.bold,
+              fontSize: Dimensions.font12-2,
+            ),
           ),
         ),
         SizedBox(height: Dimensions.height4),
-        Text(
-          detailText??'',
-          style: GoogleFonts.poppins(
-            color: AppColors.zigoGreyTextColor,
-            fontWeight: FontWeight.bold,
-            fontSize: Dimensions.font12,
+        Container(
+          width: Dimensions.width50*2.4,
+          child: Text(
+            detailText??'',
+            style: GoogleFonts.poppins(
+              color: AppColors.zigoGreyTextColor,
+              fontWeight: FontWeight.bold,
+              fontSize: Dimensions.font12-4,
+            ),
           ),
         ),
       ],

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class BoatLeaseModel {
   String name;
   String routeCities;
-  double pricePerDay;
+  String pricePerDay;
   String cityOfLocation;
   String image;
 

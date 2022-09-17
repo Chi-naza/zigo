@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
+import 'package:zigo/screens/flight/flight_booking.dart';
+import 'package:zigo/screens/hotel/hotel_list.dart';
+import 'package:zigo/screens/vehicle/boat_lease_list.dart';
+import 'package:zigo/screens/vehicle/car_lease_list.dart';
+import 'package:zigo/screens/vehicle/request_for_trip.dart';
 
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({Key? key}) : super(key: key);
@@ -15,8 +22,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
       data: Theme.of(context).copyWith(canvasColor: Colors.white),
       child: Drawer(
         child: Column(
-          children: const [
-            ListTile(
+          children: [
+            const ListTile(
               leading: CircleAvatar(
                 radius: 28,
                 backgroundColor: Colors.blueGrey,
@@ -43,6 +50,40 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     fontSize: 12.0),
               ),
             ),
+
+            // Testing Buttons
+            SizedBox(height: 40),
+
+            ElevatedButton(
+              onPressed: () => Get.toNamed(PlanYourBudgetScreen.routeName), 
+              child: Text("Plan Your Budget Screen")
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.toNamed(HotelListScreen.routeName), 
+              child: Text("Hotel List Screen")
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.toNamed(FlightBookingScreen.routeName), 
+              child: Text("Book Flight Screen Now")
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.toNamed(RequestForTrip.routeName), 
+              child: Text("Request For Trip")
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.toNamed(CarLeaseListScreen.routeName), 
+              child: Text("Car List Screen")
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.toNamed(BoatLeaseListScreen.routeName), 
+              child: Text("Book Vehicle List Screen")
+            ),
+
           ],
         ),
       ),

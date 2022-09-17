@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:zigo/controllers/auth_controller.dart';
+import 'package:zigo/services/firebase_storage_services.dart';
 
 
 
@@ -12,6 +13,7 @@ class InitialBindings implements Bindings{
   void dependencies() {
     // TODO: implement dependencies
     Get.put(AuthController(), permanent: true );
+    Get.put(FirebaseStorageService());
   }
 
 }

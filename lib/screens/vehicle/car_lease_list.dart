@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/vehicle_lease_controller.dart';
 import 'package:zigo/widgets/car_lease_card.dart';
 import 'package:zigo/widgets/header/header.dart';
 
 class CarLeaseListScreen extends StatelessWidget {
   const CarLeaseListScreen({Key? key}) : super(key: key);
+
+  static const String routeName = '/car-lease-list';
 
   @override
   Widget build(BuildContext context) {
@@ -93,31 +97,27 @@ class CarLeaseListScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: Dimensions.height30),
-            // Car Lease Card Section
-            const CarLeaseCard(
-              city: 'Abuja',
-              vehicleName: 'CHEVROLET GTS',
-              modelYear: '2021',
-              price: '500',
-              vehicleImagePath: 'assets/images/carlease_car.png',
-            ),
-            SizedBox(height: Dimensions.height20),
-            const CarLeaseCard(
-              city: 'Abuja',
-              vehicleName: 'CHEVROLET GTS',
-              modelYear: '2021',
-              price: '500',
-              vehicleImagePath: 'assets/images/carlease_car.png',
-            ),
-            SizedBox(height: Dimensions.height20),
-            const CarLeaseCard(
-              city: 'Abuja',
-              vehicleName: 'CHEVROLET GTS',
-              modelYear: '2021',
-              price: '500',
-              vehicleImagePath: 'assets/images/carlease_car.png',
-            ),
-            SizedBox(height: Dimensions.height50*2),
+            //LEASE CARDS
+            GetBuilder<VehicleLeaseController>(builder: (controller) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: ((context, index) => SizedBox(height: Dimensions.height10)), 
+                  itemCount: controller.carLeaseDataList.length,
+                  itemBuilder: ((context, index) {
+                    return CarLeaseCard(
+                      city: controller.carLeaseDataList[index].cityOfLocation, // city
+                      vehicleName: controller.carLeaseDataList[index].carName.toUpperCase(), // car name
+                      modelYear: controller.carLeaseDataList[index].modelYear, // model year
+                      price: controller.carLeaseDataList[index].pricePerDay, // price 
+                      vehicleImagePath: controller.carLeaseDataList[index].image, // image
+                    );
+                  }),                 
+                ),
+              );
+            }),         
+            SizedBox(height: Dimensions.height30),
           ],
         ),
       ),

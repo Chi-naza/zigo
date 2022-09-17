@@ -42,7 +42,7 @@ class HotelListTile extends StatelessWidget {
               decoration: BoxDecoration( 
                 borderRadius: BorderRadius.circular(Dimensions.radius20/4),                 
                 image: DecorationImage(                      
-                  image: AssetImage(imagePath),
+                  image: NetworkImage(imagePath),
                   fit: BoxFit.fill,
                 ),
               )

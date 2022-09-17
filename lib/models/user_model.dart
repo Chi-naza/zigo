@@ -74,7 +74,7 @@ class UserModel {
 
 class MyBudgetModel {
   String  itemName;
-  double itemPrice;
+  String itemPrice;
   String createdAt;
   String totalAmount;
   String budgetName;
@@ -127,7 +127,7 @@ class MyBudgetModel {
 class BookedHotelModel{
   String hotelName;
   String typeOfRoom;
-  int noOfRooms;
+  String noOfRooms;
   String startDate;
   String endDate;
 
@@ -185,9 +185,9 @@ class BookedFlightModel {
   String dateOfDeparture;
   String dateOfReturn;
   String seatClass;
-  int noOfPersons;
+  String noOfPersons;
   String luggage;
-  double amountDue;
+  String amountDue;
 
 
   BookedFlightModel({
@@ -260,7 +260,7 @@ class BookedFlightModel {
 class BookedTaxiModel{
   String currentLocation;
   String destination;
-  int noOfPersons;
+  String noOfPersons;
   String luggage;
 
 

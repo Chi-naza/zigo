@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/taxi_booking_controller.dart';
 import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 
@@ -9,8 +11,12 @@ import 'package:zigo/widgets/header/header_section.dart';
 class RequestForTrip extends StatelessWidget {
   const RequestForTrip({Key? key}) : super(key: key);
 
+  static const String routeName = '/request-for-trip';
+
   @override
   Widget build(BuildContext context) {
+    TaxiBookingController controller = Get.find();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -62,15 +68,14 @@ class RequestForTrip extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(bottom: Dimensions.height50*2),
                     child: CircleAvatar(
-                      backgroundColor: Colors.teal,
-                      backgroundImage: AssetImage('assets/images/avatar.jpg'),
-                      // foregroundImage: AssetImage('assets/images/splash23.png'),
+                      backgroundColor: Colors.white,
+                      foregroundImage: NetworkImage(controller.taxiDetailsList[0].driverImage), // driver image
                       radius: Dimensions.radius30*2.2,
                     ),
                   ),
                   // Column for Details (wrapped with Container)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width9),
                     // color: Colors.red,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,18 +84,22 @@ class RequestForTrip extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'CHIBUIKE ',
+                              '${controller.taxiDetailsList[0].driverLastName.toUpperCase()} ',
                               style: GoogleFonts.poppins(
                                 color: AppColors.zigoGreyTextColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: Dimensions.font23,
                               ),
                             ),
-                            Text(
-                              'Chika Levi',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontSize: Dimensions.font23,
+                            SizedBox(width:Dimensions.width10),
+                            Container(
+                              width: Dimensions.width50*2,
+                              child: Text(
+                                '${controller.taxiDetailsList[0].driverFirstName} ${controller.taxiDetailsList[0].driverMidName}',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontSize: Dimensions.font16,
+                                ),
                               ),
                             ),
                           ],
@@ -98,7 +107,7 @@ class RequestForTrip extends StatelessWidget {
                         SizedBox(height: Dimensions.height4),
                         // 154 Trips Text
                         Text(
-                          '154 Trips',
+                          '${controller.taxiDetailsList[0].noOfTripsTaken} Trips',  // no. of trips taken
                           style: GoogleFonts.poppins(
                             color: AppColors.zigoGreyTextColor,
                             fontSize: Dimensions.font20-2,
@@ -110,7 +119,7 @@ class RequestForTrip extends StatelessWidget {
                         Row(
                           children: List.generate(
                             //generate items(widgets)
-                            5,
+                            int.parse(controller.taxiDetailsList[0].rating),
                             (index) => Icon(
                               Icons.star,
                               color: AppColors.starColor,
@@ -121,7 +130,7 @@ class RequestForTrip extends StatelessWidget {
                         SizedBox(height: Dimensions.height4),
                         // Toyota. . .  text
                         Text(
-                          'TOYOTA Yaris',
+                          controller.taxiDetailsList[0].carName,  // car name
                           style: GoogleFonts.poppins(
                             color: AppColors.zigoGreyTextColor,
                             fontSize: Dimensions.font16-2,

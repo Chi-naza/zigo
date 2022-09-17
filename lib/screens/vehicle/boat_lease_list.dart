@@ -1,14 +1,17 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/vehicle_lease_controller.dart';
 import 'package:zigo/widgets/car_lease_card.dart';
 import 'package:zigo/widgets/header/header.dart';
 
-class BookVehicleListScreen extends StatelessWidget {
-  const BookVehicleListScreen({Key? key}) : super(key: key);
+class BoatLeaseListScreen extends StatelessWidget {
+  const BoatLeaseListScreen({Key? key}) : super(key: key);
+
+  static const String routeName = '/vehicle-lease-list';
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +33,11 @@ class BookVehicleListScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'BOOK TAXI',
+                          'BOAT LEASE',
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w600,
-                            fontSize: Dimensions.height20,
+                            fontSize: Dimensions.height18,
                             color: Colors.grey,
-                            letterSpacing: 1,
                           ),
                         ),
                         // search container
@@ -178,30 +180,25 @@ class BookVehicleListScreen extends StatelessWidget {
             ),
             SizedBox(height: Dimensions.height30),
             // List of Vehicle Lease Card (with our Custom CarLeaseCard)
-            CarLeaseCard(
-              city: 'Ireland', 
-              vehicleName: 'IFY CRUISE', 
-              modelYear: '2022', 
-              price: '500', 
-              vehicleImagePath: 'assets/images/big_ship.png',
-            ),
-            SizedBox(height: Dimensions.height20),
-            CarLeaseCard(
-              city: 'Abuja',
-              vehicleName: 'CHEVROLET GTS',
-              modelYear: '2021',
-              price: '500', 
-              vehicleImagePath: 'assets/images/carlease_car.png',
-            ),
-            SizedBox(height: Dimensions.height20),
-            CarLeaseCard(
-              city: 'Abuja',
-              vehicleName: 'CHEVROLET GTS',
-              modelYear: '2021',
-              price: '500', 
-              vehicleImagePath: 'assets/images/carlease_car.png',
-            ),
-            SizedBox(height: Dimensions.height50),
+            GetBuilder<VehicleLeaseController>(builder: ((controller) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: ((context, index) => SizedBox(height: Dimensions.height10)), 
+                  itemCount: controller.boatLeaseDataList.length,
+                  itemBuilder: ((context, index) {
+                    return CarLeaseCard(
+                      city: controller.boatLeaseDataList[index].cityOfLocation, // city
+                      vehicleName: controller.boatLeaseDataList[index].name.toUpperCase(), // boat name
+                      modelYear: '', // model year
+                      price: controller.boatLeaseDataList[index].pricePerDay, // price 
+                      vehicleImagePath: controller.boatLeaseDataList[index].image, // image
+                    );
+                  }),                 
+                ),
+              );
+            })),           
           ],
         ),
       ),

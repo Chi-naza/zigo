@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HotelModel {
   String hotelName;
-  int reviews;
+  String reviews;
   String city;
   String location;
-  double price;
-  int stars;
+  String price;
+  String stars;
   String image;
 
 
@@ -23,7 +23,7 @@ class HotelModel {
 
 
   HotelModel.fromJson(Map<String, dynamic> json):
-    hotelName = json['hotel_name'],
+    hotelName = json['name'],
     reviews = json['reviews'],
     city = json['city'],
     location = json['location'],
@@ -33,7 +33,7 @@ class HotelModel {
 
 
   HotelModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot):
-    hotelName = snapshot['hotel_name'],
+    hotelName = snapshot['name'],
     reviews = snapshot['reviews'],
     city = snapshot['city'],
     location = snapshot['location'],

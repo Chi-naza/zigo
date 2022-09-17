@@ -19,6 +19,21 @@ class BudgetController extends GetxController {
 
 
   Future<void> getAllBudgetItems() async{
+    try{
+      // getting docs of the budgetItems collection.
+      QuerySnapshot<Map<String, dynamic>> itemsData = await budgetItemRef.get();
+
+      final itemsList = itemsData.docs.map((e) => BudgetItemsModel.fromSnapshot(e)).toList();
+
+      budgetItemsList.assignAll(itemsList);
+
+      print("BUDGET ITEMS :::: $budgetItemsList");  //testing
+
+
+    }catch (e){
+      print("GET BUDGET ITEMS ERROR: $e");
+    }
+
     
   }
 

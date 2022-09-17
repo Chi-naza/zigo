@@ -194,7 +194,7 @@ class CarLeaseCard extends StatelessWidget {
                   width: Dimensions.height50*4,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(vehicleImagePath),
+                      image: NetworkImage(vehicleImagePath),
                     ),
                   ),
                 ),

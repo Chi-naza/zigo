@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BudgetItemsModel {
   String itemName;
-  double itemPrice;
+  String itemPrice;
 
 
   BudgetItemsModel({

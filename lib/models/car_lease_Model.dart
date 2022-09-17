@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CarLeaseModel {
     String carName;
     String modelYear;
-    double pricePerDay;
+    String pricePerDay;
     String cityOfLocation;
-    int noOfSeats;
+    String noOfSeats;
     String image;
 
     CarLeaseModel({
