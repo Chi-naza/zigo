@@ -11,7 +11,7 @@ import 'package:zigo/screens/Intro/onboarding/intro_screen2.dart';
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
 
-  static const String  routeName = '/zigo-into';
+  static const String  routeName = '/zigo-into'; 
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
