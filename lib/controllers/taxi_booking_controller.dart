@@ -1,15 +1,21 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:zigo/constants/app_colors.dart';
+import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/models/taxi_model.dart';
+import 'package:zigo/models/user_model.dart';
 import 'package:zigo/services/firebase_storage_services.dart';
 
 class TaxiBookingController extends GetxController {
 
   final taxiDetailsList = <TaxiModel>[].obs;
+
+  // Instance of AuthController
+  AuthController _authController = Get.find();
 
   @override
   void onReady() {
@@ -45,12 +51,9 @@ class TaxiBookingController extends GetxController {
     }catch (e){
       print("GET TAXI DETAILS ERROR :: $e");
     }
+    
   }
-
-
-
-
-
+  
 
 
 }

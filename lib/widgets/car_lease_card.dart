@@ -10,8 +10,9 @@ class CarLeaseCard extends StatelessWidget {
   final String modelYear;
   final String price;
   final String vehicleImagePath;
+  final Function()?  onTap;
 
-  const CarLeaseCard({Key? key, required this.city, required this.vehicleName, required this.modelYear, required this.price, required this.vehicleImagePath,}) : super(key: key);
+  const CarLeaseCard({Key? key, required this.city, required this.vehicleName, required this.modelYear, required this.price, required this.vehicleImagePath, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +184,7 @@ class CarLeaseCard extends StatelessWidget {
                       text: 'Rent', 
                       height: Dimensions.height30,
                       width: Dimensions.width50*3,
-                      onTap: (){}
+                      onTap: onTap,
                     ),
                   ],
                 ), //end of the COL: Containing (seats, pump, amount, button)

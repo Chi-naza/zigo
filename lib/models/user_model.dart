@@ -1,6 +1,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zigo/models/boat_lease_model.dart';
 import 'package:zigo/models/budget_items_model.dart';
+import 'package:zigo/models/car_lease_Model.dart';
 
 class UserModel {
   String email;
@@ -13,6 +15,8 @@ class UserModel {
   List<BookedHotelModel>? bookedHotel;
   List<BookedFlightModel>? bookedFlight;
   List<BookedTaxiModel>? bookedTaxi;
+  List<MyLeasedCarModel>? leasedCar;
+  List<MyLeasedBoatModel>? leasedBoat;
 
 
   UserModel({
@@ -297,8 +301,100 @@ class BookedTaxiModel{
     return data;
   }
 
+}
+
+
+
+class MyLeasedCarModel {
+  Map car;
+  String rentedAt;
+  String totalAmount;
+  String daysOfRent;
+
+
+
+  MyLeasedCarModel({
+    required this.car,
+    required this.rentedAt,
+    required this.totalAmount,
+    required this.daysOfRent,
+  });
+
+  MyLeasedCarModel.fromJson(Map<String, dynamic> json):
+    car = json['car'],
+    rentedAt = json['rented_at'],
+    totalAmount = json['total_amount'],
+    daysOfRent = json['days_of_rent'];
+
+
+  MyLeasedCarModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot):
+    car = snapshot['car'],
+    rentedAt = snapshot['rented_at'],
+    totalAmount = snapshot['total_amount'],
+    daysOfRent = snapshot['days_of_rent'];  
+
+
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+      data['car'] = this.car;
+      data['rented_at'] = this.rentedAt;
+      data['total_amount'] = this.totalAmount;
+      data['days_of_rent'] = this.daysOfRent;
+ 
+    return data;
+  }
 
 
 }
+
+
+
+class MyLeasedBoatModel {
+  Map boat;
+  String rentedAt;
+  String totalAmount;
+  String daysOfRent;
+
+
+
+  MyLeasedBoatModel({
+    required this.boat,
+    required this.rentedAt,
+    required this.totalAmount,
+    required this.daysOfRent,
+  });
+
+  MyLeasedBoatModel.fromJson(Map<String, dynamic> json):
+    boat = json['boat'],
+    rentedAt = json['rented_at'],
+    totalAmount = json['total_amount'],
+    daysOfRent = json['days_of_rent'];
+
+
+  MyLeasedBoatModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot):
+    boat = snapshot['boat'],
+    rentedAt = snapshot['rented_at'],
+    totalAmount = snapshot['total_amount'],
+    daysOfRent = snapshot['days_of_rent'];  
+
+
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+      data['boat'] = this.boat;
+      data['rented_at'] = this.rentedAt;
+      data['total_amount'] = this.totalAmount;
+      data['days_of_rent'] = this.daysOfRent;
+ 
+    return data;
+  }
+
+
+}
+
+
+
+
+
+ 
 
 

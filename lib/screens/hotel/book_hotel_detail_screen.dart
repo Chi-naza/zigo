@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/models/hotel_model.dart';
 import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 
 
 class BookHotelDetailScreen extends StatefulWidget {
-  const BookHotelDetailScreen({Key? key}) : super(key: key);
+  final HotelModel hotelModel;
+  
+  const BookHotelDetailScreen({Key? key, required this.hotelModel}) : super(key: key);
 
   @override
   State<BookHotelDetailScreen> createState() => _BookHotelDetailScreenState();
@@ -173,7 +176,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                       Column(
                         children: [
                           Text(
-                            'Sunview Hotel',
+                            widget.hotelModel.hotelName, // hotel name
                             style: GoogleFonts.montserrat(
                               color: AppColors.zigoGreyTextColor,
                               fontWeight: FontWeight.bold,
@@ -187,7 +190,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                                 color: AppColors.zigoGreyTextColor,
                               ),
                               Text(
-                                'Ikeja, Lagos',
+                                '${widget.hotelModel.location}, ${widget.hotelModel.city}', // hotel location
                                 style: GoogleFonts.montserrat(
                                   color: AppColors.zigoGreyTextColor,
                                   fontWeight: FontWeight.bold
@@ -206,7 +209,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                             color: Colors.redAccent,
                           ),
                           Text(
-                            '475 Reviews',
+                            '${widget.hotelModel.reviews} Reviews', // hotel revies
                             style: GoogleFonts.montserrat(
                               color: AppColors.zigoGreyTextColor,
                               fontWeight: FontWeight.bold,
@@ -454,9 +457,9 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [                        
-                        // Amount
+                        // Hotel price
                         Text(
-                          'N35,000',
+                          widget.hotelModel.price, 
                           style: GoogleFonts.montserrat(
                             color: AppColors.zigoGreyTextColor,
                             fontWeight: FontWeight.w700,

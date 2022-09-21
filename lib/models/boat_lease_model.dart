@@ -32,6 +32,21 @@ class BoatLeaseModel {
       cityOfLocation = snapshot['location'],
       image = snapshot['image'];
 
+  
+
+
+  Map<String, dynamic> toJson(){
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    
+    data['name'] = this.name;
+    data['route_cities'] = this.routeCities;
+    data['price_per_day'] = this.pricePerDay;
+    data['location'] = this.cityOfLocation;
+    data['image'] = this.image;
+
+    return data;
+  }
+
 
 
 

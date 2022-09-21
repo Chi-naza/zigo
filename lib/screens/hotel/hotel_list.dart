@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/hotel_controller.dart';
+import 'package:zigo/screens/hotel/book_hotel_detail_screen.dart';
 import 'package:zigo/widgets/header/header.dart';
 import 'package:zigo/widgets/hotel_list_tile.dart';
 
@@ -103,7 +104,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                   color: AppColors.mainColor,
                                   borderRadius: BorderRadius.circular(Dimensions.radius20/3),
                                 ), 
-                                child: Icon(
+                                child: const Icon(
                                   Icons.search,
                                   color: Colors.white,
                                 ),       
@@ -146,126 +147,137 @@ class _HotelListScreenState extends State<HotelListScreen> {
             ),
             SizedBox(height: Dimensions.height12),
             // PageView Slide Section
-            // Parent Container for the PageView
-            Container(
-              width: Dimensions.screenWidth-120,
-              height: Dimensions.height50*5.8,
-              margin: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                 boxShadow: [
-                  BoxShadow(
-                    offset: Offset(1, 3),
-                    color: AppColors.zigoGreyColor,
-                    blurRadius: Dimensions.height9,
+            // Parent Container for the PageView (Wrapped with  Obx)
+            Obx(() {
+                return Container(
+                  width: Dimensions.screenWidth-120,
+                  height: Dimensions.height50*5.8,
+                  margin: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                     boxShadow: [
+                      BoxShadow(
+                        offset: Offset(1, 3),
+                        color: AppColors.zigoGreyColor,
+                        blurRadius: Dimensions.height9,
+                      ),
+                    ]
                   ),
-                ]
-              ),
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: hotelController.hotelList.length,
-                itemBuilder: (context, index) {
-                  // Container generated for each item by PageView builder
-                  return Container(
-                    // giving space between one pageView item and another with margin
-                    margin: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-                    decoration: BoxDecoration(     
-                      color: Colors.white,             
-                      borderRadius: BorderRadius.circular(Dimensions.radius20),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(1, 3),
-                          color: AppColors.zigoGreyColor,
-                          blurRadius: Dimensions.height9,
-                        ),
-                      ]
-                    ),              
-                    child: Column(
-                      children: [
-                        // The Image in the Container
-                        Container(
-                          height: Dimensions.height50*4,
-                          width: double.infinity,
-                          decoration: BoxDecoration(                  
-                            color: index.isEven ? Color(0xFF69c5df) : Color(0xFFfa7552),
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: hotelController.hotelList.length,
+                    itemBuilder: (context, index) {
+                      var hotel = hotelController.hotelList[index];
+                      // Container generated for each item by PageView builder
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to((){
+                            return BookHotelDetailScreen(hotelModel: hotel); // going to detailPage on a tap
+                          });
+                        },
+                        child: Container(
+                          // giving space between one pageView item and another with margin
+                          margin: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                          decoration: BoxDecoration(     
+                            color: Colors.white,             
                             borderRadius: BorderRadius.circular(Dimensions.radius20),
-                            image: DecorationImage(                      
-                              image: NetworkImage(hotelController.hotelList[index].image), //AssetImage('assets/images/sunview_slide.png'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        // Row with columns of texts below the image (wrapped with container)
-                        Container(
-                          margin: EdgeInsets.only(top: Dimensions.height20),
-                          padding: EdgeInsets.symmetric(horizontal: Dimensions.width4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // first column of text inside the row
-                              Column(
-                                children: [
-                                  Text(
-                                    hotelController.hotelList[index].hotelName,
-                                    style: GoogleFonts.montserrat(
-                                      color: AppColors.zigoGreyTextColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Dimensions.font20-1,
-                                    ),
-                                  ),
-                                  Row(                                  
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: AppColors.zigoGreyTextColor,
-                                      ),
-                                      Text(
-                                        "${hotelController.hotelList[index].location}, ${hotelController.hotelList[index].city}",
-                                        style: GoogleFonts.montserrat(
-                                          color: AppColors.zigoGreyTextColor,
-                                          fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ], 
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(1, 3),
+                                color: AppColors.zigoGreyColor,
+                                blurRadius: Dimensions.height9,
                               ),
-                              // 2nd column of text inside the row. One with stars & Amount
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //stars in a Row using List.generate()
-                                  Row(
-                                    children: List.generate(
-                                      //generate items(widgets)
-                                      int.parse(hotelController.hotelList[index].stars),
-                                      (index) => Icon(
-                                        Icons.star,
-                                        color: AppColors.starColor,
-                                        size: Dimensions.height18,
-                                      ),
-                                    ),
+                            ]
+                          ),              
+                          child: Column(
+                            children: [
+                              // The Image in the Container
+                              Container(
+                                height: Dimensions.height50*4,
+                                width: double.infinity,
+                                decoration: BoxDecoration(                  
+                                  color: index.isEven ? Color(0xFF69c5df) : Color(0xFFfa7552),
+                                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                                  image: DecorationImage(                      
+                                    image: NetworkImage(hotel.image), //hotel image
+                                    fit: BoxFit.cover,
                                   ),
-                                  // amount
-                                  Text(
-                                    hotelController.hotelList[index].price,
-                                    style: GoogleFonts.montserrat(
-                                      color: AppColors.zigoGreyTextColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Dimensions.font23,
+                                ),
+                              ),
+                              // Row with columns of texts below the image (wrapped with container)
+                              Container(
+                                margin: EdgeInsets.only(top: Dimensions.height20),
+                                padding: EdgeInsets.symmetric(horizontal: Dimensions.width4),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // first column of text inside the row
+                                    Column(
+                                      children: [
+                                        Text(
+                                          hotel.hotelName, //hotel name
+                                          style: GoogleFonts.montserrat(
+                                            color: AppColors.zigoGreyTextColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Dimensions.font20-1,
+                                          ),
+                                        ),
+                                        Row(                                  
+                                          children: [
+                                            Icon(
+                                              Icons.location_on,
+                                              color: AppColors.zigoGreyTextColor,
+                                            ),
+                                            Text(
+                                              "${hotel.location}, ${hotel.city}",  // hotel location
+                                              style: GoogleFonts.montserrat(
+                                                color: AppColors.zigoGreyTextColor,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ], 
                                     ),
-                                  ),
-                                ],
+                                    // 2nd column of text inside the row. One with stars & Amount
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        //stars in a Row using List.generate()
+                                        Row(
+                                          children: List.generate(
+                                            //generate items(widgets)
+                                            int.parse(hotel.stars),  // hotel rating
+                                            (index) => Icon(
+                                              Icons.star,
+                                              color: AppColors.starColor,
+                                              size: Dimensions.height18,
+                                            ),
+                                          ),
+                                        ),
+                                        // amount
+                                        Text(
+                                          hotel.price, // hotel price
+                                          style: GoogleFonts.montserrat(
+                                            color: AppColors.zigoGreyTextColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: Dimensions.font23,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  );              
-                },
-              ),                 
+                      );              
+                    },
+                  ),                 
+                );
+              }
             ),
             SizedBox(height: Dimensions.height10),
             // SLIDER DOTS
@@ -281,22 +293,33 @@ class _HotelListScreenState extends State<HotelListScreen> {
             ),
             SizedBox(height: Dimensions.height30),
             GetBuilder<HotelController>(builder: ((controller) {
-              return ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: ((context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-                    child: HotelListTile(
-                      imagePath: controller.hotelList[index].image, 
-                      hotelName: controller.hotelList[index].hotelName, 
-                      hotelLocation: "${controller.hotelList[index].location}, ${controller.hotelList[index].city}",
-                      price: controller.hotelList[index].price, 
-                      numOfReviews: controller.hotelList[index].reviews,
-                    ),
+              return Obx(() {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    itemBuilder: ((context, index) {
+                      var hotel = controller.hotelList[index];
+                      return GestureDetector(
+                        onTap: () {
+                           Get.to((){
+                            return BookHotelDetailScreen(hotelModel: hotel); // going to detailPage on a tap
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                          child: HotelListTile(
+                            imagePath: hotel.image, // hotel image
+                            hotelName: hotel.hotelName, // hotel name
+                            hotelLocation: "${hotel.location}, ${hotel.city}", // hotel location
+                            price: hotel.price, //hotel price
+                            numOfReviews: hotel.reviews, // hotel reviews
+                          ),
+                        ),
+                      );
+                    }), 
+                    separatorBuilder: ((context, index) => SizedBox(height: Dimensions.height20)), 
+                    itemCount: controller.hotelList.length,
                   );
-                }) , 
-                separatorBuilder: ((context, index) => SizedBox(height: Dimensions.height20)), 
-                itemCount: controller.hotelList.length,
+                }
               );
             })),
             SizedBox(height: Dimensions.height50)

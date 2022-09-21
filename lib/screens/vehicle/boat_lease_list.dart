@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/controllers/vehicle_lease_controller.dart';
+import 'package:zigo/controllers/boat_lease_controller.dart';
 import 'package:zigo/widgets/car_lease_card.dart';
 import 'package:zigo/widgets/header/header.dart';
 
@@ -180,23 +180,28 @@ class BoatLeaseListScreen extends StatelessWidget {
             ),
             SizedBox(height: Dimensions.height30),
             // List of Vehicle Lease Card (with our Custom CarLeaseCard)
-            GetBuilder<VehicleLeaseController>(builder: ((controller) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  separatorBuilder: ((context, index) => SizedBox(height: Dimensions.height10)), 
-                  itemCount: controller.boatLeaseDataList.length,
-                  itemBuilder: ((context, index) {
-                    return CarLeaseCard(
-                      city: controller.boatLeaseDataList[index].cityOfLocation, // city
-                      vehicleName: controller.boatLeaseDataList[index].name.toUpperCase(), // boat name
-                      modelYear: '', // model year
-                      price: controller.boatLeaseDataList[index].pricePerDay, // price 
-                      vehicleImagePath: controller.boatLeaseDataList[index].image, // image
-                    );
-                  }),                 
-                ),
+            GetBuilder<BoatLeaseController>(builder: ((controller) {
+              return Obx(() {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      separatorBuilder: ((context, index) => SizedBox(height: Dimensions.height10)), 
+                      itemCount: controller.boatLeaseDataList.length,
+                      itemBuilder: ((context, index) {
+                        var boat = controller.boatLeaseDataList[index];
+                        return CarLeaseCard(
+                          city: boat.cityOfLocation, // city
+                          vehicleName: boat.name.toUpperCase(), // boat name
+                          modelYear: '', // model year
+                          price: boat.pricePerDay, // price 
+                          vehicleImagePath: boat.image, // image
+                          onTap: () => controller.rentBoat(boat.name, boat), // calling the rentBoat function
+                        );
+                      }),                 
+                    ),
+                  );
+                }
               );
             })),           
           ],

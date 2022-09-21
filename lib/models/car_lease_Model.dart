@@ -37,6 +37,22 @@ class CarLeaseModel {
       noOfSeats = snapshot['no_of_seats'],
       image = snapshot['image'];
 
+    
+
+    Map<String, dynamic> toJson(){
+      final Map<String, dynamic> data = new Map<String, dynamic>();
+      
+      data['name'] = this.carName;
+      data['model_year'] = this.modelYear;
+      data['price_per_day'] = this.pricePerDay;
+      data['location'] = this.cityOfLocation;
+      data['no_of_seats'] = this.noOfSeats;
+      data['image'] = this.image;
+
+
+      return data;
+    }
+
 
 
 
