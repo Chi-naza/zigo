@@ -2,11 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/budget_controller.dart';
+import 'package:zigo/screens/budget/select_budget_items.dart';
 import 'package:zigo/widgets/app_button.dart';
+import 'package:zigo/widgets/budget_items_row.dart';
 import 'package:zigo/widgets/header/header_section.dart';
+import 'package:zigo/widgets/shadowed_tile.dart';
 
 class PlanYourBudgetScreen extends StatefulWidget {
   const PlanYourBudgetScreen({Key? key}) : super(key: key);
@@ -21,24 +25,23 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
 
   BudgetController budgetController = Get.find();
 
-  // dummy list for items
-  String dropDownCurrentValue = 'Enter item';
+  // dummy list for items: FOR DROPDOWN
+  // String dropDownCurrentValue = 'Enter item';
   // var items = ['Enter item', 'Hello', 'Dear', 'Ada', 'My love'];
 
   // dummy list for file types
   String currentFileType = '.Doc';
   var fileTypeList = ['.Doc', '.PDF', '.Png', '.Jpg', '.Xls'];
 
+  // Checking if user wants to save budget to phone storage
   bool saveToPhone = false;
+
+
+  // TEXT CONTROLLERS
+  var _budgetNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    List<String> items = ['Enter item'];
-    for(var item in budgetController.budgetItemsList){
-      items.add("${item.itemName} - ${item.itemPrice} naira");
-    }
-    
-    print(items);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -47,6 +50,7 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
           children: [
             HeaderSection(
               headerText: 'Plan Your Budget', 
+              useShadowedContBelowDivider: true,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.width18),
                 child: Row(
@@ -81,151 +85,136 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
                 ),
               ),
             ),
+            // THE SELECTED ITEMS ARE SHOW HERE
+            Obx(() =>  ListView.builder(
+              shrinkWrap: true,
+              itemCount: budgetController.selectedBudgetItemsList.length,
+              itemBuilder: ((context, index) {
+                var item = budgetController.selectedBudgetItemsList[index];
+                return BudgetItemRow(
+                  itemNumber: index + 1, 
+                  itemName: item.itemName, 
+                  itemPrice: item.itemPrice,
+                );
+              }),
+            )),
+            SizedBox(height: Dimensions.height15),
             // Croaker fish section: wrappped with column (first row & divider beneath)
-            Column(
-              children: [
-                Row(
-                  children: [
-                    // text with number
-                    Text(
-                      '  1.',
-                      style: GoogleFonts.montserrat(),
-                    ),
-                    // items beside the number in a row
-                    Container(
-                      padding: EdgeInsets.only(left: Dimensions.width9),
-                      width: Dimensions.screenWidth - 100,
-                      height: Dimensions.height20*2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // text ITEM
-                          Text(
-                            'CROAKER FISH',
-                            style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.zigoGreyTextColor,
-                            ),
-                          ),
-                          // Vertical divider
-                          VerticalDivider(
-                            color: AppColors.zigoGreyColor,
-                            thickness: Dimensions.height9/7,
-                            indent: Dimensions.height9,
-                            endIndent: Dimensions.height9,
-                          ),
-                          // price
-                          Text(
-                            '5,000.23',
-                            style: GoogleFonts.montserrat(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.zigoGreyTextColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+            // Column(
+            //   children: [
+            //     
+            //     // The divider below Croaker Fish text
+            //     Divider(
+            //       thickness: Dimensions.height9/8,
+            //       color: AppColors.zigoGreyColor,
+            //       endIndent: Dimensions.width20,
+            //       indent: Dimensions.width20,
+            //     ),
+            //     SizedBox(height: Dimensions.height16),
+            //     // Row Containing Dropdown button Here and TextField!
+            //     Row(
+            //       children: [
+            //         // more . . . icon
+            //         Icon(
+            //           Icons.more_vert,
+            //           color: Colors.grey,
+            //           size: Dimensions.height20*1.5,
+            //         ),
+            //         // Containing Dropdown button with with textField
+            //         Container(
+            //           padding: EdgeInsets.only(left: Dimensions.width9),
+            //           width: Dimensions.screenWidth - 50,
+            //           height: Dimensions.height20*2.2,
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               // Decoration box specifically for decorating a box
+            //               DecoratedBox(
+            //                 decoration: BoxDecoration(                            
+            //                   borderRadius: BorderRadius.circular(5),
+            //                   boxShadow: <BoxShadow>[
+            //                     BoxShadow(
+            //                       offset: Offset(1,2),
+            //                       color: AppColors.zigoGreyColor, //shadow for button
+            //                       blurRadius: 5
+            //                     ),
+            //                   ]
+            //                 ),
+            //                 // Container with Dropdown button wrapped with decoratedBox
+            //                 child: Container(
+            //                   color: AppColors.mainWhiteColor,
+            //                   child: Padding(
+            //                     padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
+            //                     // Wrapping dropdown button widget with this: to remove the persitent underline
+            //                     child: DropdownButtonHideUnderline(
+            //                       child: DropdownButton(                            
+            //                         isExpanded: false,
+            //                         icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
+            //                         value: dropDownCurrentValue,
+            //                         items: items.map((e) {
+            //                           return DropdownMenuItem(value: e, child: Text(e));
+            //                         }).toList(), 
+            //                         onChanged: (String? newValue){
+            //                           setState(() {
+            //                             dropDownCurrentValue = newValue!;
+            //                           });
+            //                         },
+            //                         style: GoogleFonts.montserrat(fontSize: Dimensions.font16, color: Colors.black),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ), 
+            //               SizedBox(width: Dimensions.width16),                       
+            //               // Vertical divider
+            //               VerticalDivider(
+            //                 color: AppColors.zigoGreyColor,
+            //                 thickness: Dimensions.height9/7,
+            //                 indent: Dimensions.height9,
+            //                 endIndent: Dimensions.height9,
+            //               ),
+            //               SizedBox(width: Dimensions.width10),
+            //               // the INPUT FIELD beside the DropDown Button
+            //               Expanded(
+            //                 child: TextField(
+            //                   decoration: InputDecoration(
+            //                     border: OutlineInputBorder(
+            //                       borderSide: BorderSide(
+            //                         color: AppColors.zigoGreyColor,
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+              child: Text(
+                "Add items to your new budget by clicking on the icon below",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: Dimensions.font23,
+                  color: AppColors.zigoBackgroundColor2,
                 ),
-                // The divider below Croaker Fish text
-                Divider(
-                  thickness: Dimensions.height9/8,
-                  color: AppColors.zigoGreyColor,
-                  endIndent: Dimensions.width20,
-                  indent: Dimensions.width20,
-                ),
-                SizedBox(height: Dimensions.height16),
-                // Row Containing Dropdown button Here and TextField!
-                Row(
-                  children: [
-                    // more . . . icon
-                    Icon(
-                      Icons.more_vert,
-                      color: Colors.grey,
-                      size: Dimensions.height20*1.5,
-                    ),
-                    // Containing Dropdown button with with textField
-                    Container(
-                      padding: EdgeInsets.only(left: Dimensions.width9),
-                      width: Dimensions.screenWidth - 50,
-                      height: Dimensions.height20*2.2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Decoration box specifically for decorating a box
-                          DecoratedBox(
-                            decoration: BoxDecoration(                            
-                              borderRadius: BorderRadius.circular(5),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  offset: Offset(1,2),
-                                  color: AppColors.zigoGreyColor, //shadow for button
-                                  blurRadius: 5
-                                ),
-                              ]
-                            ),
-                            // Container with Dropdown button wrapped with decoratedBox
-                            child: Container(
-                              color: AppColors.mainWhiteColor,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
-                                // Wrapping dropdown button widget with this: to remove the persitent underline
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(                            
-                                    isExpanded: false,
-                                    icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
-                                    value: dropDownCurrentValue,
-                                    items: items.map((e) {
-                                      return DropdownMenuItem(value: e, child: Text(e));
-                                    }).toList(), 
-                                    onChanged: (String? newValue){
-                                      setState(() {
-                                        dropDownCurrentValue = newValue!;
-                                      });
-                                    },
-                                    style: GoogleFonts.montserrat(fontSize: Dimensions.font16, color: Colors.black),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ), 
-                          SizedBox(width: Dimensions.width16),                       
-                          // Vertical divider
-                          VerticalDivider(
-                            color: AppColors.zigoGreyColor,
-                            thickness: Dimensions.height9/7,
-                            indent: Dimensions.height9,
-                            endIndent: Dimensions.height9,
-                          ),
-                          SizedBox(width: Dimensions.width10),
-                          // the INPUT FIELD beside the DropDown Button
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppColors.zigoGreyColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
             SizedBox(height: Dimensions.height20),
-            // Container having the add '+' icon
-            Container(
-              // shifting the icon with margin
-              margin: EdgeInsets.only(right: Dimensions.width50*4),
-              child: Icon(
-                Icons.add,
-                size: Dimensions.radius30*1.3,
-                color: AppColors.zigoGreyColor,
+            // Container having the add '+' icon (Wrapped with Inkwell)
+            InkWell(
+              onTap: () => Get.to(() => const SelectBudgetItemsScreen()), // goto items list
+              child: Container(
+                padding: EdgeInsets.only(right: Dimensions.width50*4),
+                child: Icon(
+                  Icons.add,
+                  size: Dimensions.radius30*1.3,
+                  color: AppColors.zigoGreyColor,
+                ),
               ),
             ),
             SizedBox(height: Dimensions.height30),
@@ -249,14 +238,16 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
              child: Column(
                children: [
                  // amount
-                 Text(
-                   '5,000.23',
-                   style: GoogleFonts.montserrat(
-                     color: AppColors.mainColor,
-                     fontWeight: FontWeight.bold,
-                     fontSize: Dimensions.font23,
-                   ),
-                 ),
+                 Obx((){
+                  return Text(
+                    "₦${budgetController.budgetTotalAmount()}",  // totalBudget Amount
+                    style: GoogleFonts.montserrat(
+                      color: AppColors.mainColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Dimensions.font23,
+                    ),
+                  );
+                 }),
                  SizedBox(height: Dimensions.height4),
                  // total text
                  Text(
@@ -277,15 +268,15 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
               children: [
                 // date
                 Text(
-                  '10/28/22',
+                  DateFormat.yMMMEd().format(DateTime.now()), // formatted DateTime
                   style: GoogleFonts.montserrat(
                      color: AppColors.zigoTextBlackColor,
                      fontWeight: FontWeight.w500,                             
                   ),
                 ),
-                // save button (with our custom app button)
+                // CREATE BUDGET BUTTON (with our custom app button) & TIME
                 AppButton(
-                  text: 'Save', 
+                  text: 'Create Budget', 
                   onTap: (){
                     showDialog(
                       context: context, 
@@ -341,9 +332,11 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
                                           Expanded(
                                             child: TextField(
                                               expands: true,
-                                              maxLines: null,                                                                               
+                                              maxLines: null,
+                                              textInputAction: TextInputAction.done,
+                                              controller: _budgetNameController,                                                                               
                                               decoration: InputDecoration(
-                                                hintText: 'Enter file name',
+                                                hintText: 'Enter budget name',
                                                 hintStyle: GoogleFonts.montserrat(
                                                   color: AppColors.zigoGreyTextColor,                                          
                                                 ),
@@ -456,6 +449,8 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
                                           ),
                                         ),
                                         onTap: (){
+                                          // Saving Budget to DataBase
+                                          budgetController.saveBudgetInDataBase(_budgetNameController.text.trim());
                                           // Removing the prev. dialog and initiating a new one with pop(context)
                                           Navigator.pop(context);
                                           showDialog(
@@ -514,7 +509,7 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
                                                                 Container(                                                          
                                                                   width: Dimensions.width50*3,
                                                                   child: Text(
-                                                                    'Obudu Budget',
+                                                                    _budgetNameController.text, // getting budget name from textController
                                                                     maxLines: 1,
                                                                     overflow: TextOverflow.ellipsis,
                                                                     style: GoogleFonts.montserrat(

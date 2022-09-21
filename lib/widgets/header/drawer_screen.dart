@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zigo/screens/budget/auto_budget_planner.dart';
+import 'package:zigo/screens/budget/budget_details.dart';
+import 'package:zigo/screens/budget/my_budget_lists.dart';
 import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
 import 'package:zigo/screens/flight/flight_booking.dart';
 import 'package:zigo/screens/hotel/hotel_list.dart';
@@ -82,6 +85,16 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ElevatedButton(
               onPressed: () => Get.toNamed(BoatLeaseListScreen.routeName), 
               child: Text("Book Vehicle List Screen")
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.to(() => MyBudgetListScreen()), 
+              child: Text("View My Budgets"),
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.toNamed(AutoBudgetPlannerScreen.routeName), 
+              child: Text("Automatic Budget Planner"),
             ),
 
           ],

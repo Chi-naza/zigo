@@ -151,6 +151,13 @@ class AuthController extends GetxController{
   }
 
 
+  // Getting the CurrentUser
+  User? getUser(){
+    _user.value = _auth.currentUser;
+    return _user.value;
+  }
+
+
   // A function that takes a user to the logIn screen
   void navigateToLoginScreen(){
     Get.toNamed(SignInScreen.routeName);

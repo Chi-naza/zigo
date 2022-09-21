@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:zigo/models/budget_items_model.dart';
 
 class UserModel {
   String email;
@@ -8,7 +9,7 @@ class UserModel {
   String? phoneNumber;
   String? profileImage;
   String? address;
-  List<MyBudgetModel>? budget;
+  List? budget;
   List<BookedHotelModel>? bookedHotel;
   List<BookedFlightModel>? bookedFlight;
   List<BookedTaxiModel>? bookedTaxi;
@@ -73,46 +74,42 @@ class UserModel {
 
 
 class MyBudgetModel {
-  String  itemName;
-  String itemPrice;
-  String createdAt;
+  String  budgetName;
   String totalAmount;
-  String budgetName;
+  String createdAt;
+  List budgetItemsList;
 
   MyBudgetModel({
-    required this.itemName,
-    required this.itemPrice,
-    required this.createdAt,
+    required this.budgetName,
     required this.totalAmount,
-    required this.budgetName
+    required this.createdAt,
+    required this.budgetItemsList,
   });
 
 
   MyBudgetModel.fromJson(Map<String, dynamic> json):
-    itemName = json['item_name'],
-    itemPrice = json['item_price'],
-    createdAt = json['created_at'],
+    budgetName = json['budget_name'],
     totalAmount = json['total_amount'],
-    budgetName = json['budget_name'];
+    createdAt = json['created_at'],
+    budgetItemsList = json['budget_items_list'];
 
   // for getting data from firebase
   MyBudgetModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot):
-    itemName = snapshot['item_name'],
-    itemPrice = snapshot['item_price'],
-    createdAt = snapshot['created_at'],
+    budgetName = snapshot['budget_name'],
     totalAmount = snapshot['total_amount'],
-    budgetName = snapshot['budget_name'];
+    createdAt = snapshot['created_at'],
+    budgetItemsList = snapshot['budget_items_list'];
+
 
 
   
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['item_name'] = this.itemName;
-    data['item_price'] = this.itemPrice;
-    data['created_at'] = this.createdAt;
-    data['total_amount'] = this.totalAmount;
     data['budget_name'] = this.budgetName;
- 
+    data['total_amount'] = this.totalAmount;
+    data['created_at'] = this.createdAt;
+    data['budget_items_list'] = this.budgetItemsList;
+     
     return data;
   }
 

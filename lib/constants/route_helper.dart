@@ -8,7 +8,9 @@ import 'package:zigo/screens/Intro/onboarding/onboarding_screen.dart';
 import 'package:zigo/screens/Intro/splash_screen.dart';
 import 'package:zigo/screens/auth/signIn.dart';
 import 'package:zigo/screens/auth/signup.dart';
+import 'package:zigo/screens/budget/auto_budget_planner.dart';
 import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
+import 'package:zigo/screens/budget/select_budget_items.dart';
 import 'package:zigo/screens/flight/flight_booking.dart';
 import 'package:zigo/screens/hotel/hotel_list.dart';
 import 'package:zigo/screens/reservations.dart';
@@ -55,7 +57,7 @@ class AppRoutes {
     GetPage(
       name: PlanYourBudgetScreen.routeName,
       page: () => PlanYourBudgetScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.circularReveal,
       binding: BindingsBuilder((){
         Get.put(BudgetController());
       })
@@ -108,6 +110,16 @@ class AppRoutes {
       transition: Transition.fadeIn,
       binding: BindingsBuilder((){
         Get.put(VehicleLeaseController());
+      })
+    ),
+
+    // Auto Budget Planner
+    GetPage(
+      name: AutoBudgetPlannerScreen.routeName,
+      page: () => AutoBudgetPlannerScreen(),
+      transition: Transition.leftToRightWithFade,
+      binding: BindingsBuilder((){
+        Get.put(BudgetController());
       })
     ),
 
