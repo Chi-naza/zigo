@@ -42,4 +42,19 @@ class HotelModel {
     image = snapshot['image'];
 
   
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['name'] = this.hotelName;
+    data['reviews'] = this.reviews;
+    data['city'] = this.city;
+    data['location'] = this.location;
+    data['price'] = this.price;
+    data['stars'] = this.stars;
+    data['image'] = this.image;
+
+    return data;
+  }
+
+  
 }

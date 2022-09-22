@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/models/hotel_model.dart';
+import 'package:zigo/models/user_model.dart';
 import 'package:zigo/services/firebase_storage_services.dart';
 
 class HotelController extends GetxController {
 
   final hotelList = <HotelModel>[].obs;
+
+  // AuthController instance
+  AuthController _authController = Get.find();
 
   @override
   void onReady() {
@@ -52,8 +57,24 @@ class HotelController extends GetxController {
   }
 
 
-  void bookHotel(String hotelName){
+
+  // A function which implements the booking of a hotel
+  Future<void> bookHotel(String hotelName, HotelModel hotel, String typeOfRoom, String noOfRooms, String startDate, String endDate) async {
     try{
+
+      BookedHotelModel bookedHotelModel = BookedHotelModel(
+        hotel: hotel.toJson(), 
+        typeOfRoom: typeOfRoom, 
+        noOfRooms: noOfRooms, 
+        startDate: startDate, 
+        endDate: endDate
+      );
+
+      print("Booked Hotel Model: ${bookedHotelModel}"); // testing
+      print("Hotel Model: ${hotel}"); // testing
+
+      await userRef.doc(_authController.getUser()!.email).collection('booked_hotels').doc(hotelName.toUpperCase()).set(bookedHotelModel.toJson());
+
 
       Get.snackbar(
         "", 
@@ -63,6 +84,9 @@ class HotelController extends GetxController {
         colorText: Colors.white,
         backgroundColor: AppColors.mainColorLight2,
       );
+
+      // On successful hotel booking, we navigate to home
+      _authController.navigateToHomeScreen();
 
     }catch(e){
       Get.snackbar(

@@ -126,7 +126,7 @@ class MyBudgetModel {
 
 
 class BookedHotelModel{
-  String hotelName;
+  Map hotel;
   String typeOfRoom;
   String noOfRooms;
   String startDate;
@@ -134,7 +134,7 @@ class BookedHotelModel{
 
 
   BookedHotelModel({
-    required this.hotelName,
+    required this.hotel,
     required this.typeOfRoom,
     required this.noOfRooms,
     required this.startDate,
@@ -143,7 +143,7 @@ class BookedHotelModel{
 
 
   BookedHotelModel.fromJson(Map<String, dynamic> json):
-    hotelName = json['name'],
+    hotel = json['hotel'],
     typeOfRoom = json['type_of_room'],
     noOfRooms = json['no_of_rooms'],
     startDate = json['start_date'],
@@ -151,7 +151,7 @@ class BookedHotelModel{
 
   // for getting data from firebase
   BookedHotelModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot):
-    hotelName = snapshot['name'],
+    hotel = snapshot['hotel'],
     typeOfRoom = snapshot['type_of_room'],
     noOfRooms = snapshot['no_of_rooms'],
     startDate = snapshot['start_date'],
@@ -161,7 +161,7 @@ class BookedHotelModel{
   
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.hotelName;
+    data['hotel'] = this.hotel;
     data['type_of_room'] = this.typeOfRoom;
     data['no_of_rooms'] = this.noOfRooms;
     data['start_date'] = this.startDate;

@@ -23,6 +23,9 @@ class _TestScreenState extends State<TestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Test Screen"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: GridView.count(
@@ -34,7 +37,7 @@ class _TestScreenState extends State<TestScreen> {
             width: 4,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.green,
+              color: Color.fromRGBO(236,97,10,1.0),
               borderRadius: BorderRadius.circular(10)
             ),
           )),

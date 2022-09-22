@@ -1,8 +1,11 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/hotel_controller.dart';
 import 'package:zigo/models/hotel_model.dart';
 import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/header/header_section.dart';
@@ -75,6 +78,10 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
     }
   }
 
+
+  //Creating an instance of Hotel Controller
+  HotelController _hotelController = Get.find();
+
    @override
   void initState() {
     super.initState();
@@ -106,7 +113,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
         child: Column(
           children: [
             // head section
-            HeaderSection(headerText: 'HOTELS', extraSpaceAfterHeader: false),
+            const HeaderSection(headerText: 'HOTELS', extraSpaceAfterHeader: false),
             // The Carousel
             Stack(
               children: [
@@ -372,9 +379,8 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(Dimensions.radius20/3),
                                       ), 
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.calendar_today,
-                                        // color: ,
                                       ),       
                                     ),                
                                   ],
@@ -436,9 +442,8 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(Dimensions.radius20/3),
                                       ), 
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.calendar_today,
-                                        // color: ,
                                       ),       
                                     ),                
                                   ],
@@ -467,7 +472,33 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                           ),
                         ),
                         // Book no BUTTON
-                        AppButton(text: "Book Now", onTap: (){},),
+                        AppButton(
+                          text: "Book Now", 
+                          onTap: (){
+                            // Calling the bookHotel function from hotel Controller. 
+                            // We check if the user has provided the details needed for the booking
+                            if(currRoom!="choose room" && roomNum!="choose no." && startBookDate!=DateTime.now() && endBookDate!=DateTime.now()){
+                              _hotelController.bookHotel(
+                                widget.hotelModel.hotelName, 
+                                widget.hotelModel, 
+                                currRoom, 
+                                roomNum, 
+                                DateFormat.yMd().format(startBookDate), 
+                                DateFormat.yMd().format(endBookDate)
+                              );
+                            }else{
+                              Get.snackbar(
+                                "", 
+                                "",
+                                titleText: Text("Provide The Needed Details", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
+                                messageText: Text("Make sure that you have carefully provided the necessary information for this booking", style: TextStyle(color: Colors.white, fontSize: Dimensions.font16)),
+                                colorText: Colors.white,
+                                backgroundColor: Colors.redAccent,
+                              );
+                            }
+                            
+                          },
+                        ),
                       ],
                     ),
                   ),
