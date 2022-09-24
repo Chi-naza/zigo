@@ -28,7 +28,7 @@ class Reservations extends StatelessWidget {
         child: Column(
           children: [
             // The header
-            HeaderSection(headerText: 'RESERVATIONS'),
+            const HeaderSection(headerText: 'RESERVATIONS'),
            // Accordion one
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
@@ -47,7 +47,7 @@ class Reservations extends StatelessWidget {
                 ),
                 contentChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     // hotels
                     SmallTextAndDivider(text: 'Hotels'),                
                     // hotels
@@ -80,7 +80,7 @@ class Reservations extends StatelessWidget {
                 ),
                 contentChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     // hotels
                     SmallTextAndDivider(text: 'Flight'),                
                     // hotels

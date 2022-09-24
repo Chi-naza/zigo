@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:zigo/constants/app_colors.dart';
-import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/models/boat_lease_model.dart';
 import 'package:zigo/models/user_model.dart';
 import 'package:zigo/services/firebase_storage_services.dart';
+import 'package:zigo/widgets/custom_snackbar.dart';
 
 class BoatLeaseController extends GetxController{
 
@@ -75,23 +73,16 @@ class BoatLeaseController extends GetxController{
       // Takes MyLeasedBoatModel instance and saves the given info in our FireStore DB (with userEmail as 'budgets' Doc Key)
       await userRef.doc('${_authController.getUser()!.email}').collection('leased_boats').doc(boatName.toUpperCase()).set(_myLeasedBoatModel.toJson());
 
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Boat Rented Successfully", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text("You have just rented a new boat called $boatName", style: TextStyle(color: Colors.white,fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: AppColors.mainColorLight2,
+      customSnackbar(
+        titleText: "Boat Rented Successfully", 
+        bodyText: "You have just rented a new boat called $boatName"
       );
 
     }catch(e){
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Boat Rent failed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text(e.toString(), style: TextStyle(color: Colors.white, fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: Colors.redAccent,
+      customSnackbar(
+        titleText: "Boat Rent failed", 
+        bodyText: e.toString(),
+        isError: true
       );
     }
   }

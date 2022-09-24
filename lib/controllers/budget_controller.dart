@@ -1,16 +1,15 @@
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zigo/constants/app_colors.dart';
-import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/models/budget_items_model.dart';
 import 'package:zigo/models/user_model.dart';
 import 'package:zigo/screens/budget/my_budget_lists.dart';
+import 'package:zigo/widgets/custom_snackbar.dart';
 
 class BudgetController extends GetxController {
 
@@ -41,9 +40,8 @@ class BudgetController extends GetxController {
 
   @override
   void onReady() {
-  
     getAllBudgetItems();
-
+     getMyBudgets();
     super.onReady();
   }
 
@@ -156,9 +154,11 @@ class BudgetController extends GetxController {
       if(_authController.isLoggedIn() && selectedBudgetItemsList.isNotEmpty){
         // Creating a new list & decoding the BudgetItemModel instance and saving the actual data to the new list
         List modifiedList = [];
+
         for(var t in selectedBudgetItemsList){
           modifiedList.add({'item_name': t.itemName, 'item_price': t.itemPrice});
         }
+
         print("Modified List Here: $modifiedList"); // testing
 
         MyBudgetModel _myBudgetModel = MyBudgetModel(
@@ -177,13 +177,10 @@ class BudgetController extends GetxController {
         // Getting the saved budget Items from the DB which will help us to see our data when we navigate to the next screen
         await getMyBudgets();
 
-        Get.snackbar(
-          "", 
-          "",
-          titleText: Text("Saved Successfully", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-          messageText: Text("You have created a new budget called $budgetName", style: TextStyle(color: Colors.white,fontSize: Dimensions.font16)),
-          colorText: Colors.white,
-          backgroundColor: AppColors.mainColorLight2,
+        // Snackbar on successful budget creation
+        customSnackbar(
+          titleText: "Created Successfully", 
+          bodyText: "You have created a new budget called $budgetName"
         );
 
         // navigate to MyBudgets List SCreen
@@ -215,13 +212,10 @@ class BudgetController extends GetxController {
         // Getting the saved budget Items from the DB which will help us to see our data when we navigate to the next screen
         await getMyBudgets();
 
-        Get.snackbar(
-          "", 
-          "",
-          titleText: Text("Saved Successfully", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-          messageText: Text("You have created a new budget called $budgetName", style: TextStyle(color: Colors.white,fontSize: Dimensions.font16)),
-          colorText: Colors.white,
-          backgroundColor: AppColors.mainColorLight2,
+        // Snackbar on successful budget creation: auto budget
+        customSnackbar(
+          titleText: "Created Successfully", 
+          bodyText: "You have created a new budget called $budgetName"
         );
 
         // navigate to MyBudgets List SCreen
@@ -229,13 +223,10 @@ class BudgetController extends GetxController {
       }
 
     }catch (e){
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Budget Save failed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text(e.toString(), style: TextStyle(color: Colors.white, fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: Colors.redAccent,
+      customSnackbar(
+        titleText: "Budget Creation failed",
+        bodyText: e.toString(),
+        isError: true
       );
     }
   }
@@ -251,6 +242,7 @@ class BudgetController extends GetxController {
 
       final userBudget = data.docs.map((e) => MyBudgetModel.fromSnapshot(e)).toList();
       mySavedBudgetList.assignAll(userBudget);
+      update();
 
       print("USER BUDGET FROM DB: $mySavedBudgetList"); // testing
 

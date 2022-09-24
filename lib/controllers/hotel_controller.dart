@@ -8,6 +8,7 @@ import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/models/hotel_model.dart';
 import 'package:zigo/models/user_model.dart';
 import 'package:zigo/services/firebase_storage_services.dart';
+import 'package:zigo/widgets/custom_snackbar.dart';
 
 class HotelController extends GetxController {
 
@@ -75,27 +76,19 @@ class HotelController extends GetxController {
 
       await userRef.doc(_authController.getUser()!.email).collection('booked_hotels').doc(hotelName.toUpperCase()).set(bookedHotelModel.toJson());
 
-
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Hotel Booking Successful", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text("You have just booked $hotelName", style: TextStyle(color: Colors.white,fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: AppColors.mainColorLight2,
+      customSnackbar(
+        titleText:"Hotel Booking Successful", 
+        bodyText: "You have just booked $hotelName"
       );
 
       // On successful hotel booking, we navigate to home
       _authController.navigateToHomeScreen();
 
     }catch(e){
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Hotel Booking Failed", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text(e.toString(), style: TextStyle(color: Colors.white, fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: Colors.redAccent,
+      customSnackbar(
+        titleText:"Hotel Booking Failed", 
+        bodyText: e.toString(),
+        isError: true
       );
     }
   }

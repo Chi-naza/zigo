@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/flight_controller.dart';
+import 'package:zigo/controllers/hotel_controller.dart';
+import 'package:zigo/models/user_model.dart';
+import 'package:zigo/widgets/custom_snackbar.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 import 'package:zigo/widgets/inputfield_with_description_n_logo.dart';
 import 'package:zigo/widgets/title_n_detail_texts.dart';
@@ -13,16 +16,18 @@ class FlightBookingScreen extends StatefulWidget {
 
   static const String routeName = '/flight-booking';
 
+  // List pp =  [{'seat': 'A1', 'picked': false}];
+
   @override
   State<FlightBookingScreen> createState() => _FlightBookingScreenState();
 }
 
 class _FlightBookingScreenState extends State<FlightBookingScreen> {
 
-  // Flight Booking
-  List<int> _selectedItems = [];
-  int price = 30;
-  int sum = 0;
+  // PICKING SEAT. This List contains index of each of the seats picked
+  // List<int> _selectedItems = []; 
+
+  double totalAmount = 0;
   String selectedSeatsText = "";
 
   // DropDowns
@@ -34,6 +39,21 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
 
   var flightTypeList = ["One Way", "Two-way", "Other way"];
   String currFlightType = "One Way";
+
+  //Instance of Flight Controller
+  FlightController _flightController = Get.find();
+
+
+  // Text Controllers for TextFields and Inputs
+  TextEditingController cityOfDepartureTextController = TextEditingController();
+  TextEditingController cityOfArrivalTextController = TextEditingController();
+  TextEditingController seatClassController = TextEditingController();
+  TextEditingController noOfPersonsController = TextEditingController();
+  TextEditingController luggageController = TextEditingController();
+
+
+  // Form Key
+  var _formKey = GlobalKey<FormState>();
 
 
   // Text Controller For: Date Picker - Departure/Arrival Date
@@ -88,14 +108,77 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
   int _activeStepIndex = 0;
 
   onStepContinueFunction() {
+    // Continue Button on the first form of the Stepper
+    if(_activeStepIndex == 0){
+      _flightController.getMyDesiredPlane(
+        dateOfDeparture: _departureDateController.text.trim(), 
+        airport: startAirport, 
+        cityOfDeparture: cityOfDepartureTextController.text.trim(),
+      );
+    }
+
+    // Continue Button on the second step of the Stepper
+    if(_activeStepIndex == 1){
+      // calling the seat status calculator
+      _flightController.showSeatStatus(_flightController.oneFlightModel);
+    }
+
+    // Continue Button on the last Step of the stepper
     if (_activeStepIndex < (stepList().length - 1)) {
       setState(() {
         _activeStepIndex += 1;
       });
     } else {
-      print('Submited');
+
+      // IF FIELDS ARE EMPTY OR SOME FIELDS ARE EMPTY 
+      // Directing the user back to complete 'incomplete details'
+      if(
+        cityOfArrivalTextController.text.isEmpty || 
+        cityOfDepartureTextController.text.isEmpty || 
+        _dateOfReturnController.text.isEmpty ||
+        _departureDateController.text.isEmpty ||
+        seatClassController.text.isEmpty ||
+        noOfPersonsController.text.isEmpty ||
+        luggageController.text.isEmpty
+      ){
+        // custom snackbar to send the user back
+        customSnackbar(
+          titleText: "Incomplete Details",
+          bodyText: "Please make sure that you have provided the necessary details",
+          isError: true
+        );
+      }else{
+        // Instantiating booked flight model
+        BookedFlightModel bModel = BookedFlightModel(
+          flight: _flightController.oneFlightModel.toJson(), //LATER: will come from the flight user picks
+          cityOfArrival: cityOfArrivalTextController.text.trim(), 
+          cityOfDeparture: cityOfDepartureTextController.text.trim(), 
+          startAirport: startAirport, 
+          endAirport: endAirport, 
+          dateOfDeparture: _departureDateController.text.trim(), 
+          dateOfReturn: _dateOfReturnController.text.trim(), 
+          seatClass: seatClassController.text.trim(), 
+          noOfPersons: noOfPersonsController.text.trim(), 
+          luggage: luggageController.text.trim(), 
+          amountDue: totalAmount.toString(), 
+          seatsBooked: selectedSeatsText,
+        );
+
+        // Calling bookFlight function only when the form is valid
+        if(_formKey.currentState!.validate()){
+          _flightController.bookFlight(
+            plane: _flightController.oneFlightModel, //TODO: will change later to choiceFlight
+            bookedFlightModel: bModel
+          );
+
+          print('Submited');
+
+        }
+      }    
+      
     }
   }
+
 
   onStepCancelFunction() {
     if (_activeStepIndex == 0) {
@@ -118,338 +201,358 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
             padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
             height: Dimensions.height50*7,
             // color: Colors.amber,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // ROW FOR: City of DEPARTURE & ARRIVAL
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Icon/Departure
-                    InputFieldWithDescriptionNLogo(
-                      descriptionText: 'City of Departure', 
-                      hintText: 'Lagos', 
-                      icon: Icons.flight_takeoff, 
-                      width: Dimensions.width50*2.75,
-                    ),
-                    // Icon/Arrival
-                    InputFieldWithDescriptionNLogo(
-                      descriptionText: 'City of Arrival', 
-                      icon: Icons.flight_land,
-                      width: Dimensions.width50*2.75,
-                    ),                   
-                  ],
-                ),
-                // ROW: CHOOSE AIRPORT
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Icon/Choose Airport
-                    Row(
-                      children: [
-                        // Icon now as Image in Container
-                        Container(
-                          height: Dimensions.height20,
-                          width: Dimensions.width15,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/aiportTower.png'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),      
-                        SizedBox(width: Dimensions.width4),
-                        // COLUMN: textfield & Text
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // choose Airport TEXT
-                            Text(
-                              'Choose Airport',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Dimensions.font26/2,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // ROW FOR: City of DEPARTURE & ARRIVAL
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Icon/Departure
+                      InputFieldWithDescriptionNLogo(
+                        controller: cityOfDepartureTextController,
+                        descriptionText: 'City of Departure', 
+                        hintText: 'Lagos', 
+                        icon: Icons.flight_takeoff, 
+                        width: Dimensions.width50*2.75,
+                      ),
+                      // Icon/Arrival
+                      InputFieldWithDescriptionNLogo(
+                        controller: cityOfArrivalTextController,
+                        descriptionText: 'City of Arrival', 
+                        icon: Icons.flight_land,
+                        width: Dimensions.width50*2.75,
+                      ),                   
+                    ],
+                  ),
+                  // ROW: CHOOSE AIRPORT
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Icon/Choose Airport
+                      Row(
+                        children: [
+                          // Icon now as Image in Container
+                          Container(
+                            height: Dimensions.height20,
+                            width: Dimensions.width15,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/aiportTower.png'),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(height: Dimensions.height4),
-                            // DropdownList wrapped in a Container widget
-                            Container(
-                              height: Dimensions.height20*2,
-                              width: Dimensions.width50*2.9,
-                              decoration: BoxDecoration(
-                                color: AppColors.zigoBackgroundColor,
-                                borderRadius: BorderRadius.circular(Dimensions.radius20/4),
-                              ),  
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
-                                // Wrapping dropdown button widget with this: to remove the persitent underline
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(                            
-                                    isExpanded: true,
-                                    icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
-                                    value: startAirport,
-                                    items: startAirportList.map((e) {
-                                      return DropdownMenuItem(value: e, child: Text(e));
-                                    }).toList(), 
-                                    onChanged: (String? newValue){
-                                      setState(() {
-                                        startAirport = newValue!;
-                                      });
-                                    },
-                                    style: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold, ),
+                          ),      
+                          SizedBox(width: Dimensions.width4),
+                          // COLUMN: textfield & Text
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // choose Airport TEXT
+                              Text(
+                                'Choose Airport',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Dimensions.font26/2,
+                                ),
+                              ),
+                              SizedBox(height: Dimensions.height4),
+                              // DropdownList wrapped in a Container widget
+                              Container(
+                                height: Dimensions.height20*2,
+                                width: Dimensions.width50*2.9,
+                                decoration: BoxDecoration(
+                                  color: AppColors.zigoBackgroundColor,
+                                  borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                ),  
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
+                                  // Wrapping dropdown button widget with this: to remove the persitent underline
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(                            
+                                      isExpanded: true,
+                                      icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
+                                      value: startAirport,
+                                      items: startAirportList.map((e) {
+                                        return DropdownMenuItem(value: e, child: Text(e));
+                                      }).toList(), 
+                                      onChanged: (String? newValue){
+                                        setState(() {
+                                          startAirport = newValue!;
+                                        });
+                                      },
+                                      style: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold, ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ), 
-                      ],
-                    ),
-                    // Icon/Destination Airport
-                    Row(
-                      children: [
-                        // Icon now as Image in Container
-                        Container(
-                          height: Dimensions.height20,
-                          width: Dimensions.width15,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/aiportTower.png'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),      
-                        SizedBox(width: Dimensions.width4),
-                        // COLUMN: textfield & Text
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // choose Destination Airport TEXT
-                            Text(
-                              'Destination Airport',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Dimensions.font26/2,
+                            ],
+                          ), 
+                        ],
+                      ),
+                      // Icon/Destination Airport
+                      Row(
+                        children: [
+                          // Icon now as Image in Container
+                          Container(
+                            height: Dimensions.height20,
+                            width: Dimensions.width15,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/aiportTower.png'),
+                                fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(height: Dimensions.height4),
-                            // DropdownList wrapped in a Container widget
-                            Container(
-                              height: Dimensions.height20*2,
-                              width: Dimensions.width50*2.9,
-                              decoration: BoxDecoration(
-                                color: AppColors.zigoBackgroundColor,
-                                borderRadius: BorderRadius.circular(Dimensions.radius20/4),
-                              ),                              
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
-                                // Wrapping dropdown button widget with this: to remove the persitent underline
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(                            
-                                    isExpanded: true,
-                                    icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
-                                    value: endAirport,
-                                    items: endAirportList.map((e) {
-                                      return DropdownMenuItem(value: e, child: Text(e));
-                                    }).toList(), 
-                                    onChanged: (String? newValue){
-                                      setState(() {
-                                        endAirport = newValue!;
-                                      });
-                                    },
-                                    style: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold),
+                          ),      
+                          SizedBox(width: Dimensions.width4),
+                          // COLUMN: textfield & Text
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // choose Destination Airport TEXT
+                              Text(
+                                'Destination Airport',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Dimensions.font26/2,
+                                ),
+                              ),
+                              SizedBox(height: Dimensions.height4),
+                              // DropdownList wrapped in a Container widget
+                              Container(
+                                height: Dimensions.height20*2,
+                                width: Dimensions.width50*2.9,
+                                decoration: BoxDecoration(
+                                  color: AppColors.zigoBackgroundColor,
+                                  borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                ),                              
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
+                                  // Wrapping dropdown button widget with this: to remove the persitent underline
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(                            
+                                      isExpanded: true,
+                                      icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
+                                      value: endAirport,
+                                      items: endAirportList.map((e) {
+                                        return DropdownMenuItem(value: e, child: Text(e));
+                                      }).toList(), 
+                                      onChanged: (String? newValue){
+                                        setState(() {
+                                          endAirport = newValue!;
+                                        });
+                                      },
+                                      style: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ), 
-                      ],
-                    ),
-                  ],
-                ),
-                //ROW: DEPARTURE & RETURN DATES
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // ROW FOR: Date of Departure
-                    Row(
-                      children: [
-                        // Icon 
-                        Icon(Icons.calendar_today, size: Dimensions.font20-2),               
-                        SizedBox(width: Dimensions.width4),
-                        // DATE & TEXT
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Date of Departure',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Dimensions.font26/2,
+                            ],
+                          ), 
+                        ],
+                      ),
+                    ],
+                  ),
+                  //ROW: DEPARTURE & RETURN DATES
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // ROW FOR: Date of Departure
+                      Row(
+                        children: [
+                          // Icon 
+                          Icon(Icons.calendar_today, size: Dimensions.font20-2),               
+                          SizedBox(width: Dimensions.width4),
+                          // DATE & TEXT
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Date of Departure',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Dimensions.font26/2,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: Dimensions.height4),
-                            // The text Field & DatePicker
-                            GestureDetector(
-                              onTap: () => _selectDepartureDate(context),
-                              // AbsorbPointer widget to disable tap or on the textField
-                              child: AbsorbPointer(
-                                child:  Container(
-                                  height: Dimensions.height20*2,
-                                  width: Dimensions.width50*1.8,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.zigoBackgroundColor,
-                                    borderRadius: BorderRadius.circular(Dimensions.radius20/4),
-                                  ),            
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: Dimensions.width10),
-                                      // the input field
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _departureDateController,
-                                          expands: true,
-                                          maxLines: null,                                                                               
-                                          decoration: InputDecoration(
-                                            hintText: '',
-                                            hintStyle: GoogleFonts.montserrat(
-                                              color: AppColors.zigoGreyTextColor,                                          
+                              SizedBox(height: Dimensions.height4),
+                              // The text Field & DatePicker
+                              GestureDetector(
+                                onTap: () => _selectDepartureDate(context),
+                                // AbsorbPointer widget to disable tap or on the textField
+                                child: AbsorbPointer(
+                                  child:  Container(
+                                    height: Dimensions.height20*2,
+                                    width: Dimensions.width50*1.8,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.zigoBackgroundColor,
+                                      borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                    ),            
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: Dimensions.width10),
+                                        // the input field
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _departureDateController,
+                                            expands: true,
+                                            maxLines: null,                                                                               
+                                            decoration: InputDecoration(
+                                              hintText: '',
+                                              hintStyle: GoogleFonts.montserrat(
+                                                color: AppColors.zigoGreyTextColor,                                          
+                                              ),
+                                              border: InputBorder.none,
                                             ),
-                                            border: InputBorder.none,
                                           ),
-                                        ),
-                                      ),         
-                                    ],
+                                        ),         
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      // COLUMN: TYPE of FLIGHT
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // choose Airport TEXT
+                          Text(
+                            'Type',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.zigoGreyTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: Dimensions.font26/2,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    // COLUMN: TYPE of FLIGHT
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // choose Airport TEXT
-                        Text(
-                          'Type',
-                          style: GoogleFonts.poppins(
-                            color: AppColors.zigoGreyTextColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: Dimensions.font26/2,
                           ),
-                        ),
-                        SizedBox(height: Dimensions.height4),
-                        // DropdownList wrapped in a Container widget
-                        Container(
-                          height: Dimensions.height20*2,
-                          width: Dimensions.width50*1.6,                          
-                          decoration: BoxDecoration(
-                            color: AppColors.zigoBackgroundColor,
-                            borderRadius: BorderRadius.circular(Dimensions.radius20/4),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
-                            // Wrapping dropdown button widget with this: to remove the persitent underline
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(                            
-                                isExpanded: true,
-                                icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
-                                value: currFlightType,
-                                items: flightTypeList.map((e) {
-                                  return DropdownMenuItem(value: e, child: Text(e));
-                                }).toList(), 
-                                onChanged: (String? newValue){
-                                  setState(() {
-                                    currFlightType = newValue!;
-                                  });
-                                },
-                                style: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold),
+                          SizedBox(height: Dimensions.height4),
+                          // DropdownList wrapped in a Container widget
+                          Container(
+                            height: Dimensions.height20*2,
+                            width: Dimensions.width50*1.6,                          
+                            decoration: BoxDecoration(
+                              color: AppColors.zigoBackgroundColor,
+                              borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: Dimensions.width12),
+                              // Wrapping dropdown button widget with this: to remove the persitent underline
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(                            
+                                  isExpanded: true,
+                                  icon: Icon(Icons.keyboard_arrow_down, size: Dimensions.font26),  
+                                  value: currFlightType,
+                                  items: flightTypeList.map((e) {
+                                    return DropdownMenuItem(value: e, child: Text(e));
+                                  }).toList(), 
+                                  onChanged: (String? newValue){
+                                    setState(() {
+                                      currFlightType = newValue!;
+                                    });
+                                  },
+                                  style: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ), 
-                    // ROW FOR: Date of RETURN & ICON
-                    Row(
-                      children: [
-                        // Icon
-                        Icon(Icons.calendar_today, size: Dimensions.font20-2), 
-                        SizedBox(width: Dimensions.width4),
-                        // DATE & TEXT
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Date of Return',
-                              style: GoogleFonts.poppins(
-                                color: AppColors.zigoGreyTextColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Dimensions.font26/2,
+                        ],
+                      ), 
+                      // ROW FOR: Date of RETURN & ICON
+                      Row(
+                        children: [
+                          // Icon
+                          Icon(Icons.calendar_today, size: Dimensions.font20-2), 
+                          SizedBox(width: Dimensions.width4),
+                          // DATE & TEXT
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Date of Return',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Dimensions.font26/2,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: Dimensions.height4),
-                            // The text Field & DatePicker
-                            GestureDetector(
-                              onTap: () => _selectDateOfReturn(context),
-                              // AbsorbPointer widget to disable tap or on the textField
-                              child: AbsorbPointer(
-                                child:  Container(
-                                  height: Dimensions.height20*2,
-                                  width: Dimensions.width50*1.8,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.zigoBackgroundColor,
-                                    borderRadius: BorderRadius.circular(Dimensions.radius20/4),
-                                  ),            
-                                  child: Row(
-                                    children: [
-                                      SizedBox(width: Dimensions.width10),
-                                      // the input field
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _dateOfReturnController,
-                                          expands: true,
-                                          maxLines: null,                                                                               
-                                          decoration: InputDecoration(
-                                            hintText: '',
-                                            hintStyle: GoogleFonts.montserrat(
-                                              color: AppColors.zigoGreyTextColor,                                          
+                              SizedBox(height: Dimensions.height4),
+                              // The text Field & DatePicker
+                              GestureDetector(
+                                onTap: () => _selectDateOfReturn(context),
+                                // AbsorbPointer widget to disable tap or on the textField
+                                child: AbsorbPointer(
+                                  child:  Container(
+                                    height: Dimensions.height20*2,
+                                    width: Dimensions.width50*1.8,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.zigoBackgroundColor,
+                                      borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                    ),            
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: Dimensions.width10),
+                                        // the input field
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _dateOfReturnController,
+                                            expands: true,
+                                            maxLines: null,                                                                               
+                                            decoration: InputDecoration(
+                                              hintText: '',
+                                              hintStyle: GoogleFonts.montserrat(
+                                                color: AppColors.zigoGreyTextColor,                                          
+                                              ),
+                                              border: InputBorder.none,
                                             ),
-                                            border: InputBorder.none,
                                           ),
-                                        ),
-                                      ),         
-                                    ],
+                                        ),         
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  // ROW: SEAT, PERSONS, LUGGAGE
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                    //seat class
+                    InputFieldWithDescriptionNLogo(
+                      controller: seatClassController,
+                      descriptionText: 'Seat Class', 
+                      width: Dimensions.width50*1.8, 
+                      icon: Icons.airline_seat_recline_normal
                     ),
-                  ],
-                ),
-                // ROW: SEAT, PERSONS, LUGGAGE
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  //seat class
-                  InputFieldWithDescriptionNLogo(descriptionText: 'Seat Class', width: Dimensions.width50*1.8, icon: Icons.airline_seat_recline_normal),
-                  //no. of persons
-                  InputFieldWithDescriptionNLogo(descriptionText: 'No. of Person', width: Dimensions.width50*1.8, icon: Icons.group),
-                  //luggage
-                  InputFieldWithDescriptionNLogo(descriptionText: 'Luggage', width: Dimensions.width50*1.8, icon: Icons.luggage),
-                  ],
-                ),
-              ],
+                    //no. of persons
+                    InputFieldWithDescriptionNLogo(
+                      controller: noOfPersonsController,
+                      descriptionText: 'No. of Person', 
+                      width: Dimensions.width50*1.8, 
+                      icon: Icons.group
+                    ),
+                    //luggage
+                    InputFieldWithDescriptionNLogo(
+                      controller: luggageController,
+                      descriptionText: 'Luggage', 
+                      width: Dimensions.width50*1.8, 
+                      icon: Icons.luggage
+                    ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -486,7 +589,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
         title: Text(_activeStepIndex==2 ? 'Choose Seat' : ''),
         content: GetBuilder<FlightController>(builder: (controller) {
           return Container(
-            height: Dimensions.height50*12,
+            height: Dimensions.height50*13,
             // padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
             child: Column(
               children: [
@@ -514,38 +617,51 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                             crossAxisCount: 3,
                             mainAxisSpacing: 10,
                             childAspectRatio: 1,
-                            children: List.generate(seats.length, (index) {
+                            // Getting the list of seats from the choiceFlight. Wwe are using OneFlightModel as a test
+                            children: List.generate(_flightController.oneFlightModel.seats.length, (index) {
+                              var planeSeats = _flightController.oneFlightModel.seats[index]['seat'];
+                              var isPlanePicked = _flightController.oneFlightModel.seats[index]['picked'];
+                              var _selectedItems = _flightController.selectedFlightSeatsIndexList;
                               return Center(
                                 child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      if(_selectedItems.contains(index)==false){
-                                        sum = sum + price;
-                                        _selectedItems.add(index);
-                                        selectedSeatsText = "";
-                                        _selectedItems.forEach((element) {
-                                          if (selectedSeatsText != "") selectedSeatsText += " , ";
-                                          selectedSeatsText += (seats[element]);
-
-                                        });
-                                      }else{
-                                        sum = sum - price;
-                                        _selectedItems.remove(index);
-                                        selectedSeatsText = "";
-                                        _selectedItems.forEach((element) {
-                                          if (selectedSeatsText != "") selectedSeatsText += " , ";
-                                          selectedSeatsText += (seats[element]);
-
-                                        });
+                                      if(isPlanePicked == false){
+                                        if(_selectedItems.contains(index)==false){
+                                          totalAmount +=  double.parse(_flightController.oneFlightModel.price);                                          
+                                          _selectedItems.add(index);
+                                          print("Total Amount for Flight: $totalAmount"); //test
+                                          print("Selected Seat Index List: $_selectedItems"); //test                                          
+                                          selectedSeatsText = "";
+                                          _selectedItems.forEach((element) {
+                                            if (selectedSeatsText != "") selectedSeatsText += " , ";
+                                            selectedSeatsText += (seats[element]);
+                                          });
+                                        }else{
+                                          totalAmount -=  double.parse(_flightController.oneFlightModel.price);                                         
+                                          _selectedItems.remove(index);
+                                         _flightController.selectedFlightSeatsIndexList.refresh(); // update with new changes list on the fly
+                                           print("Total Amount for Flight: $totalAmount"); //test
+                                          print("Selected Seat Index List: $_selectedItems"); //test
+                                          selectedSeatsText = "";
+                                          _selectedItems.forEach((element) {
+                                            if (selectedSeatsText != "") selectedSeatsText += " , ";
+                                            selectedSeatsText += (seats[element]);
+                                          });
+                                        }                                        
                                       }
                                     });
+                                    // calling our seatStatus function: which executes at every tap or press
+                                    _flightController.showSeatStatus(_flightController.oneFlightModel); 
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: _selectedItems.contains(index) ? Colors.pink : Color(0xff828EFB), // background
+                                    primary: isPlanePicked ? Colors.pink : (_selectedItems.contains(index)? Colors.green :Color(0xff828EFB)), // background
                                     onPrimary: Colors.white, // foreground
+                                    // primary: _selectedItems.contains(index) ? Colors.pink : Color(0xff828EFB), // background
+                                    // onPrimary: Colors.white, // foreground
                                   ),
                                   child: Text(
-                                    seats[index],
+                                    planeSeats,
                                     style: TextStyle(fontSize: 12),
                                   ),
                                 ),
@@ -631,51 +747,74 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                   ],
                 ),
                 // LEGEND section
-                Container(
-                  margin: EdgeInsets.only(left: Dimensions.width30, top: Dimensions.height20),
-                  child: Column(
-                    children: [
-                      // seats available
-                      Row(
+                Obx(() {
+                    return Container(
+                      margin: EdgeInsets.only(left: Dimensions.width30, top: Dimensions.height30),
+                      child: Column(
                         children: [
-                          Container(
-                            height: Dimensions.height18,
-                            width: Dimensions.width18,
-                            color: Color(0xff828EFB),
+                          // chosen seats
+                          Row(
+                            children: [
+                              Container(
+                                height: Dimensions.height18,
+                                width: Dimensions.width18,
+                                color: Colors.green,
+                              ),
+                              SizedBox(width: Dimensions.width16),
+                              Text(
+                                '${_flightController.chosenSeats} Picked Seats',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: Dimensions.font26/2,                         
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: Dimensions.width16),
-                          Text(
-                            '12 Seats Available',
-                            style: GoogleFonts.poppins(
-                              color: AppColors.zigoGreyTextColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: Dimensions.font26/2,                         
-                            ),
+                          SizedBox(height: Dimensions.height10),
+                          // seats available
+                          Row(
+                            children: [
+                              Container(
+                                height: Dimensions.height18,
+                                width: Dimensions.width18,
+                                color: Color(0xff828EFB),
+                              ),
+                              SizedBox(width: Dimensions.width16),
+                              Text(
+                                '${_flightController.availableSeats} Seats Available',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: Dimensions.font26/2,                         
+                                ),
+                              ),
+                            ],
                           ),
+                          SizedBox(height: Dimensions.height10),
+                          // seats Unavailable
+                          Row(
+                            children: [
+                              Container(
+                                height: Dimensions.height18,
+                                width: Dimensions.width18,
+                                color: Colors.pink,
+                              ),
+                              SizedBox(width: Dimensions.width16),
+                              Text(
+                                '${_flightController.unAvailableSeats} Seats Unavailable',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.zigoGreyTextColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: Dimensions.font26/2,                         
+                                ),
+                              ),
+                            ],
+                          ),                 
                         ],
                       ),
-                      SizedBox(height: Dimensions.height10),
-                      // seats Unavailable
-                      Row(
-                        children: [
-                          Container(
-                            height: Dimensions.height18,
-                            width: Dimensions.width18,
-                            color: Colors.pink,
-                          ),
-                          SizedBox(width: Dimensions.width16),
-                          Text(
-                            '32 Seats Unavailable',
-                            style: GoogleFonts.poppins(
-                              color: AppColors.zigoGreyTextColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: Dimensions.font26/2,                         
-                            ),
-                          ),
-                        ],
-                      ),                 
-                    ],
-                  ),
+                    );
+                  }
                 ),
               ],
             ),
@@ -695,37 +834,37 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
               // row 1
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   // city of departure
-                  TitleAndDetailTexts(title: 'City of Departure', detailText: 'Lagos'),
+                  TitleAndDetailTexts(title: 'City of Departure', detailText: cityOfDepartureTextController.text.trim()), // city of Departure
                   // city of Arrival
-                  TitleAndDetailTexts(title: 'City of Arrival', detailText: 'Abuja'),
+                  TitleAndDetailTexts(title: 'City of Arrival', detailText: cityOfArrivalTextController.text.trim()), // city of Arrival
                   // choose Airport
-                  TitleAndDetailTexts(title: 'Choose Airport', detailText: "Murtala Mohammad Int'l"),
+                  TitleAndDetailTexts(title: 'Choose Airport', detailText: startAirport), // start Airport
                 ],
               ),
               // row 2
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   // city of departure
-                  TitleAndDetailTexts(title: 'Destination Airport', detailText: "Murtala Mohammad Int'l"),
+                  TitleAndDetailTexts(title: 'Destination Airport', detailText: endAirport), // endAirport
                   // city of Arrival
-                  TitleAndDetailTexts(title: 'Date of Departure', detailText: '8/29/2022'),
+                  TitleAndDetailTexts(title: 'Date of Departure', detailText: _departureDateController.text.trim()), // date of Departure
                   // choose Airport
-                  TitleAndDetailTexts(title: 'Date of Return', detailText: '8/29/2022'),
+                  TitleAndDetailTexts(title: 'Date of Return', detailText: _dateOfReturnController.text.trim()), // date of Return
                 ],
               ),
               // row 3
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   // city of departure
-                  TitleAndDetailTexts(title: 'Type', detailText: 'One Way'),
+                  TitleAndDetailTexts(title: 'Type', detailText: seatClassController.text.trim()), // seat Class or type of flight
                   // city of Arrival
-                  TitleAndDetailTexts(title: 'No. of Persons', detailText: '10'),
+                  TitleAndDetailTexts(title: 'No. of Persons', detailText: noOfPersonsController.text.trim()), // no. of persons
                   // choose Airport
-                  TitleAndDetailTexts(title: 'Luggage', detailText: "Two bags & a can"),
+                  TitleAndDetailTexts(title: 'Luggage', detailText: luggageController.text.trim()), //luggage
                 ],
               ),
             ],
@@ -755,7 +894,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                 width: Dimensions.screenWidth,
                 height: Dimensions.screenHeight,
                 child: Stepper(
-                  physics: BouncingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   type: StepperType.horizontal,
                   currentStep: _activeStepIndex,
                   steps: stepList(),

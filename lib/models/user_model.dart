@@ -178,21 +178,22 @@ class BookedHotelModel{
 
 
 class BookedFlightModel {
-  String flightName;
+  Map flight;
   String cityOfArrival;
   String cityOfDeparture;
   String startAirport;
   String endAirport;
-  String dateOfDeparture;
-  String dateOfReturn;
-  String seatClass;
-  String noOfPersons;
-  String luggage;
-  String amountDue;
+  String dateOfDeparture; 
+  String dateOfReturn; 
+  String seatClass; 
+  String noOfPersons; 
+  String luggage; 
+  String amountDue; 
+  String seatsBooked;
 
 
   BookedFlightModel({
-    required this.flightName,
+    required this.flight,
     required this.cityOfArrival,
     required this.cityOfDeparture,
     required this.startAirport,
@@ -202,12 +203,14 @@ class BookedFlightModel {
     required this.seatClass,
     required this.noOfPersons,
     required this.luggage,
-    required this.amountDue
+    required this.amountDue,
+    required this.seatsBooked
   });
 
 
   BookedFlightModel.fromJson(Map<String, dynamic> json):
-    flightName = json['flight_name'],
+    flight = json['flight'],
+    seatsBooked = json['seats_booked'],
     cityOfArrival = json['city_of_arrival'],
     cityOfDeparture = json['city_of_departure'],
     startAirport = json['start_airport'],
@@ -222,7 +225,8 @@ class BookedFlightModel {
 
   // for getting data from firebase
   BookedFlightModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot):
-    flightName = snapshot['flight_name'],
+    flight = snapshot['flight'],
+    seatsBooked = snapshot['seats_booked'],
     cityOfArrival = snapshot['city_of_arrival'],
     cityOfDeparture = snapshot['city_of_departure'],
     startAirport = snapshot['start_airport'],
@@ -237,7 +241,8 @@ class BookedFlightModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['flight_name'] = this.flightName;
+    data['flight'] = this.flight;
+    data['seats_booked'] = this.seatsBooked;
     data['city_of_arrival'] = this.cityOfArrival;
     data['city_of_departure'] = this.cityOfDeparture;
     data['start_airport'] = this.startAirport;

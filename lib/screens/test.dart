@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:zigo/constants/app_colors.dart';
-import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/main.dart';
-import 'package:zigo/screens/reservations.dart';
+
 
 
 
@@ -19,27 +13,33 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
 
 
-
+List<String> stringData = ["Abuchi", "Somtoo", "Abakpa", "Adolf", "Pinacle", "Ebube", "Elizabeth"];
   @override
   Widget build(BuildContext context) {
+    var w = MediaQuery.of(context).size.width.round();
+    var h = MediaQuery.of(context).size.height.round();
+
+    print("($w,  $h)");
     return Scaffold(
       appBar: AppBar(
         title: Text("Test Screen"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(5.0),
         child: GridView.count(
           shrinkWrap: true,
           crossAxisCount: 3,
           crossAxisSpacing: 5,
           mainAxisSpacing: 5,
-          children: List.generate(15, (index) => Container(
-            width: 4,
-            height: 4,
+          childAspectRatio: h/h*0.6,
+          children: List.generate(stringData.length, (index) => Container(
+            // width: w*0.25,
+            // height: h*0.49,
             decoration: BoxDecoration(
               color: Color.fromRGBO(236,97,10,1.0),
               borderRadius: BorderRadius.circular(10)
             ),
+            child: Text(stringData[index]),
           )),
         ),
       ),

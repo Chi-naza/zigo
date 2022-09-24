@@ -88,7 +88,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ),
 
             ElevatedButton(
-              onPressed: () => Get.to(() => MyBudgetListScreen()), 
+              onPressed: () => Get.toNamed(MyBudgetListScreen.routeName), 
               child: Text("View My Budgets"),
             ),
 

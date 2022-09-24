@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zigo/constants/app_colors.dart';
-import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/screens/Intro/onboarding/onboarding_screen.dart';
 import 'package:zigo/screens/auth/signIn.dart';
 import 'package:zigo/screens/auth/signup.dart';
 import 'package:zigo/screens/reservations.dart';
+import 'package:zigo/widgets/custom_snackbar.dart';
 
 class AuthController extends GetxController{
   // Instantiating a FireBase Auth and User
@@ -62,13 +60,9 @@ class AuthController extends GetxController{
       await saveUserInFireStore(email);
 
       // snackbar for registration success
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Registration Success", style: authTextStyle.copyWith(fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text("Welcome! \nYou are now one of us. Enjoy the ride", style: authTextStyle.copyWith(fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: AppColors.mainColorLight2,
+      customSnackbar(
+        titleText: "Registration Success", 
+        bodyText: "Welcome! \nYou are now one of us. Enjoy the ride"
       );
 
       // when successful, go to signIn page
@@ -76,13 +70,10 @@ class AuthController extends GetxController{
 
     }on FirebaseAuthException catch(e){
       // snackbar for registration failure 
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Account Creation Fialed", style: authTextStyle.copyWith(fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text(e.toString(), style: authTextStyle.copyWith(fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: Colors.redAccent,
+      customSnackbar(
+        titleText: "Account Creation Fialed", 
+        bodyText: e.toString(),
+        isError: true
       );
     }
 
@@ -114,28 +105,21 @@ class AuthController extends GetxController{
       // firebase function which signs in a user using email & pwd
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-      // snackbar for registration success
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Login Successful", style: authTextStyle.copyWith(fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text("Welcome back!", style: authTextStyle.copyWith(fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: AppColors.mainColorLight2,
+      // snackbar for login success
+      customSnackbar(
+        titleText: "Login Successful", 
+        bodyText: "Welcome back!"
       );
 
       // when successful, go to homeScreen
       navigateToHomeScreen();
 
     }on FirebaseAuthException catch(e){
-      // snackbar for registration failure 
-      Get.snackbar(
-        "", 
-        "",
-        titleText: Text("Login Fialed", style: authTextStyle.copyWith(fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-        messageText: Text(e.toString(), style: authTextStyle.copyWith(fontSize: Dimensions.font16)),
-        colorText: Colors.white,
-        backgroundColor: Colors.redAccent,
+      // snackbar for login failure 
+      customSnackbar(
+        titleText: "Login Fialed", 
+        bodyText: e.toString(),
+        isError: true
       );
     }
 
@@ -186,12 +170,6 @@ class AuthController extends GetxController{
     }
   }
 
-
-
-  // Custom TextStyle for auth
-  TextStyle authTextStyle = TextStyle(
-    color: Colors.white,
-  );
 
 
 }

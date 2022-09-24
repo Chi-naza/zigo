@@ -8,8 +8,9 @@ class InputFieldWithDescriptionNLogo extends StatelessWidget {
   final IconData? icon;
   final String? hintText;
   final double? width;
+  final TextEditingController controller;
   
-  const InputFieldWithDescriptionNLogo({Key? key, required this.descriptionText, this.icon, this.hintText, this.width}) : super(key: key);
+  const InputFieldWithDescriptionNLogo({Key? key, required this.descriptionText, this.icon, this.hintText, this.width, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +48,17 @@ class InputFieldWithDescriptionNLogo extends StatelessWidget {
                   SizedBox(width: Dimensions.width10),
                   // the input field
                   Expanded(
-                    child: TextField(
+                    child: TextFormField(
+                      controller: controller,
                       expands: true,
-                      maxLines: null,                                                                               
+                      maxLines: null,
+                      validator: (value) {
+                        if (value!.isEmpty) {                            
+                          return "Input needed";
+                        }else{
+                          return null;
+                        }
+                      },                                                                               
                       decoration: InputDecoration(
                         hintText: hintText??'',
                         hintStyle: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold),

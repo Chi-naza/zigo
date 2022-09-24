@@ -13,6 +13,8 @@ import 'package:zigo/widgets/header/header_section.dart';
 class MyBudgetListScreen extends StatelessWidget {
   const MyBudgetListScreen({Key? key}) : super(key: key);
 
+  static const String routeName = '/my-budgets';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

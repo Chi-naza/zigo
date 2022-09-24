@@ -11,7 +11,7 @@ class FlightModel {
   String duration;
   String noOfSeats;
   String price;
-  List? seats;
+  List seats;
 
 
   FlightModel({
@@ -24,7 +24,8 @@ class FlightModel {
     required this.dateOfDeparture,
     required this.duration,
     required this.noOfSeats,
-    required this.price
+    required this.price,
+    required this.seats
   });
 
 
@@ -38,7 +39,8 @@ class FlightModel {
     dateOfDeparture = json['date_of_departure'],
     noOfSeats = json['no_of_seats'],
     duration = json['flight_duration'],
-    price = json['price'];
+    price = json['price'],
+    seats = json['seats'];
     
 
   // for getting data from firebase
@@ -52,7 +54,29 @@ class FlightModel {
     dateOfDeparture = snapshot['date_of_departure'],
     noOfSeats = snapshot['no_of_seats'],
     duration = snapshot['flight_duration'],
-    price = snapshot['price'];
+    price = snapshot['price'],
+    seats = snapshot['seats'];
+
+
+
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['name'] = this.flightName;
+    data['plane_id'] = this.flightID;
+    data['city_of_arrival'] = this.cityOfArrival;
+    data['city_of_departure'] = this.cityOfDeparture;
+    data['start_airport'] = this.startAirport;
+    data['end_airport'] = this.endAirport;
+    data['date_of_departure'] = this.dateOfDeparture;
+    data['no_of_seats'] = this.noOfSeats;
+    data['flight_duration'] = this.flightName;
+    data['price'] = this.price;
+    data['seats'] = this.seats;
+
+    return data;
+  }
 
 
 }
