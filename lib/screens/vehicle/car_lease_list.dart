@@ -35,7 +35,7 @@ class CarLeaseListScreen extends StatelessWidget {
                           'CAR LEASE',
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w600,
-                            fontSize: Dimensions.height20,
+                            fontSize: Dimensions.height20-2,
                             color: Colors.grey,
                             letterSpacing: 1,
                           ),
@@ -43,7 +43,7 @@ class CarLeaseListScreen extends StatelessWidget {
                         // search container
                         Container(
                           height: Dimensions.height20*2,
-                          width: Dimensions.width50*5,
+                          width: Dimensions.width50*4,
                           decoration: BoxDecoration(
                             color: AppColors.zigoBackgroundColor,
                             borderRadius: BorderRadius.circular(Dimensions.radius20/4),

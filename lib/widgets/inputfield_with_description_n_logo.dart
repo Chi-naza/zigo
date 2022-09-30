@@ -32,7 +32,7 @@ class InputFieldWithDescriptionNLogo extends StatelessWidget {
               style: GoogleFonts.poppins(
                 color: AppColors.zigoGreyTextColor,
                 fontWeight: FontWeight.bold,
-                fontSize: Dimensions.font26/2,
+                fontSize: Dimensions.font12,
               ),
             ),
             SizedBox(height: Dimensions.height4),

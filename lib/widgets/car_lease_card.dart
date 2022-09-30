@@ -191,8 +191,8 @@ class CarLeaseCard extends StatelessWidget {
                 SizedBox(width: Dimensions.width4),
                 // CAR/VEHICLE HERE
                 Container(
-                  height: Dimensions.height50*2.3,
-                  width: Dimensions.height50*4,
+                  height: Dimensions.height50*2,
+                  width: Dimensions.height50*3,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(vehicleImagePath),

@@ -15,7 +15,7 @@ class HotelListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Dimensions.height50*1.6,
+      height: Dimensions.height50*1.7,
       width: Dimensions.screenWidth - 10,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -51,27 +51,33 @@ class HotelListTile extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  hotelName,
-                  style: GoogleFonts.montserrat(
-                    color: AppColors.zigoGreyTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: Dimensions.font20-3,
+                Container(
+                  width: Dimensions.width50*2,
+                  child: Text(
+                    hotelName, // hotel name
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.montserrat(
+                      color: AppColors.zigoGreyTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Dimensions.font16,
+                    ),
                   ),
                 ),
                 SizedBox(height: Dimensions.height4),
                 Row(                                  
                   children: [
                     Icon(
-                      Icons.location_on,
+                      Icons.location_on, // location icon
                       color: AppColors.zigoGreyTextColor,
+                      size: Dimensions.font12+2,
                     ),
+                    SizedBox(width: Dimensions.height4),
                     Text(
                       hotelLocation,
                       style: GoogleFonts.montserrat(
                         color: AppColors.zigoGreyTextColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: Dimensions.font12,
+                        fontSize: Dimensions.font12-2,
                       ),
                     ),
                   ],
@@ -86,7 +92,7 @@ class HotelListTile extends StatelessWidget {
                 (index) => Icon(
                   Icons.star,
                   color: AppColors.starColor,
-                  size: Dimensions.height12,
+                  size: Dimensions.height9,
                 ),
               ),
             ),
@@ -95,11 +101,11 @@ class HotelListTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  price,
+                  price, //price
                   style: GoogleFonts.montserrat(
                     color: AppColors.zigoGreyTextColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: Dimensions.font20-1,
+                    fontSize: Dimensions.font16-2,
                   ),
                 ),
                 SizedBox(height: Dimensions.height4),
@@ -108,13 +114,18 @@ class HotelListTile extends StatelessWidget {
                     Icon(
                       Icons.location_on,
                       color: AppColors.zigoGreyTextColor,
+                      size: Dimensions.font12+2,
                     ),                            
-                    Text(
-                      '$numOfReviews Reviews',
-                      style: GoogleFonts.montserrat(
-                        color: AppColors.zigoGreyTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: Dimensions.font12,
+                    Container(
+                      width: Dimensions.width50,
+                      child: Text(
+                        '$numOfReviews Reviews',
+                        overflow: TextOverflow.clip,
+                        style: GoogleFonts.montserrat(
+                          color: AppColors.zigoGreyTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Dimensions.height9,
+                        ),
                       ),
                     ),
                   ],

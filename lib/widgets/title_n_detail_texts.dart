@@ -12,9 +12,11 @@ class TitleAndDetailTexts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: Dimensions.width50*2.4,
+          width: Dimensions.width50*2,
+          // color: Colors.red,
           child: Text(
             title,
             style: GoogleFonts.poppins(
@@ -26,7 +28,8 @@ class TitleAndDetailTexts extends StatelessWidget {
         ),
         SizedBox(height: Dimensions.height4),
         Container(
-          width: Dimensions.width50*2.4,
+          // color: Colors.red,
+          width: Dimensions.width50*2,
           child: Text(
             detailText??'',
             style: GoogleFonts.poppins(

@@ -24,7 +24,7 @@ class BudgetItemRow extends StatelessWidget {
             // items beside the number in a row
             Container(
               padding: EdgeInsets.only(left: Dimensions.width9),
-              width: Dimensions.screenWidth - 100,
+              width: Dimensions.screenWidth - 80,
               height: Dimensions.height50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

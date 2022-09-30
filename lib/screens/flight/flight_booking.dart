@@ -216,14 +216,14 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                         descriptionText: 'City of Departure', 
                         hintText: 'Lagos', 
                         icon: Icons.flight_takeoff, 
-                        width: Dimensions.width50*2.75,
+                        width: Dimensions.width50*2,
                       ),
                       // Icon/Arrival
                       InputFieldWithDescriptionNLogo(
                         controller: cityOfArrivalTextController,
                         descriptionText: 'City of Arrival', 
                         icon: Icons.flight_land,
-                        width: Dimensions.width50*2.75,
+                        width: Dimensions.width50*2,
                       ),                   
                     ],
                   ),
@@ -256,14 +256,14 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                 style: GoogleFonts.poppins(
                                   color: AppColors.zigoGreyTextColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: Dimensions.font26/2,
+                                  fontSize: Dimensions.font12,
                                 ),
                               ),
                               SizedBox(height: Dimensions.height4),
                               // DropdownList wrapped in a Container widget
                               Container(
                                 height: Dimensions.height20*2,
-                                width: Dimensions.width50*2.9,
+                                width: Dimensions.width50*2.4,
                                 decoration: BoxDecoration(
                                   color: AppColors.zigoBackgroundColor,
                                   borderRadius: BorderRadius.circular(Dimensions.radius20/4),
@@ -318,14 +318,14 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                 style: GoogleFonts.poppins(
                                   color: AppColors.zigoGreyTextColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: Dimensions.font26/2,
+                                  fontSize: Dimensions.font12,
                                 ),
                               ),
                               SizedBox(height: Dimensions.height4),
                               // DropdownList wrapped in a Container widget
                               Container(
                                 height: Dimensions.height20*2,
-                                width: Dimensions.width50*2.9,
+                                width: Dimensions.width50*2.4,
                                 decoration: BoxDecoration(
                                   color: AppColors.zigoBackgroundColor,
                                   borderRadius: BorderRadius.circular(Dimensions.radius20/4),
@@ -371,12 +371,15 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Date of Departure',
-                                style: GoogleFonts.poppins(
-                                  color: AppColors.zigoGreyTextColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Dimensions.font26/2,
+                              Container(
+                                width: Dimensions.height50*2,
+                                child: Text(
+                                  'Date of Departure',
+                                  style: GoogleFonts.poppins(
+                                    color: AppColors.zigoGreyTextColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Dimensions.font12,
+                                  ),
                                 ),
                               ),
                               SizedBox(height: Dimensions.height4),
@@ -387,7 +390,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                 child: AbsorbPointer(
                                   child:  Container(
                                     height: Dimensions.height20*2,
-                                    width: Dimensions.width50*1.8,
+                                    width: Dimensions.width50*1.4,
                                     decoration: BoxDecoration(
                                       color: AppColors.zigoBackgroundColor,
                                       borderRadius: BorderRadius.circular(Dimensions.radius20/4),
@@ -429,7 +432,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                             style: GoogleFonts.poppins(
                               color: AppColors.zigoGreyTextColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: Dimensions.font26/2,
+                              fontSize: Dimensions.font12,
                             ),
                           ),
                           SizedBox(height: Dimensions.height4),
@@ -474,12 +477,15 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Date of Return',
-                                style: GoogleFonts.poppins(
-                                  color: AppColors.zigoGreyTextColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Dimensions.font26/2,
+                              Container(
+                                width: Dimensions.height50,
+                                child: Text(
+                                  'Date of Return',
+                                  style: GoogleFonts.poppins(
+                                    color: AppColors.zigoGreyTextColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Dimensions.font12,
+                                  ),
                                 ),
                               ),
                               SizedBox(height: Dimensions.height4),
@@ -490,7 +496,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                 child: AbsorbPointer(
                                   child:  Container(
                                     height: Dimensions.height20*2,
-                                    width: Dimensions.width50*1.8,
+                                    width: Dimensions.width50*1.2,
                                     decoration: BoxDecoration(
                                       color: AppColors.zigoBackgroundColor,
                                       borderRadius: BorderRadius.circular(Dimensions.radius20/4),
@@ -532,21 +538,21 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                     InputFieldWithDescriptionNLogo(
                       controller: seatClassController,
                       descriptionText: 'Seat Class', 
-                      width: Dimensions.width50*1.8, 
+                      width: Dimensions.width50*1.2, 
                       icon: Icons.airline_seat_recline_normal
                     ),
                     //no. of persons
                     InputFieldWithDescriptionNLogo(
                       controller: noOfPersonsController,
                       descriptionText: 'No. of Person', 
-                      width: Dimensions.width50*1.8, 
+                      width: Dimensions.width50*1.2, 
                       icon: Icons.group
                     ),
                     //luggage
                     InputFieldWithDescriptionNLogo(
                       controller: luggageController,
                       descriptionText: 'Luggage', 
-                      width: Dimensions.width50*1.8, 
+                      width: Dimensions.width50*1.2, 
                       icon: Icons.luggage
                     ),
                     ],
@@ -599,7 +605,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                     // PLANE SYMBOL & PICK SEAT inside
                     Container(
                       height: Dimensions.height50*10,
-                      width: Dimensions.width50*4,
+                      width: Dimensions.width50*3.5,
                       decoration: const BoxDecoration(
                         // color: Colors.redAccent,
                         image: DecorationImage(
@@ -684,7 +690,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                             style: GoogleFonts.poppins(
                               color: AppColors.zigoGreyTextColor,
                               fontWeight: FontWeight.w500,
-                              fontSize: Dimensions.font23,                         
+                              fontSize: Dimensions.font16+2,                         
                             ),
                           ),
                           // Name & No. of PLANE
@@ -696,7 +702,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                 style: GoogleFonts.poppins(
                                   color: AppColors.zigoGreyTextColor,
                                   fontWeight: FontWeight.w300,
-                                  fontSize: Dimensions.font20+2,                         
+                                  fontSize: Dimensions.font16,                         
                                 ),
                               ),
                               Text(
@@ -704,7 +710,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                 style: GoogleFonts.poppins(
                                   color: AppColors.zigoGreyTextColor,
                                   fontWeight: FontWeight.w300,
-                                  fontSize: Dimensions.font20,                         
+                                  fontSize: Dimensions.font16-2,                         
                                 ),
                               ),
                             ],
@@ -833,7 +839,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
             children: [
               // row 1
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // city of departure
                   TitleAndDetailTexts(title: 'City of Departure', detailText: cityOfDepartureTextController.text.trim()), // city of Departure
@@ -845,7 +851,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
               ),
               // row 2
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // city of departure
                   TitleAndDetailTexts(title: 'Destination Airport', detailText: endAirport), // endAirport
@@ -857,7 +863,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
               ),
               // row 3
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // city of departure
                   TitleAndDetailTexts(title: 'Type', detailText: seatClassController.text.trim()), // seat Class or type of flight

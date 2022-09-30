@@ -215,12 +215,16 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                     // first column of text inside the row
                                     Column(
                                       children: [
-                                        Text(
-                                          hotel.hotelName, //hotel name
-                                          style: GoogleFonts.montserrat(
-                                            color: AppColors.zigoGreyTextColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: Dimensions.font20-1,
+                                        Container(
+                                          width: Dimensions.width50*2.2,
+                                          child: Text(
+                                            hotel.hotelName, //hotel name
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.montserrat(
+                                              color: AppColors.zigoGreyTextColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: Dimensions.font16+2,
+                                            ),
                                           ),
                                         ),
                                         Row(                                  
@@ -228,6 +232,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                             Icon(
                                               Icons.location_on,
                                               color: AppColors.zigoGreyTextColor,
+                                              size: Dimensions.height12+2,
                                             ),
                                             Text(
                                               "${hotel.location}, ${hotel.city}",  // hotel location
@@ -252,7 +257,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                             (index) => Icon(
                                               Icons.star,
                                               color: AppColors.starColor,
-                                              size: Dimensions.height18,
+                                              size: Dimensions.height12+2,
                                             ),
                                           ),
                                         ),
@@ -262,7 +267,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                                           style: GoogleFonts.montserrat(
                                             color: AppColors.zigoGreyTextColor,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: Dimensions.font23,
+                                            fontSize: Dimensions.font20,
                                           ),
                                         ),
                                       ],

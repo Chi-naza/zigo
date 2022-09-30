@@ -69,9 +69,9 @@ class Current {
     temp = json['temp'],
     humidity = json['humidity'],
     clouds = json['clouds'],
-    windSpeed = json['wind_speed'],
-    uvIndex = (json['uvi'] as num).toDouble(),
-    feelsLike = json['feels_like'],
+    windSpeed = json['wind_speed'] == null ? 0.0 : json['wind_speed'].toDouble(),
+    uvIndex = json['uvi'] == null ? 0.0 : json['uvi'].toDouble(),
+    feelsLike = json['feels_like'] == null ? 0.0 : json['feels_like'].toDouble(),
     weather = (json['weather'] as List).map((e) => Weather.fromJson(e)).toList();
   
 
@@ -205,12 +205,12 @@ class Temp {
   Temp({required this.day, required this.min, required this.max, required this.night, required this.eve, required this.morn});
 
   Temp.fromJson(Map<String, dynamic> json) :
-    day = json['day'],
-    min = json['min'],
-    max = json['max'],
-    night = json['night'],
-    eve = json['eve'],
-    morn = json['morn'];
+    day = json['day'] == null ? 0.0 : json['day'].toDouble(),
+    min = json['min'] == null ? 0.0 : json['min'].toDouble(),
+    max = json['max'] == null ? 0.0 : json['max'].toDouble(),
+    night = json['night'] == null ? 0.0 : json['night'].toDouble(),
+    eve = json['eve'] == null ? 0.0 : json['eve'].toDouble(),
+    morn = json['morn'] == null ? 0.0 : json['morn'].toDouble();
   
 
   Map<String, dynamic> toJson() {
@@ -227,31 +227,4 @@ class Temp {
 
 
 
-
-class FeelsLike {
-  double day;
-  double night;
-  double eve;
-  double morn;
-
-  FeelsLike({required this.day, required this.night, required this.eve, required this.morn});
-
-  FeelsLike.fromJson(Map<String, dynamic> json) :
-    day = json['day'],
-    night = json['night'],
-    eve = json['eve'],
-    morn = json['morn'];
-  
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['day'] = this.day;
-    data['night'] = this.night;
-    data['eve'] = this.eve;
-    data['morn'] = this.morn;
-
-    return data;
-  }
-  
-}
 
