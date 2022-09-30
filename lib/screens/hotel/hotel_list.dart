@@ -74,7 +74,7 @@ class _HotelListScreenState extends State<HotelListScreen> {
                         // search container
                         Container(
                           height: Dimensions.height20*2,
-                          width: Dimensions.width50*5,
+                          width: Dimensions.width50*4,
                           decoration: BoxDecoration(
                             color: AppColors.zigoBackgroundColor,
                             borderRadius: BorderRadius.circular(Dimensions.radius20/4),
