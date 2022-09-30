@@ -24,23 +24,49 @@ List<String> stringData = ["Abuchi", "Somtoo", "Abakpa", "Adolf", "Pinacle", "Eb
       appBar: AppBar(
         title: Text("Test Screen"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: 3,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-          childAspectRatio: h/h*0.6,
-          children: List.generate(stringData.length, (index) => Container(
-            // width: w*0.25,
-            // height: h*0.49,
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(236,97,10,1.0),
-              borderRadius: BorderRadius.circular(10)
+      // body: Padding(
+      //   padding: const EdgeInsets.all(5.0),
+      //   child: GridView.count(
+      //     shrinkWrap: true,
+      //     crossAxisCount: 3,
+      //     crossAxisSpacing: 5,
+      //     mainAxisSpacing: 5,
+      //     childAspectRatio: h/h*0.6,
+      //     children: List.generate(stringData.length, (index) => Container(
+      //       // width: w*0.25,
+      //       // height: h*0.49,
+      //       decoration: BoxDecoration(
+      //         color: Color.fromRGBO(236,97,10,1.0),
+      //         borderRadius: BorderRadius.circular(10)
+      //       ),
+      //       child: Text(stringData[index]),
+      //     )),
+      //   ),
+      // ),
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 32),
+        child: Material(
+          elevation: 3.0,
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          child: TextField(
+            onChanged: (String value) {},
+            cursorColor: Color.fromRGBO(224,62,54,1.0),
+
+            decoration: InputDecoration(
+              hintText: "Email",
+              prefixIcon: Icon(Icons.email),
+              // prefixIcon: Material(
+              //   elevation: 0,
+              //   borderRadius: BorderRadius.all(Radius.circular(30)),
+              //   child: Icon(
+              //     Icons.email,
+              //     color: Color.fromRGBO(224,62,54,1.0),
+              //   ),
+              // ),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(horizontal: 25,vertical: 13),
             ),
-            child: Text(stringData[index]),
-          )),
+          ),
         ),
       ),
     );

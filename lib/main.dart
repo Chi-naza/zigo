@@ -11,6 +11,8 @@ import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
 import 'package:zigo/screens/budget/select_budget_items.dart';
 import 'package:zigo/screens/reservations.dart';
 import 'package:zigo/screens/test.dart';
+import 'package:zigo/screens/weather/user_weather_details.dart';
+import 'package:zigo/screens/weather/weather_n_places.dart';
 
 import 'screens/auth/signIn.dart';
 

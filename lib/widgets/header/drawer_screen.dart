@@ -9,6 +9,7 @@ import 'package:zigo/screens/hotel/hotel_list.dart';
 import 'package:zigo/screens/vehicle/boat_lease_list.dart';
 import 'package:zigo/screens/vehicle/car_lease_list.dart';
 import 'package:zigo/screens/vehicle/request_for_trip.dart';
+import 'package:zigo/screens/weather/user_weather_details.dart';
 
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({Key? key}) : super(key: key);
@@ -95,6 +96,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ElevatedButton(
               onPressed: () => Get.toNamed(AutoBudgetPlannerScreen.routeName), 
               child: Text("Automatic Budget Planner"),
+            ),
+
+            ElevatedButton(
+              onPressed: () => Get.to(() => UserWeatherDetailsScreen()), 
+              child: Text("User Weather Details"),
             ),
 
           ],

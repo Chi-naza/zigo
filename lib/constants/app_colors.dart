@@ -13,10 +13,15 @@ class AppColors {
   static final Color zigoBackgroundColor = Color(0xFFE5E5E5);
   static final Color zigoBackgroundColor2 = Color(0xFFEFEFEF);
   static final Color starColor = Color(0xFFFEDE38);
-
-  // static final Color zigoBackground2Color = Color.fromARGB(255, 255, 253, 253);
   
   static final Color mainWhiteColor = Color(0xFFFFFFFF);
+
+  // For Weather
+  static const dividerLine = Color(0xffE4E4EE);
+  static const cardColor = Color(0xffE9ECF1);
+  static const textColorBlack = Color(0xff171717);
+  static const firstGradientColor = Color(0xff408ADE);
+  static const secondGradientColor = Color(0xff5286CD);
 
 }
 
