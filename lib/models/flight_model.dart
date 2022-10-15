@@ -11,6 +11,7 @@ class FlightModel {
   String duration;
   String noOfSeats;
   String price;
+  String image;
   List seats;
 
 
@@ -25,6 +26,7 @@ class FlightModel {
     required this.duration,
     required this.noOfSeats,
     required this.price,
+    required this.image,
     required this.seats
   });
 
@@ -40,6 +42,7 @@ class FlightModel {
     noOfSeats = json['no_of_seats'],
     duration = json['flight_duration'],
     price = json['price'],
+    image = json['image'],
     seats = json['seats'];
     
 
@@ -55,6 +58,7 @@ class FlightModel {
     noOfSeats = snapshot['no_of_seats'],
     duration = snapshot['flight_duration'],
     price = snapshot['price'],
+    image = snapshot['image'],
     seats = snapshot['seats'];
 
 
@@ -73,6 +77,7 @@ class FlightModel {
     data['no_of_seats'] = this.noOfSeats;
     data['flight_duration'] = this.flightName;
     data['price'] = this.price;
+    data['image'] = this.image;
     data['seats'] = this.seats;
 
     return data;

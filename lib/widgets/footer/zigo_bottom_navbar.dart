@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/screens/reservations.dart';
+import 'package:zigo/screens/home/zigo_home.dart';
 
 class ZigoBottomNavBar extends StatelessWidget {
   final bool isHomeClicked;
@@ -24,7 +24,7 @@ class ZigoBottomNavBar extends StatelessWidget {
             // Home
             InkWell(
               onTap: () {
-                Get.offAllNamed(Reservations.routeName);
+                Get.offAllNamed(HomeScreen.routeName);
               },
               child: Container(
                 height: Dimensions.height25*3,

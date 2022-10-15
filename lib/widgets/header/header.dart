@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/auth_controller.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+
+  Header({Key? key}) : super(key: key);
+
+  AuthController authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+
+    var user = authController.currentUserData;
+
     return Column(
       children: [
         SizedBox(height: Dimensions.height20),
@@ -33,8 +41,8 @@ class Header extends StatelessWidget {
               //profile image
               CircleAvatar(
                 backgroundColor: Colors.teal,
-                backgroundImage: AssetImage('assets/images/avatar.jpg'),// will fall back to this if foreground is wrong/null
-                // foregroundImage: AssetImage('assets/images/splash23.png'),
+                backgroundImage: const AssetImage('assets/images/avatar.jpg'),// will fall back to this if foreground is wrong/null
+                foregroundImage: NetworkImage(user.profileImage!),
                 radius: Dimensions.radius30,
               ),
             ],

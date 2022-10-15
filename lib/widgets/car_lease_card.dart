@@ -17,7 +17,7 @@ class CarLeaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Dimensions.height50*4,
+      // height: Dimensions.height50*4,
       width: Dimensions.screenWidth - 20,
       decoration: BoxDecoration(
         gradient: LinearGradient(

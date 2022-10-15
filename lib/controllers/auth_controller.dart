@@ -1,10 +1,16 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:zigo/firebase%20references/references.dart';
+import 'package:zigo/models/user_model.dart';
 import 'package:zigo/screens/Intro/onboarding/onboarding_screen.dart';
 import 'package:zigo/screens/auth/signIn.dart';
 import 'package:zigo/screens/auth/signup.dart';
-import 'package:zigo/screens/reservations.dart';
+import 'package:zigo/screens/home/zigo_home.dart';
 import 'package:zigo/widgets/custom_snackbar.dart';
 
 class AuthController extends GetxController{
@@ -15,6 +21,12 @@ class AuthController extends GetxController{
   final _user = Rxn<User>();
 
   late Stream<User?> _authStateChanges;
+
+  // List containing userData
+  late UserModel currentUserData;
+
+  //checker boolean
+  final isLoading = false.obs;
 
 
 
@@ -41,6 +53,11 @@ class AuthController extends GetxController{
     });
 
     navigateToOnboarding(); // navigating to onBoarding
+
+    // Getting userData if user is loggedIn
+    if(isLoggedIn()){
+      getUserDetails();
+    }
   }
 
 
@@ -53,9 +70,10 @@ class AuthController extends GetxController{
   // SIGN UP function
   Future<void> register(String email,  password) async{
     try{
+      isLoading.value = true;
       // firebase function which creates user using email & pwd
       await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
+      isLoading.value = false;
       // calling this save function after registration
       await saveUserInFireStore(email);
 
@@ -84,14 +102,19 @@ class AuthController extends GetxController{
 
   // Function which creates a user in the fireStore DB when registration is done
   saveUserInFireStore(String email){
-    userRef.doc(email).set({
-      "email" : email,
-      "first_name" : " ",
-      "last_name" : " ",
-      "phone_number" : " ",
-      "profile_image" : " ",
-      "address" : " ",
-    });
+
+    UserModel userModel = UserModel(
+      email: email, 
+      firstName: '', 
+      lastName: '',
+      phoneNumber: '',
+      profileImage: '', 
+      address: '',
+      dateRegistered:  DateFormat.yMd().add_jm().format(DateTime.now()), // eg 1/9/2021 2AM
+    );
+
+    // serializing it to Json and sending it to user collection in fireStore
+    userRef.doc(email).set(userModel.toJson());
 
   }
 
@@ -102,9 +125,10 @@ class AuthController extends GetxController{
   // SIGN UP function
   Future<void> login(String email,  password) async{
     try{
+      isLoading.value = true;
       // firebase function which signs in a user using email & pwd
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-
+      isLoading.value = false;
       // snackbar for login success
       customSnackbar(
         titleText: "Login Successful", 
@@ -154,7 +178,7 @@ class AuthController extends GetxController{
 
   // A function that takes a user to the SignUp screen
   void navigateToHomeScreen(){
-    Get.offAllNamed(Reservations.routeName);
+    Get.offAllNamed(HomeScreen.routeName);
   }
 
 
@@ -168,6 +192,91 @@ class AuthController extends GetxController{
     }on FirebaseAuthException catch(e){
       print("SignOut Error From FireBase: $e");
     }
+  }
+
+
+
+  // A function which will update userAccount Details
+  Future<void> updateAccountDetails({required pickedFile, required uploadTask, required String fname, required String lname, required String address, required String phoneNumber}) async {
+    try{
+
+      if(pickedFile != null){
+        isLoading.value = true;
+
+        // Getting the doc we have online, so that we can update the portion we need
+        DocumentSnapshot<Map<String, dynamic>> dataGotten = await userRef.doc('${getUser()!.email}').get(); 
+
+        // some fields to be updated
+        await dataGotten.reference.update({
+          'first_name': fname,
+          'last_name': lname,
+          'address': address,
+          'phone_number': phoneNumber,
+          'profile_image': await uploadImageFile(pickedFile, uploadTask), // image returned from our uploadImage function
+        });
+
+        isLoading.value = false;
+    
+      } else{
+        customSnackbar(
+          titleText: "No Image Picked", 
+          bodyText: "You have not selected any image yet. Select an image by tappin on 'Add Profile Image' button",
+          isError: true
+        );
+      }
+
+    }catch (e){
+      customSnackbar(
+        titleText: "Account Update Fialed", 
+        bodyText: e.toString(),
+        isError: true
+      );
+    }
+  }
+
+
+
+
+  // A function which gets current user's data/details from fireStore.
+  Future<void> getUserDetails() async {
+    try{
+      DocumentSnapshot<Map<String, dynamic>> dataGotten = await userRef.doc('${getUser()!.email}').get();     
+      
+      if(dataGotten.exists){
+        // data() converts gottenData to Map<String, dynamic> format
+        Map<String, dynamic>? data = dataGotten.data();
+        // deserializing the data gotten to our UserModel; through the instance of UserModel created
+        currentUserData = UserModel.fromJson(data!);
+      }
+      
+      print("THIS IS cuRRent USER Data: $currentUserData"); // testing
+
+    }catch (e){
+      print("GET USER DETAILS error: $e");
+    }
+  }
+
+
+
+
+  // A function which uploads the picked image to the DB and returns the downloadURL
+  Future<String> uploadImageFile(pickedFile, uploadTask) async{
+    final path = "profile_images/${pickedFile!.name}";
+    final file = File(pickedFile!.path!);
+
+    // setting the upload path: path is the directory it will be uploaded to
+    final ref = firebaseStorage.child(path);
+    uploadTask = ref.putFile(file);
+
+    // waiting for the completion of the upload. When complete we do something
+    final snapshot = await uploadTask!.whenComplete(() {});
+
+    // Getting the download url
+    final downloadUrl = await snapshot.ref.getDownloadURL();
+    print("Download Url: $downloadUrl"); // testing
+
+    return downloadUrl;
+
   }
 
 

@@ -1,8 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:zigo/models/boat_lease_model.dart';
-import 'package:zigo/models/budget_items_model.dart';
-import 'package:zigo/models/car_lease_Model.dart';
+
 
 class UserModel {
   String email;
@@ -11,10 +9,10 @@ class UserModel {
   String? phoneNumber;
   String? profileImage;
   String? address;
-  List? budget;
+  String? dateRegistered;
+  List<MyBudgetModel>? budget;
   List<BookedHotelModel>? bookedHotel;
   List<BookedFlightModel>? bookedFlight;
-  List<BookedTaxiModel>? bookedTaxi;
   List<MyLeasedCarModel>? leasedCar;
   List<MyLeasedBoatModel>? leasedBoat;
 
@@ -26,10 +24,12 @@ class UserModel {
     this.phoneNumber,
     this.profileImage,
     this.address,
+    this.dateRegistered,
     this.budget,
     this.bookedHotel,
     this.bookedFlight,
-    this.bookedTaxi
+    this.leasedCar,
+    this.leasedBoat,
   });
 
 
@@ -40,10 +40,12 @@ class UserModel {
     phoneNumber = json['phone_number'],
     profileImage = json['profile_image'],
     address = json['address'],
-    budget = (json['budget'] as List).map((e) => MyBudgetModel.fromJson(e as Map<String, dynamic>)).toList(),
-    bookedHotel = (json['booked_hotel'] as List).map((e) => BookedHotelModel.fromJson(e as Map<String, dynamic>)).toList(),
-    bookedFlight = (json['booked_flight'] as List).map((e) => BookedFlightModel.fromJson(e as Map<String, dynamic>)).toList(),
-    bookedTaxi = (json['booked_taxi'] as List).map((e) => BookedTaxiModel.fromJson(e as Map<String, dynamic>)).toList();
+    dateRegistered = json['date_registered'],
+    budget = json['budget'] == null? [] : (json['budget'] as List).map((e) => MyBudgetModel.fromJson(e as Map<String, dynamic>)).toList(),
+    bookedHotel = json['booked_hotel']  == null? [] : (json['booked_hotel'] as List).map((e) => BookedHotelModel.fromJson(e as Map<String, dynamic>)).toList(),
+    bookedFlight = json['booked_flight'] == null? [] : (json['booked_flight'] as List).map((e) => BookedFlightModel.fromJson(e as Map<String, dynamic>)).toList(),
+    leasedCar = json['leased_car'] == null? [] : (json['leased_car'] as List).map((e) => MyLeasedCarModel.fromJson(e as Map<String, dynamic>)).toList(),
+    leasedBoat = json['leased_boat'] == null? [] : (json['leased_boat'] as List).map((e) => MyLeasedBoatModel.fromJson(e as Map<String, dynamic>)).toList();
 
 
   // for firebase  
@@ -54,10 +56,13 @@ class UserModel {
     phoneNumber = snapshot['phone_number'],
     profileImage = snapshot['profile_image'],
     address = snapshot['address'],
-    budget = (snapshot['budget'] as List).map((e) => MyBudgetModel.fromJson(e as Map<String, dynamic>)).toList(),
-    bookedHotel = (snapshot['booked_hotel'] as List).map((e) => BookedHotelModel.fromJson(e as Map<String, dynamic>)).toList(),
-    bookedFlight = (snapshot['booked_flight'] as List).map((e) => BookedFlightModel.fromJson(e as Map<String, dynamic>)).toList(),
-    bookedTaxi = (snapshot['booked_taxi'] as List).map((e) => BookedTaxiModel.fromJson(e as Map<String, dynamic>)).toList();
+    dateRegistered = snapshot['date_registered'],
+    budget = snapshot['budget'] == null? [] : (snapshot['budget'] as List).map((e) => MyBudgetModel.fromJson(e as Map<String, dynamic>)).toList(),
+    bookedHotel = snapshot['booked_hotel']  == null? [] : (snapshot['booked_hotel'] as List).map((e) => BookedHotelModel.fromJson(e as Map<String, dynamic>)).toList(),
+    bookedFlight = snapshot['booked_flight'] == null? [] : (snapshot['booked_flight'] as List).map((e) => BookedFlightModel.fromJson(e as Map<String, dynamic>)).toList(),
+    leasedCar = snapshot['leased_car'] == null? [] : (snapshot['leased_car'] as List).map((e) => MyLeasedCarModel.fromJson(e as Map<String, dynamic>)).toList(),
+    leasedBoat = snapshot['leased_boat'] == null? [] : (snapshot['leased_boat'] as List).map((e) => MyLeasedBoatModel.fromJson(e as Map<String, dynamic>)).toList();
+
   
 
 
@@ -69,6 +74,7 @@ class UserModel {
     data['phone_number'] = this.phoneNumber;
     data['profile_image'] = this.profileImage;
     data['address'] = this.address;
+    data['date_registered'] = this.dateRegistered;
  
     return data;
   }
@@ -260,53 +266,6 @@ class BookedFlightModel {
 
 }
 
-
-
-
-class BookedTaxiModel{
-  String currentLocation;
-  String destination;
-  String noOfPersons;
-  String luggage;
-
-
-  BookedTaxiModel({
-    required this.currentLocation,
-    required this.destination,
-    required this.noOfPersons,
-    required this.luggage
-  });
-
-
-
-  BookedTaxiModel.fromJson(Map<String, dynamic> json):
-    currentLocation = json['current_location'],
-    destination = json['destination'],
-    noOfPersons = json['no_of_persons'],
-    luggage = json['luggage'];
-   
-
-  // for getting data from firebase
-  BookedTaxiModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot):
-    currentLocation = snapshot['current_location'],
-    destination = snapshot['destination'],
-    noOfPersons = snapshot['no_of_persons'],
-    luggage = snapshot['luggage'];
-
-
-
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-      data['current_location'] = this.currentLocation;
-      data['destination'] = this.destination;
-      data['no_of_persons'] = this.noOfPersons;
-      data['luggage'] = this.luggage;
- 
-    return data;
-  }
-
-}
 
 
 

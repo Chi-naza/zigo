@@ -81,10 +81,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         }
                       },     
                       decoration: InputDecoration(
-                        helperText: 'Username (email)',
+                        helperText: 'Email',
                         helperStyle: GoogleFonts.montserrat(
                           color: AppColors.mainColor,
-                          fontSize: Dimensions.font20,
+                          fontSize: Dimensions.font16+2,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -106,7 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         helperText: 'Password',
                         helperStyle: GoogleFonts.montserrat(
                           color: AppColors.mainColor,
-                          fontSize: Dimensions.font20,
+                          fontSize: Dimensions.font16+2,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -122,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             'Forgot Password?',
                             style: GoogleFonts.montserrat(
                               color: AppColors.mainColor,
-                              fontSize: Dimensions.font16,
+                              fontSize: Dimensions.font12+2,
                             ),
                           ),
                         ),
@@ -132,7 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           onTap: (){
                             //only proceeds if form data are valid
                             if(formKey.currentState!.validate()){
-                              // calling the login() from authController
+                              // calling the login from authController
                               controller.login(_emailController.text.trim(), _passwordController.text.trim());
                             }
                           },
@@ -144,7 +144,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             // Create account section
-            SizedBox(height: Dimensions.height50),
+            SizedBox(height: Dimensions.height30),
             InkWell(
               onTap: (){
                 controller.navigateToSignUpScreen();
@@ -153,7 +153,7 @@ class _SignInScreenState extends State<SignInScreen> {
               'Create Account',
                 style: GoogleFonts.montserrat(
                   color: AppColors.mainColor.withOpacity(0.7),
-                  fontSize: Dimensions.font16,
+                  fontSize: Dimensions.font12,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -19,7 +19,7 @@ class SignUpScreen extends StatefulWidget{
 
 class _SignUpScreenState extends State<SignUpScreen> {
 
-  AuthController controller = Get.find();
+  AuthController authController = Get.find();
 
   final formKey = GlobalKey<FormState>(); 
 
@@ -82,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         helperText: 'Email',
                         helperStyle: GoogleFonts.montserrat(
                           color: AppColors.mainColor,
-                          fontSize: Dimensions.font20,
+                          fontSize: Dimensions.font16+2,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -104,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         helperText: 'Password',                        
                         helperStyle: GoogleFonts.montserrat(
                           color: AppColors.mainColor,
-                          fontSize: Dimensions.font20,
+                          fontSize: Dimensions.font16+2,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -128,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             //only proceeds if form data are valid
                             if(formKey.currentState!.validate()){                                                         
                               // calling the register function from AuthController
-                              controller.register(_emailController.text.trim(), _passwordController.text.trim());
+                              authController.register(_emailController.text.trim(), _passwordController.text.trim());
                             }                           
                           },
                         ),
@@ -139,20 +139,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
             // Create account section
-            SizedBox(height: Dimensions.height50),
+            SizedBox(height: Dimensions.height30),
             Column(
               children: [
                 Text(
                   'Already have an Account?',
                   style: GoogleFonts.montserrat(
                     color: AppColors.zigoGreyTextColor,
-                    fontSize: Dimensions.font16,
+                    fontSize: Dimensions.font12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 InkWell(
                   onTap: (){
-                    controller.navigateToLoginScreen();
+                    authController.navigateToLoginScreen();
                   },
                   child: Text(
                   'Sign In',
@@ -162,7 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-           ),
+                ),
               ],
             ),
            SizedBox(height: Dimensions.height30),

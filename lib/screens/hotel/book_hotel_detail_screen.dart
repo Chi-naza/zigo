@@ -8,6 +8,7 @@ import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/hotel_controller.dart';
 import 'package:zigo/models/hotel_model.dart';
 import 'package:zigo/widgets/app_button.dart';
+import 'package:zigo/widgets/header/drawer_screen.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 
 
@@ -109,6 +110,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
   Widget build(BuildContext context) {
   
     return Scaffold(
+      drawer: const DrawerScreen(),
       body: SingleChildScrollView(
         child: Column(
           children: [

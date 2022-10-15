@@ -5,16 +5,8 @@ import 'package:zigo/bindings/initial_bindings.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/route_helper.dart';
 import 'package:zigo/firebase_options.dart';
-import 'package:zigo/screens/Intro/onboarding/onboarding_screen.dart';
-import 'package:zigo/screens/auth/signup.dart';
-import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
-import 'package:zigo/screens/budget/select_budget_items.dart';
-import 'package:zigo/screens/reservations.dart';
-import 'package:zigo/screens/test.dart';
-import 'package:zigo/screens/weather/user_weather_details.dart';
-import 'package:zigo/screens/weather/weather_n_places.dart';
+import 'package:zigo/screens/home/zigo_home.dart';
 
-import 'screens/auth/signIn.dart';
 
 
 Future<void> main() async {
@@ -42,7 +34,7 @@ class MyApp extends StatelessWidget {
         // fontFamily: 'Montserrat',
         primarySwatch: buildMaterialColor(const Color(0xFF0A71DE)),
       ),
-      // home: TestScreen(),
+      // home: const HomeScreen(),
     );
   }
 }

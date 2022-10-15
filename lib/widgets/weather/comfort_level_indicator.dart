@@ -73,7 +73,7 @@ class ComfortLevelCircularIndicator extends StatelessWidget {
                 SizedBox(width: Dimensions.width10),
                 // value
                 Text(
-                  '34', //currentWeatherData.feelsLike.toString(),
+                  currentWeatherData.feelsLike.toString(),
                   style: GoogleFonts.poppins(
                     fontSize: Dimensions.font16,
                     color: AppColors.textColorBlack
@@ -94,7 +94,7 @@ class ComfortLevelCircularIndicator extends StatelessWidget {
                 SizedBox(width: Dimensions.width10),
                 // value
                 Text(
-                  '23',//currentWeatherData.uvIndex.toString(),
+                  currentWeatherData.uvIndex.toString(),
                   style: GoogleFonts.poppins(
                     fontSize: Dimensions.font16,
                     color: AppColors.textColorBlack

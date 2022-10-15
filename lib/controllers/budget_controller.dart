@@ -27,7 +27,7 @@ class BudgetController extends GetxController {
 
 
   // Getting Saved Budget
-  List<MyBudgetModel> mySavedBudgetList = [];
+  final mySavedBudgetList = <MyBudgetModel>[].obs;
 
    // Auto Budget Items List
   final autoBudgetItemsList = <BudgetItemsModel>[].obs;

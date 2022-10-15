@@ -21,5 +21,23 @@ class FirebaseStorageService extends GetxService {
   }
 
 
+  // Customized for getting only flight images
+  Future<String?> getFlightImages({String? imageName, required String storageFolder, required String debugErrorText}) async {
+    if(imageName == null){
+      return null;
+    }
+
+    try{
+      var urlRef = firebaseStorage.child(storageFolder).child('${imageName.toUpperCase()}.png');
+      var imageUrl = await urlRef.getDownloadURL();
+      return imageUrl;
+    }catch (e){
+      print("${debugErrorText.toUpperCase()}: $e");
+      return null;
+    }
+
+  }
+
+
 
 }

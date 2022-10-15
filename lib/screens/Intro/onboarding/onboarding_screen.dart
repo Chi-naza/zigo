@@ -71,7 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           forwardButtonTextStyle: slideButtonsTextStyle,
           backButtonTextStyle: slideButtonsTextStyle,
           doneButtonTextStyle: slideButtonsTextStyle.copyWith(fontSize: Dimensions.font20-2),
-          skipButtonTextStyle: slideButtonsTextStyle,//.copyWith(color: Colors.redAccent),
+          skipButtonTextStyle: slideButtonsTextStyle,
           pageController: _pageController,
           pageCount: slides().length,
           currentIndex: initialPage,

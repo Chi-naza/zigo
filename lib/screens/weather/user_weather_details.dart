@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/weather_controller.dart';
+import 'package:zigo/widgets/animations/zigo_loading.dart';
+import 'package:zigo/widgets/footer/zigo_bottom_navbar.dart';
 import 'package:zigo/widgets/weather/comfort_level_indicator.dart';
 import 'package:zigo/widgets/weather/current_weather_widget.dart';
 import 'package:zigo/widgets/weather/daily_weather_forecast.dart';
@@ -21,12 +23,15 @@ class _UserWeatherDetailsScreenState extends State<UserWeatherDetailsScreen> {
   /// Injecting our dependency
   final WeatherController weatherController = Get.put(WeatherController(), permanent: true);
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Obx((){
-          return weatherController.checkLoading().isTrue? Center( child: CircularProgressIndicator()) : ListView(
+          return weatherController.checkLoading().isTrue || weatherController.currentWeatherDataList.isEmpty? const Center(child: ZigoLoading()) : ListView(
+            physics: const BouncingScrollPhysics(),
             children: [
               SizedBox(height: Dimensions.height20),
               // The Head

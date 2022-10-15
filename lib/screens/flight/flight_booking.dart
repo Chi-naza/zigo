@@ -4,9 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/flight_controller.dart';
-import 'package:zigo/controllers/hotel_controller.dart';
 import 'package:zigo/models/user_model.dart';
+import 'package:zigo/widgets/animations/zigo_loading.dart';
 import 'package:zigo/widgets/custom_snackbar.dart';
+import 'package:zigo/widgets/footer/zigo_bottom_navbar.dart';
+import 'package:zigo/widgets/header/drawer_screen.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 import 'package:zigo/widgets/inputfield_with_description_n_logo.dart';
 import 'package:zigo/widgets/title_n_detail_texts.dart';
@@ -115,12 +117,32 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
         airport: startAirport, 
         cityOfDeparture: cityOfDepartureTextController.text.trim(),
       );
+
+      // Checking if desired flight is available
+      if(_flightController.userRequestedFlights.isEmpty){
+        setState(() {
+          _activeStepIndex --;         
+        });
+        customSnackbar(
+          titleText: 'No Flight Available', 
+          bodyText: 'Flights going to your desired location is not available at the moment. Bear with us, and try again later',
+          isError: true
+        );
+      }
     }
 
     // Continue Button on the second step of the Stepper
     if(_activeStepIndex == 1){
-      // calling the seat status calculator
-      _flightController.showSeatStatus(_flightController.oneFlightModel);
+        setState(() {
+          _activeStepIndex --;
+        });
+        // error dialog appears when flight is not picked
+        customSnackbar(
+          titleText: 'Choose Flight', 
+          bodyText: 'Pick a flight by tapping on one of the flights in the list we have here. You may not be able to proceed if you don\'t choose a flight',
+          isError: true
+        );        
+ 
     }
 
     // Continue Button on the last Step of the stepper
@@ -150,7 +172,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
       }else{
         // Instantiating booked flight model
         BookedFlightModel bModel = BookedFlightModel(
-          flight: _flightController.oneFlightModel.toJson(), //LATER: will come from the flight user picks
+          flight: _flightController.choiceFlight.toJson(), //LATER: will come from the flight user picks
           cityOfArrival: cityOfArrivalTextController.text.trim(), 
           cityOfDeparture: cityOfDepartureTextController.text.trim(), 
           startAirport: startAirport, 
@@ -167,7 +189,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
         // Calling bookFlight function only when the form is valid
         if(_formKey.currentState!.validate()){
           _flightController.bookFlight(
-            plane: _flightController.oneFlightModel, //TODO: will change later to choiceFlight
+            plane: _flightController.choiceFlight, //TODO: will change later to choiceFlight
             bookedFlightModel: bModel
           );
 
@@ -571,16 +593,28 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
           height: Dimensions.height50*8,
           padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
           child: ListView.builder(
-            itemCount: 5,
+            itemCount: _flightController.userRequestedFlights.length,
             itemBuilder: (context, index){
-              return Container(
-                height: Dimensions.height50*2.5,
-                margin: EdgeInsets.symmetric(vertical: Dimensions.width10),
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.3),
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/flight890new.png'),
-                    fit: BoxFit.cover,
+              // Getting the requested flights on the 2nd stepper
+              var plane =  _flightController.userRequestedFlights[index];
+              return GestureDetector(
+                // calling our getChoice function
+                onTap: () {
+                   _flightController.getChoiceFlight(plane);
+                   _flightController.showSeatStatus(plane);
+                   setState(() {
+                     _activeStepIndex = 2;
+                   });
+                },
+                child: Container(
+                  height: Dimensions.height50*2.5,
+                  margin: EdgeInsets.symmetric(vertical: Dimensions.width10),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.3),
+                    image: DecorationImage(
+                      image: NetworkImage(plane.image), // image
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               );
@@ -624,17 +658,22 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                             mainAxisSpacing: 10,
                             childAspectRatio: 1,
                             // Getting the list of seats from the choiceFlight. Wwe are using OneFlightModel as a test
-                            children: List.generate(_flightController.oneFlightModel.seats.length, (index) {
-                              var planeSeats = _flightController.oneFlightModel.seats[index]['seat'];
-                              var isPlanePicked = _flightController.oneFlightModel.seats[index]['picked'];
+                            children: List.generate(_flightController.choiceFlight.seats.length, (index) {
+                              var planeSeats = _flightController.choiceFlight.seats[index]['seat'];
+                              var isPlanePicked = _flightController.choiceFlight.seats[index]['picked'];
                               var _selectedItems = _flightController.selectedFlightSeatsIndexList;
                               return Center(
                                 child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
+                                      // UPDATING SEATS AVAILABLE & UNAVAILABLE :: on Pressing this button
+                                      // if seat is not picked, add the index of that seat number to our selectedItems list
+                                      // also update the totalAmount and finally, save the selected seat's index actual value to 
+                                      //our selectedSeatsText String variable
+                                      // Else: remove the seat if already selected, reduce the totalAmount also & finally, update selectedSeatsText
                                       if(isPlanePicked == false){
                                         if(_selectedItems.contains(index)==false){
-                                          totalAmount +=  double.parse(_flightController.oneFlightModel.price);                                          
+                                          totalAmount +=  double.parse(_flightController.choiceFlight.price);                                          
                                           _selectedItems.add(index);
                                           print("Total Amount for Flight: $totalAmount"); //test
                                           print("Selected Seat Index List: $_selectedItems"); //test                                          
@@ -644,7 +683,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                             selectedSeatsText += (seats[element]);
                                           });
                                         }else{
-                                          totalAmount -=  double.parse(_flightController.oneFlightModel.price);                                         
+                                          totalAmount -=  double.parse(_flightController.choiceFlight.price);                                         
                                           _selectedItems.remove(index);
                                          _flightController.selectedFlightSeatsIndexList.refresh(); // update with new changes list on the fly
                                            print("Total Amount for Flight: $totalAmount"); //test
@@ -658,11 +697,11 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                                       }
                                     });
                                     // calling our seatStatus function: which executes at every tap or press
-                                    _flightController.showSeatStatus(_flightController.oneFlightModel); 
+                                    _flightController.showSeatStatus(_flightController.choiceFlight); 
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: isPlanePicked ? Colors.pink : (_selectedItems.contains(index)? Colors.green :Color(0xff828EFB)), // background
-                                    onPrimary: Colors.white, // foreground
+                                    backgroundColor: isPlanePicked ? Colors.pink : (_selectedItems.contains(index)? Colors.green :Color(0xff828EFB)), // background
+                                    foregroundColor: Colors.white, // foreground
                                     // primary: _selectedItems.contains(index) ? Colors.pink : Color(0xff828EFB), // background
                                     // onPrimary: Colors.white, // foreground
                                   ),
@@ -886,32 +925,37 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //Header section
-            HeaderSection(headerText: 'FLIGHT BOOKING'),
-            // STEPPER SECTION            
-            Theme(
-              data: ThemeData(
-                colorScheme: Theme.of(context).colorScheme.copyWith(primary: Color(0xff828EFB)),
-              ),
-              child: Container(
-                width: Dimensions.screenWidth,
-                height: Dimensions.screenHeight,
-                child: Stepper(
-                  physics: const ClampingScrollPhysics(),
-                  type: StepperType.horizontal,
-                  currentStep: _activeStepIndex,
-                  steps: stepList(),
-                  onStepCancel: onStepCancelFunction,
-                  onStepContinue: onStepContinueFunction,
+      drawer: const DrawerScreen(),
+      body: Obx(() {
+          return _flightController.flightDataList.isEmpty? const ZigoLoading() : SingleChildScrollView(
+            child: Column(
+              children: [
+                //Header section
+                const HeaderSection(headerText: 'FLIGHT BOOKING'),
+                // STEPPER SECTION            
+                Theme(
+                  data: ThemeData(
+                    colorScheme: Theme.of(context).colorScheme.copyWith(primary: Color(0xff828EFB)),
+                  ),
+                  child: Container(
+                    width: Dimensions.screenWidth,
+                    height: Dimensions.screenHeight,
+                    child: Stepper(
+                      physics: const ClampingScrollPhysics(),
+                      type: StepperType.horizontal,
+                      currentStep: _activeStepIndex,
+                      steps: stepList(),
+                      onStepCancel: onStepCancelFunction,
+                      onStepContinue: onStepContinueFunction,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        }
       ),
+      bottomNavigationBar:  const ZigoBottomNavBar(),
     );
   }
 }

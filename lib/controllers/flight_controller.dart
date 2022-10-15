@@ -4,18 +4,18 @@ import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/models/flight_model.dart';
 import 'package:zigo/models/user_model.dart';
+import 'package:zigo/services/firebase_storage_services.dart';
 import 'package:zigo/widgets/custom_snackbar.dart';
 
 class FlightController extends GetxController {
 
   final flightDataList = <FlightModel>[].obs;
+
+  // List holding selected seats (their indexes)
   final selectedFlightSeatsIndexList = <int>[].obs;
 
   // User Requested Planes
   final userRequestedFlights = <FlightModel>[].obs;
-
-  //testData
-  late FlightModel oneFlightModel;
 
   //TODO: will take the place of oneFlightModel
   late FlightModel choiceFlight;
@@ -44,10 +44,19 @@ class FlightController extends GetxController {
       
       flightDataList.assignAll(itemList);
 
-      // // Getting the seats
-      // for(var plane in flightDataList){
-      //   currentFlightSeats = plane.seats
-      // }
+      // Getting flight images from fireBase Storage and passing the url to our FlightModel List
+      for(var plane in flightDataList){
+        var imageUrl = await Get.find<FirebaseStorageService>().getFlightImages(
+          imageName: "${plane.flightName.toUpperCase()} ${plane.flightID.toUpperCase()}",
+          storageFolder: 'flight_images', 
+          debugErrorText: 'FAILED TO GET FLIGHT IMAGES',
+        );
+        plane.image = imageUrl!;
+        print("Gotten Flight ImageUrl: ${plane.image}"); // test
+      }
+
+      // updating our list after adding imageUrl
+      flightDataList.assignAll(itemList);
 
     }catch (e){
       print("FLIGHT GET DATA ERROR :: $e");
@@ -106,21 +115,12 @@ class FlightController extends GetxController {
         data.add(plane);
       }
     }
-    
-    // All prints for testing
-    print("USER PLANE DATA = $data");
-    print("$dateOfDeparture || $airport || $cityOfDeparture");
-    print("$flightDataList");
 
     // Adding the filtered planes to a new list
     userRequestedFlights.assignAll(data);
     update();
 
-    // For testing: if we have only one item in the list, return a specific flightModel data
-    if(data.length==1){
-      oneFlightModel = data.first;
-      print("ONE FLIGHT DATA = $oneFlightModel");
-    }
+    print("User Requested Flights: $userRequestedFlights");// For testing
   }
 
 
@@ -150,7 +150,7 @@ class FlightController extends GetxController {
           }
         }
 
-        await flightDataRef.doc("${plane.flightName.toUpperCase()} ${plane.flightID.toUpperCase()}").set(plane.toJson());
+        await flightDataRef.doc("${plane.flightName.toUpperCase()} ${plane.flightID.toUpperCase()}").update(plane.toJson()); //set(plane.toJson());
         selectedFlightSeatsIndexList.clear();
         update();
 

@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zigo/constants/app_colors.dart';
-import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/firebase%20references/references.dart';
 import 'package:zigo/models/hotel_model.dart';

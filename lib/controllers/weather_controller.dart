@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:zigo/models/weather_model.dart';
-import 'package:zigo/services/api/api_key.dart';
+import 'package:zigo/services/api/api_keys.dart';
 
 class WeatherController extends GetxController {
   final RxBool _isLoading = true.obs;
@@ -28,8 +26,8 @@ class WeatherController extends GetxController {
     List<Hourly> _hourlyWeatherList = [];
     List<Hourly> get hourlyWeatherList => _hourlyWeatherList;
 
-    late Current _currentWeatherData;
-    Current get currentWeatherData => _currentWeatherData;
+    final currentWeatherDataList = [].obs;
+    Current get currentWeatherData => currentWeatherDataList[0];
 
 
     // Current index
@@ -100,7 +98,8 @@ class WeatherController extends GetxController {
     print("OVERALL WEATHER ::: $_weatherModel"); // testing
 
     // populating our current weather data
-    _currentWeatherData = _weatherModel.current;  
+    currentWeatherDataList.add(_weatherModel.current); 
+    print("CURRENT WEATHER LIST: $currentWeatherDataList"); 
 
     // populating our daily weather data List
     _dailyWeatherList.clear();

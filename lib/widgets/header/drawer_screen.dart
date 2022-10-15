@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zigo/screens/budget/auto_budget_planner.dart';
-import 'package:zigo/screens/budget/budget_details.dart';
-import 'package:zigo/screens/budget/my_budget_lists.dart';
-import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
-import 'package:zigo/screens/flight/flight_booking.dart';
-import 'package:zigo/screens/hotel/hotel_list.dart';
-import 'package:zigo/screens/vehicle/boat_lease_list.dart';
-import 'package:zigo/screens/vehicle/car_lease_list.dart';
-import 'package:zigo/screens/vehicle/request_for_trip.dart';
-import 'package:zigo/screens/weather/user_weather_details.dart';
+import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/auth_controller.dart';
+import 'package:zigo/screens/auth/update_profile_screen.dart';
+
 
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({Key? key}) : super(key: key);
@@ -19,26 +13,32 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
+
+  AuthController authController = Get.find();
+  
   @override
   Widget build(BuildContext context) {
+    var user = authController.currentUserData;
     return Theme(
       // for drawer background color
       data: Theme.of(context).copyWith(canvasColor: Colors.white),
       child: Drawer(
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: [
-            const ListTile(
+            ListTile(
               leading: CircleAvatar(
                 radius: 28,
                 backgroundColor: Colors.blueGrey,
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: AssetImage('assets/images/avatar.jpg'),
+                  foregroundImage: NetworkImage(user.profileImage!),
                 ),
               ),
               title: Text(
-                'Ugwuoke Chinaza',
-                style: TextStyle(
+                user != null? '${user.firstName} ${user.lastName}' : 'Ugwuoke Chinaza',
+                style: const TextStyle(
                   color: Colors.black,
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.bold,
@@ -46,63 +46,32 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
               ),
               subtitle: Text(
-                "You wouldn't get it until you register",
-                style: TextStyle(
+                user != null? "${user.email}" : "You wouldn't get it until you register",
+                style: const TextStyle(
                     color: Colors.black,
                     fontFamily: 'Roboto',
                     fontWeight: FontWeight.w400,
                     fontSize: 12.0),
               ),
             ),
-
             // Testing Buttons
-            SizedBox(height: 40),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(PlanYourBudgetScreen.routeName), 
-              child: Text("Plan Your Budget Screen")
+            SizedBox(height: Dimensions.height20*2),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.screenWidth*0.1),
+              child: ElevatedButton(
+                onPressed: () => Get.to(() => UpdateProfileScreen()), 
+                child: Text("Update Your Account"),
+              ),
+            ),            
+            SizedBox(height: Dimensions.height50*7),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.screenWidth*0.2),
+              child: ElevatedButton.icon(
+                onPressed: () => authController.signOut(), 
+                label: Text("Log Out"),
+                icon: Icon(Icons.logout),
+              ),
             ),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(HotelListScreen.routeName), 
-              child: Text("Hotel List Screen")
-            ),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(FlightBookingScreen.routeName), 
-              child: Text("Book Flight Screen Now")
-            ),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(RequestForTrip.routeName), 
-              child: Text("Request For Trip")
-            ),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(CarLeaseListScreen.routeName), 
-              child: Text("Car List Screen")
-            ),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(BoatLeaseListScreen.routeName), 
-              child: Text("Book Vehicle List Screen")
-            ),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(MyBudgetListScreen.routeName), 
-              child: Text("View My Budgets"),
-            ),
-
-            ElevatedButton(
-              onPressed: () => Get.toNamed(AutoBudgetPlannerScreen.routeName), 
-              child: Text("Automatic Budget Planner"),
-            ),
-
-            ElevatedButton(
-              onPressed: () => Get.to(() => UserWeatherDetailsScreen()), 
-              child: Text("User Weather Details"),
-            ),
-
           ],
         ),
       ),

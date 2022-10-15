@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/widgets/header/header_section.dart';
-import 'package:zigo/widgets/weather_card.dart';
+import 'package:zigo/widgets/weather/weather_card.dart';
 
 class WeatherAndPlacesScreen extends StatelessWidget {
   const WeatherAndPlacesScreen({Key? key}) : super(key: key);

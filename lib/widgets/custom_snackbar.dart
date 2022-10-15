@@ -8,8 +8,8 @@ customSnackbar({required String titleText, required String bodyText, bool isErro
   return Get.snackbar(
     "", 
     "",
-    titleText: Text(titleText, style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold, fontSize: Dimensions.font20-2)),
-    messageText: Text(bodyText, style: GoogleFonts.poppins(color: Colors.white,fontSize: Dimensions.font16)),
+    titleText: Text(titleText, style: GoogleFonts.poppins(color: Colors.white,fontWeight: FontWeight.bold, fontSize: Dimensions.font16)),
+    messageText: Text(bodyText, style: GoogleFonts.poppins(color: Colors.white,fontSize: Dimensions.font12)),
     colorText: Colors.white,
     backgroundColor: isError? Colors.redAccent : AppColors.mainColorLight2,
   );

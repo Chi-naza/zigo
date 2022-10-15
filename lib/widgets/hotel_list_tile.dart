@@ -18,7 +18,7 @@ class HotelListTile extends StatelessWidget {
       height: Dimensions.height50*1.7,
       width: Dimensions.screenWidth - 10,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.mainWhiteColor,
         borderRadius: BorderRadius.circular(Dimensions.radius20/4),
         boxShadow: [
           BoxShadow(
@@ -40,6 +40,7 @@ class HotelListTile extends StatelessWidget {
               width: Dimensions.width50*1.4,
               margin: EdgeInsets.symmetric(vertical: Dimensions.height4),
               decoration: BoxDecoration( 
+                color: AppColors.zigoBackgroundColor,
                 borderRadius: BorderRadius.circular(Dimensions.radius20/4),                 
                 image: DecorationImage(                      
                   image: NetworkImage(imagePath),

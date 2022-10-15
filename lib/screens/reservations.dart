@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
-import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/widgets/footer/zigo_bottom_navbar.dart';
 import 'package:zigo/widgets/header/drawer_screen.dart';
 import 'package:zigo/widgets/header/header_section.dart';
@@ -14,15 +12,12 @@ import 'package:zigo/widgets/small_text_n_divider.dart';
 class Reservations extends StatelessWidget {
   const Reservations({Key? key}) : super(key: key);
 
-  static const String routeName = '/home';
-
- 
 
   @override
   Widget build(BuildContext context) {
-     AuthController auth = Get.find();
+     
     return Scaffold(
-      drawer: DrawerScreen(),
+      drawer: const DrawerScreen(),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -138,14 +133,11 @@ class Reservations extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 30,), //testing
-            ElevatedButton(onPressed: () => auth.signOut(), child: Text("Log Out Now")), // testing
             SizedBox(height: Dimensions.height50),
           ],
         ),
       ),
-      // Our Custom BottomNavBar
-      bottomNavigationBar: const ZigoBottomNavBar(isHomeClicked: true),
+      bottomNavigationBar:  const ZigoBottomNavBar(),
     );
   }
 }

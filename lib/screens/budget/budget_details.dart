@@ -5,6 +5,7 @@ import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/budget_controller.dart';
 import 'package:zigo/models/budget_items_model.dart';
 import 'package:zigo/widgets/budget_items_row.dart';
+import 'package:zigo/widgets/footer/zigo_bottom_navbar.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 
 class BudgetDetails extends StatelessWidget {
@@ -165,6 +166,7 @@ class BudgetDetails extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar:  const ZigoBottomNavBar(),
     );
   }
 }

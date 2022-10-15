@@ -3,7 +3,6 @@ import 'package:zigo/controllers/boat_lease_controller.dart';
 import 'package:zigo/controllers/budget_controller.dart';
 import 'package:zigo/controllers/flight_controller.dart';
 import 'package:zigo/controllers/hotel_controller.dart';
-import 'package:zigo/controllers/taxi_booking_controller.dart';
 import 'package:zigo/controllers/car_lease_controller.dart';
 import 'package:zigo/screens/Intro/onboarding/onboarding_screen.dart';
 import 'package:zigo/screens/Intro/splash_screen.dart';
@@ -13,16 +12,17 @@ import 'package:zigo/screens/budget/auto_budget_planner.dart';
 import 'package:zigo/screens/budget/my_budget_lists.dart';
 import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
 import 'package:zigo/screens/flight/flight_booking.dart';
+import 'package:zigo/screens/home/zigo_home.dart';
 import 'package:zigo/screens/hotel/hotel_list.dart';
-import 'package:zigo/screens/reservations.dart';
-import 'package:zigo/screens/vehicle/boat_lease_list.dart';
-import 'package:zigo/screens/vehicle/car_lease_list.dart';
-import 'package:zigo/screens/vehicle/request_for_trip.dart';
+import 'package:zigo/screens/map_screen.dart';
+import 'package:zigo/screens/vehicle%20lease/boat_lease_list.dart';
+import 'package:zigo/screens/vehicle%20lease/car_lease_list.dart';
+
 
 class AppRoutes {
 
   static List<GetPage> routes = [
-    // for home screen
+    // for splash screen
     GetPage(
       name: '/',
       page: () => SplashScreen(),
@@ -33,31 +33,34 @@ class AppRoutes {
     GetPage(
       name: OnboardingScreen.routeName,
       page: () => OnboardingScreen(),
+      transition: Transition.fadeIn
     ),
 
-    // reservations: home
+    // home screen
     GetPage(
-      name: Reservations.routeName,
-      page: () => Reservations(),
+      name: HomeScreen.routeName,
+      page: () => HomeScreen(),
+      transition: Transition.fadeIn
     ),
 
     // signIn
     GetPage(
       name: SignInScreen.routeName,
       page: () => SignInScreen(),
+      transition: Transition.zoom,
     ),
 
     // signUp
     GetPage(
       name: SignUpScreen.routeName,
       page: () => SignUpScreen(),
-      transition: Transition.fadeIn,
+      transition: Transition.zoom,
     ),
 
     // Plan Your budget
     GetPage(
       name: PlanYourBudgetScreen.routeName,
-      page: () => PlanYourBudgetScreen(),
+      page: () => const PlanYourBudgetScreen(),
       transition: Transition.circularReveal,
       binding: BindingsBuilder((){
         Get.put(BudgetController());
@@ -78,19 +81,9 @@ class AppRoutes {
     GetPage(
       name: FlightBookingScreen.routeName,
       page: () => FlightBookingScreen(),
-      transition: Transition.downToUp,
-      binding: BindingsBuilder((){
-        Get.put(FlightController());
-      })
-    ),
-
-    // Request for Trip
-    GetPage(
-      name: RequestForTrip.routeName,
-      page: () => RequestForTrip(),
       transition: Transition.circularReveal,
       binding: BindingsBuilder((){
-        Get.put(TaxiBookingController());
+        Get.put(FlightController());
       })
     ),
 
@@ -118,7 +111,7 @@ class AppRoutes {
     GetPage(
       name: AutoBudgetPlannerScreen.routeName,
       page: () => AutoBudgetPlannerScreen(),
-      transition: Transition.leftToRightWithFade,
+      transition: Transition.circularReveal,
       binding: BindingsBuilder((){
         Get.put(BudgetController());
       })
@@ -128,10 +121,17 @@ class AppRoutes {
     GetPage(
       name: MyBudgetListScreen.routeName,
       page: () => MyBudgetListScreen(),
-      transition: Transition.leftToRightWithFade,
+      transition: Transition.fadeIn,
       binding: BindingsBuilder((){
         Get.put(BudgetController());
       })
+    ),
+
+    // Map Screen
+    GetPage(
+      name: MapScreen.routeName,
+      page: () => MapScreen(),
+      transition: Transition.circularReveal,
     ),
 
     

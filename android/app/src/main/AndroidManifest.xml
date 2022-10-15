@@ -31,10 +31,18 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- For Google Maps Android -->    
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBEa4773ZM32MT0fuV-K18mqY_LXhbbF9k"/> 
     </application>
 
     <!-- For Geolocator-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!--For the location plugin-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
 </manifest>
