@@ -249,8 +249,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                             'Type of Room',
                             style: GoogleFonts.montserrat(
                               color: AppColors.zigoGreyTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Dimensions.font26/2,
+                              fontWeight: FontWeight.bold,                            
                             ),
                           ),
                           SizedBox(height: Dimensions.height4),
@@ -274,7 +273,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                                       currRoom = newValue!;
                                     });
                                   },
-                                  style: GoogleFonts.montserrat(fontSize: Dimensions.font16, color: Colors.black),
+                                  style: TextStyle(fontSize: Dimensions.height10, color: AppColors.zigoGreyTextColor),
                                 ),
                               ),
                             ),
@@ -291,8 +290,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                             'Number of Rooms',
                             style: GoogleFonts.montserrat(
                               color: AppColors.zigoGreyTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Dimensions.font26/2,
+                              fontWeight: FontWeight.bold,                              
                             ),
                           ),
                           SizedBox(height: Dimensions.height4),
@@ -316,7 +314,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                                       roomNum = newValue!;
                                     });
                                   },
-                                  style: GoogleFonts.montserrat(fontSize: Dimensions.font16, color: Colors.black),
+                                  style: TextStyle(fontSize: Dimensions.height10, color: AppColors.zigoGreyTextColor),
                                 ),
                               ),
                             ),
@@ -339,8 +337,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                             'Book From',
                             style: GoogleFonts.montserrat(
                               color: AppColors.zigoGreyTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Dimensions.font26/2,
+                              fontWeight: FontWeight.bold,                              
                             ),
                           ),
                           SizedBox(height: Dimensions.height4),
@@ -351,10 +348,9 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                             child: AbsorbPointer(
                               child:  Container(
                                 height: Dimensions.height20*2,
-                                width: Dimensions.width50*2.9,
+                                width: Dimensions.width50*2,
                                 decoration: BoxDecoration(
-                                  color: AppColors.zigoBackgroundColor,
-                                  borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                  color: AppColors.zigoBackgroundColor,                                  
                                 ),            
                                 child: Row(
                                   children: [
@@ -364,7 +360,8 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                                       child: TextField(
                                         controller: _startBookDateController,
                                         expands: true,
-                                        maxLines: null,                                                                               
+                                        maxLines: null,    
+                                        style: TextStyle(fontSize: Dimensions.height10),                                                                           
                                         decoration: InputDecoration(
                                           hintText: 'start date',
                                           hintStyle: GoogleFonts.montserrat(
@@ -402,8 +399,7 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                             'To',
                             style: GoogleFonts.montserrat(
                               color: AppColors.zigoGreyTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: Dimensions.font26/2,
+                              fontWeight: FontWeight.bold,                              
                             ),
                           ),
                           SizedBox(height: Dimensions.height4),
@@ -414,10 +410,9 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                             child: AbsorbPointer(
                               child:  Container(
                                 height: Dimensions.height20*2,
-                                width: Dimensions.width50*2.9,
+                                width: Dimensions.width50*2,
                                 decoration: BoxDecoration(
-                                  color: AppColors.zigoBackgroundColor,
-                                  borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                  color: AppColors.zigoBackgroundColor,                                  
                                 ),            
                                 child: Row(
                                   children: [
@@ -427,7 +422,8 @@ class _BookHotelDetailScreenState extends State<BookHotelDetailScreen> {
                                       child: TextField(
                                         controller: _endBookDateController,
                                         expands: true,
-                                        maxLines: null,                                                                               
+                                        maxLines: null,  
+                                        style: TextStyle(fontSize: Dimensions.height10),                                                                             
                                         decoration: InputDecoration(
                                           hintText: 'end date',
                                           hintStyle: GoogleFonts.montserrat(
