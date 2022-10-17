@@ -155,8 +155,7 @@ class BudgetDetails extends StatelessWidget {
                     '₦$totalAmount', // total budget amount
                     style: GoogleFonts.montserrat(
                       color: AppColors.mainColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: Dimensions.font20-2,                         
+                      fontWeight: FontWeight.w700,                        
                     ),
                   ),
                 ],

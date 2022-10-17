@@ -51,7 +51,7 @@ class CarLeaseListScreen extends StatelessWidget {
                             // search container
                             Container(
                               height: Dimensions.height20*2,
-                              width: Dimensions.width50*4,
+                              width: Dimensions.width50*3,
                               decoration: BoxDecoration(
                                 color: AppColors.zigoBackgroundColor,
                                 borderRadius: BorderRadius.circular(Dimensions.radius20/4),

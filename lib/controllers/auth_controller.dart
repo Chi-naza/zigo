@@ -52,12 +52,13 @@ class AuthController extends GetxController{
       _user.value = user;
     });
 
-    navigateToOnboarding(); // navigating to onBoarding
-
     // Getting userData if user is loggedIn
     if(isLoggedIn()){
-      getUserDetails();
+      await getUserDetails();
     }
+
+    navigateToOnboarding(); // navigating to onBoarding
+
   }
 
 
@@ -73,9 +74,14 @@ class AuthController extends GetxController{
       isLoading.value = true;
       // firebase function which creates user using email & pwd
       await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      isLoading.value = false;
+  
       // calling this save function after registration
       await saveUserInFireStore(email);
+
+      // Getting available user details on signUp
+      await getUserDetails();
+
+      isLoading.value = false;
 
       // snackbar for registration success
       customSnackbar(
@@ -87,6 +93,7 @@ class AuthController extends GetxController{
       navigateToLoginScreen();
 
     }on FirebaseAuthException catch(e){
+      isLoading.value = false;
       // snackbar for registration failure 
       customSnackbar(
         titleText: "Account Creation Fialed", 
@@ -128,7 +135,13 @@ class AuthController extends GetxController{
       isLoading.value = true;
       // firebase function which signs in a user using email & pwd
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      
+      // Getting available user details on signUp
+      await getUserDetails();
+
       isLoading.value = false;
+
+
       // snackbar for login success
       customSnackbar(
         titleText: "Login Successful", 
@@ -139,6 +152,7 @@ class AuthController extends GetxController{
       navigateToHomeScreen();
 
     }on FirebaseAuthException catch(e){
+      isLoading.value = false;
       // snackbar for login failure 
       customSnackbar(
         titleText: "Login Fialed", 
@@ -215,9 +229,13 @@ class AuthController extends GetxController{
           'profile_image': await uploadImageFile(pickedFile, uploadTask), // image returned from our uploadImage function
         });
 
+        //getting updated user details
+        await getUserDetails();
+
         isLoading.value = false;
     
       } else{
+        isLoading.value = false;
         customSnackbar(
           titleText: "No Image Picked", 
           bodyText: "You have not selected any image yet. Select an image by tappin on 'Add Profile Image' button",

@@ -33,11 +33,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: AssetImage('assets/images/avatar.jpg'),
-                  foregroundImage: NetworkImage(user.profileImage!),
+                  foregroundImage: NetworkImage(user.profileImage??''),
                 ),
               ),
               title: Text(
-                user != null? '${user.firstName} ${user.lastName}' : 'Ugwuoke Chinaza',
+                user != null && user.firstName.isNotEmpty? '${user.firstName} ${user.lastName}' : 'Your Name Here',
                 style: const TextStyle(
                   color: Colors.black,
                   fontFamily: 'Roboto',
@@ -46,7 +46,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
               ),
               subtitle: Text(
-                user != null? "${user.email}" : "You wouldn't get it until you register",
+                user != null? "${user.email}" : "You wouldn't get it until you update",
                 style: const TextStyle(
                     color: Colors.black,
                     fontFamily: 'Roboto',

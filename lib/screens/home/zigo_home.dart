@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
+import 'package:zigo/controllers/auth_controller.dart';
 import 'package:zigo/screens/budget/auto_budget_planner.dart';
 import 'package:zigo/screens/budget/my_budget_lists.dart';
 import 'package:zigo/screens/budget/plan_your_budget_screen.dart';
@@ -32,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController pageController=PageController();
 
   double _currPageValue=0;
+
+  AuthController authController = Get.find();
 
   @override
   void initState() {
@@ -72,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: Dimensions.height25),
             // search container
             Container(
-              height: Dimensions.height45*1.3,
+              height: Dimensions.height20*2,
               width: Dimensions.screenWidth-50,
               decoration: BoxDecoration(
                 color: AppColors.zigoBackgroundColor,
@@ -88,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       maxLines: null,                                                                               
                       decoration: InputDecoration(
                         hintText: 'Enter your words',
+                        contentPadding: EdgeInsets.symmetric(vertical: Dimensions.height4),
                         hintStyle: GoogleFonts.montserrat(
                           color: AppColors.zigoGreyTextColor,                                          
                         ),
@@ -97,8 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   // the search icon
                   Container(
-                    height: Dimensions.height50,
-                    width: Dimensions.width20*3.2,
+                    padding: EdgeInsets.all(Dimensions.height10),
                     decoration: BoxDecoration(
                       color: AppColors.mainColor,
                       borderRadius: BorderRadius.circular(Dimensions.radius20/2),

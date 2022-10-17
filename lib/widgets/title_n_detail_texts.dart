@@ -22,7 +22,7 @@ class TitleAndDetailTexts extends StatelessWidget {
             style: GoogleFonts.poppins(
               color: Colors.black.withOpacity(0.5),
               fontWeight: FontWeight.bold,
-              fontSize: Dimensions.font12-2,
+              fontSize: Dimensions.height10,
             ),
           ),
         ),
@@ -34,8 +34,7 @@ class TitleAndDetailTexts extends StatelessWidget {
             detailText??'',
             style: GoogleFonts.poppins(
               color: AppColors.zigoGreyTextColor,
-              fontWeight: FontWeight.bold,
-              fontSize: Dimensions.font12-4,
+              fontSize: Dimensions.height10,
             ),
           ),
         ),

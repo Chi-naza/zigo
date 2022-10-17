@@ -20,7 +20,17 @@ class ZigoBottomNavBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Spacer(flex: 13),
+            // Spacer(flex: 25),
+            // Global search
+            InkWell(
+              child: Container(
+                height: Dimensions.height25*3,
+                width: Dimensions.width50*1.5,
+                padding: EdgeInsets.all(Dimensions.height20+2),
+                color: isSearchClicked? Colors.grey.shade300:Colors.white,
+                child: SvgPicture.asset('assets/icons/search.svg'),
+              ),
+            ),
             // Home
             InkWell(
               onTap: () {
@@ -34,18 +44,7 @@ class ZigoBottomNavBar extends StatelessWidget {
                 child: SvgPicture.asset('assets/icons/home-icon.svg'),
               ),
             ),
-            const Spacer(),
-            // Global search
-            InkWell(
-              child: Container(
-                height: Dimensions.height25*3,
-                width: Dimensions.width50*1.5,
-                padding: EdgeInsets.all(Dimensions.height20+2),
-                color: isSearchClicked? Colors.grey.shade300:Colors.white,
-                child: SvgPicture.asset('assets/icons/search.svg'),
-              ),
-            ),
-            const Spacer(),
+            
             // Settings
             InkWell(
               child: Container(

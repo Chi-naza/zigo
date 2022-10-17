@@ -223,7 +223,7 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
                 SizedBox(height: Dimensions.height30),
                 // total price container
                 Container(
-                 margin: EdgeInsets.only(left: Dimensions.width50*4),
+                 margin: EdgeInsets.only(left: Dimensions.width50*3.8),
                  padding: EdgeInsets.symmetric(vertical: Dimensions.height10, horizontal: Dimensions.width30),
                  decoration: BoxDecoration(
                    boxShadow: [
@@ -247,7 +247,6 @@ class _PlanYourBudgetScreenState extends State<PlanYourBudgetScreen> {
                         style: GoogleFonts.montserrat(
                           color: AppColors.mainColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: Dimensions.font23,
                         ),
                       );
                      }),

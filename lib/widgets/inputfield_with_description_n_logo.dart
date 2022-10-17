@@ -32,7 +32,7 @@ class InputFieldWithDescriptionNLogo extends StatelessWidget {
               style: GoogleFonts.poppins(
                 color: AppColors.zigoGreyTextColor,
                 fontWeight: FontWeight.bold,
-                fontSize: Dimensions.font12,
+                fontSize: Dimensions.font20/2,
               ),
             ),
             SizedBox(height: Dimensions.height4),
@@ -50,6 +50,7 @@ class InputFieldWithDescriptionNLogo extends StatelessWidget {
                   Expanded(
                     child: TextFormField(
                       controller: controller,
+                      style: TextStyle(fontSize: Dimensions.height10, color: Colors.black),
                       expands: true,
                       maxLines: null,
                       validator: (value) {
@@ -61,7 +62,6 @@ class InputFieldWithDescriptionNLogo extends StatelessWidget {
                       },                                                                               
                       decoration: InputDecoration(
                         hintText: hintText??'',
-                        hintStyle: GoogleFonts.poppins(fontSize: Dimensions.font12, color: AppColors.zigoGreyTextColor, fontWeight: FontWeight.bold),
                         border: InputBorder.none,
                       ),
                     ),

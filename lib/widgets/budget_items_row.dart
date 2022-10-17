@@ -24,14 +24,16 @@ class BudgetItemRow extends StatelessWidget {
             // items beside the number in a row
             Container(
               padding: EdgeInsets.only(left: Dimensions.width9),
-              width: Dimensions.screenWidth - 80,
+              width: Dimensions.screenWidth*0.9,
               height: Dimensions.height50,
+              // color: Colors.amber,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   // text Item Name
                   Container(
                     width: Dimensions.width50*3,
+                    // color: Colors.green,
                     child: Text(
                       itemName,
                       style: GoogleFonts.montserrat(
@@ -50,8 +52,10 @@ class BudgetItemRow extends StatelessWidget {
                   // price
                   Container(
                     width: Dimensions.width50*2,
+                    // color: Colors.red,
                     child: Text(
                       itemPrice,
+
                       style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.bold,
                         color: AppColors.zigoGreyTextColor,
