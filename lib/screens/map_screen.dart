@@ -34,8 +34,34 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
+    requestLocationPermission();
     getCurrentLocation();
     super.initState();
+  }
+
+  // A function which request the user to turn on device location
+  Future<void> requestLocationPermission() async {
+    bool isServiceEnabled;
+    LocationPermission locationPermission;
+
+    isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if(!isServiceEnabled){
+      return Future.error("Location is not enabled");
+    }
+
+    // status of permission location
+    locationPermission = await Geolocator.checkPermission();
+
+    if(locationPermission == LocationPermission.deniedForever){
+      return Future.error("Location permission is denied forever");
+    }else if(locationPermission == LocationPermission.denied){
+      //request permission
+      locationPermission = await Geolocator.requestPermission();
+      if(locationPermission == LocationPermission.denied){
+        return Future.error("User denied to grant location permission");
+      }
+    }
   }
 
   // Function which gets current location using Geolocator plugin

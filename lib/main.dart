@@ -28,13 +28,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Zigo',
+      debugShowCheckedModeBanner: false,
       // routes
       getPages: AppRoutes.routes,
       theme: ThemeData(
-        // fontFamily: 'Montserrat',
         primarySwatch: buildMaterialColor(const Color(0xFF0A71DE)),
       ),
-      // home: const HomeScreen(),
     );
   }
 }

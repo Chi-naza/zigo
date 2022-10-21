@@ -10,6 +10,7 @@ import 'package:zigo/widgets/animations/zigo_loading.dart';
 import 'package:zigo/widgets/app_button.dart';
 import 'package:zigo/widgets/budget_items_row.dart';
 import 'package:zigo/widgets/footer/zigo_bottom_navbar.dart';
+import 'package:zigo/widgets/header/drawer_screen.dart';
 import 'package:zigo/widgets/header/header_section.dart';
 
 
@@ -48,6 +49,7 @@ class _AutoBudgetPlannerScreenState extends State<AutoBudgetPlannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerScreen(),
       backgroundColor: Colors.white,
       body: Obx(() {
           return budgetController.budgetItemsList.isEmpty? const ZigoLoading() : SingleChildScrollView(
