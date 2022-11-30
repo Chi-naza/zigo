@@ -7,4 +7,4 @@ Your most reliable travel companion.
     - First version of Zigo is now released !
 ## See A Video
 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/xojIOtxvAuY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/xojIOtxvAuY/0.jpg)](https://www.youtube.com/watch?v=xojIOtxvAuY)
