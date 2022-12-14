@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "335252318959",
-    "project_id": "zigo-128d3",
-    "storage_bucket": "zigo-128d3.appspot.com"
+    "project_number": "203800735628",
+    "project_id": "zigo-9ac6e",
+    "storage_bucket": "zigo-9ac6e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:335252318959:android:2fd1e54f63a6613fdc891a",
+        "mobilesdk_app_id": "1:203800735628:android:abcd2870925218136b70a9",
         "android_client_info": {
-          "package_name": "com.example.zigo"
+          "package_name": "com.nanocodes.zigo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "335252318959-fi66d5hvjdusc0hqaqf55j6dh630dvlm.apps.googleusercontent.com",
+          "client_id": "203800735628-fvut3shn3oopc1nul196fd5sumc33ohg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyATRm8g4KUaJ9S8qNrr-2R-9uMKgvTqNCg"
+          "current_key": "AIzaSyASeE2QfgP9MEZ0BgWwJ4by5Ol8PIORKuI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "335252318959-fi66d5hvjdusc0hqaqf55j6dh630dvlm.apps.googleusercontent.com",
+              "client_id": "203800735628-fvut3shn3oopc1nul196fd5sumc33ohg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

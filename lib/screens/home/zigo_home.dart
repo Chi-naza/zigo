@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     pageController.dispose();  
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,7 +193,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Get.to(() => UserWeatherDetailsScreen()),
+                        onTap: () async{
+                          bool granted;
+                           granted = await authController.requestUserToGrantLocationPermision();
+                          if(granted){
+                            Get.to(UserWeatherDetailsScreen());
+                          }
+                          
+                        },
                         child: Container(
                           padding: EdgeInsets.all(Dimensions.height20),
                           child: Column(
@@ -223,7 +231,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Get.toNamed(MapScreen.routeName),
+                        onTap: () async{
+                          bool granted;
+                           granted = await authController.requestUserToGrantLocationPermision();
+                          if(granted){
+                            Get.toNamed(MapScreen.routeName);
+                          }
+                        },
                         child: Container(
                           padding: EdgeInsets.all(Dimensions.height20),
                           child: Column(

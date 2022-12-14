@@ -33,7 +33,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: AssetImage('assets/images/avatar.jpg'),
-                  foregroundImage: NetworkImage(user.profileImage??''),
+                  foregroundImage: NetworkImage(user.profileImage!),
                 ),
               ),
               title: Text(

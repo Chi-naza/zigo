@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zigo/firebase%20references/references.dart';
@@ -12,6 +11,7 @@ import 'package:zigo/screens/auth/signIn.dart';
 import 'package:zigo/screens/auth/signup.dart';
 import 'package:zigo/screens/home/zigo_home.dart';
 import 'package:zigo/widgets/custom_snackbar.dart';
+import 'package:location/location.dart';
 
 class AuthController extends GetxController{
   // Instantiating a FireBase Auth and User
@@ -23,7 +23,9 @@ class AuthController extends GetxController{
   late Stream<User?> _authStateChanges;
 
   // List containing userData
-  late UserModel currentUserData;
+  Rxn<UserModel> currentUserDataModel = Rxn<UserModel>();
+
+  UserModel get currentUserData => currentUserDataModel.value!;
 
   //checker boolean
   final isLoading = false.obs;
@@ -264,10 +266,10 @@ class AuthController extends GetxController{
         // data() converts gottenData to Map<String, dynamic> format
         Map<String, dynamic>? data = dataGotten.data();
         // deserializing the data gotten to our UserModel; through the instance of UserModel created
-        currentUserData = UserModel.fromJson(data!);
+        currentUserDataModel.value = UserModel.fromJson(data!);
       }
       
-      print("THIS IS cuRRent USER Data: $currentUserData"); // testing
+      print("THIS IS cuRRent USER Data: $currentUserDataModel"); // testing
 
     }catch (e){
       print("GET USER DETAILS error: $e");
@@ -295,6 +297,20 @@ class AuthController extends GetxController{
 
     return downloadUrl;
 
+  }
+
+
+
+  Future<bool> requestUserToGrantLocationPermision() async {
+    Location location = Location();
+    bool serviceEnabled = await location.serviceEnabled();
+    
+
+    if(!serviceEnabled){
+      serviceEnabled = await location.requestService();
+    }
+
+    return serviceEnabled;
   }
 
 
