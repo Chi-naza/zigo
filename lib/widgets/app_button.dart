@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/auth_controller.dart';
 
@@ -8,8 +9,9 @@ class AppButton extends StatelessWidget {
   final double? height;
   final double? width;
   final VoidCallback? onTap;
+  final Color? backgroundColor;
 
-  AppButton({Key? key, required this.text, this.height, this.width, this.onTap}) : super(key: key);
+  AppButton({Key? key, required this.text, this.height, this.width, this.onTap, this.backgroundColor}) : super(key: key);
 
   AuthController authController = Get.find();
 
@@ -25,6 +27,7 @@ class AppButton extends StatelessWidget {
             ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(width?? Dimensions.width50*2, height?? Dimensions.height20*2),
+              backgroundColor: backgroundColor??AppColors.mainColor,
             ),
           ),
         );

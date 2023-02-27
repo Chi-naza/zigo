@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zigo/constants/app_colors.dart';
 import 'package:zigo/constants/dimensions.dart';
 import 'package:zigo/controllers/auth_controller.dart';
@@ -25,6 +27,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();  
+
+  bool isTermsOfServiceAccepted = false;
+
+
+  // For launching urls 
+  Future<void> _launchPrivacyPolicyUrl() async {
+    final Uri _url = Uri.parse('https://github.com/Chi-naza/zigo/blob/master/PRIVACY_POLICY.md');
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
   
 
   @override
@@ -109,7 +122,78 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                     // forget passsword section
+                    SizedBox(height: Dimensions.height15),
+                    // TERMS of Service Section
+                    Row(
+                      children: [
+                        // Checkbox
+                        Checkbox(
+                          value: isTermsOfServiceAccepted,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isTermsOfServiceAccepted = value!;
+                            });
+                          },
+                        ),
+                        // Texts
+                        Container(
+                          width: Dimensions.width50*4,
+                          child: Center(
+                          child: Text.rich(
+                            TextSpan(
+                              text: 'By continuing, you agree to our ', 
+                              style: TextStyle(
+                                fontSize: Dimensions.font12, 
+                                color: Colors.black,
+                                letterSpacing: 1,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Terms of Service', 
+                                  style: TextStyle(
+                                    fontSize: Dimensions.font12, 
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                    // launch terms of service link here
+                                    _launchPrivacyPolicyUrl();
+                                    }
+                                ),
+                                TextSpan(
+                                  text: ' and ', 
+                                  style: TextStyle(
+                                    fontSize: Dimensions.font12, 
+                                    color: Colors.black
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Privacy Policy', 
+                                      style: TextStyle(
+                                        fontSize: Dimensions.font12, 
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                        // launch privacy policy link here
+                                        _launchPrivacyPolicyUrl();
+                                      }
+                                    )
+                                  ]
+                                )
+                              ]
+                            )
+                          )
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: Dimensions.height10),
+                    // Row Housing the SignUp Button
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -124,7 +208,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // sign in button (from our custom button)
                         AppButton(
                           text: 'Sign up', 
-                          onTap: (){
+                          backgroundColor: isTermsOfServiceAccepted? AppColors.mainColor : AppColors.mainColor.withOpacity(0.4),
+                          onTap: !isTermsOfServiceAccepted? (){} : (){
                             //only proceeds if form data are valid
                             if(formKey.currentState!.validate()){                                                         
                               // calling the register function from AuthController
